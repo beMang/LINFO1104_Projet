@@ -28,9 +28,9 @@ define
    %%%                  <most_probable_words> := <atom> '|' <most_probable_words> 
    %%%                                           | nil
    %%%                  <probability/frequence> := <int> | <float>
-   fun {Press}
-      {Browse press}
-      0
+   proc {Press}
+      {Browse hello}
+      nil % Fuck ne s'attend pas à avoir une valeur de retour donc on a une excpetion
    end
    
     %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
@@ -83,14 +83,15 @@ define
 			action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
 			)
 	 
-            % Creation de la fenetre
+   % Creation de la fenetre
 	 Window={QTk.build Description}
 	 {Window show}
 	 
 	 {InputText tk(insert 'end' "Loading... Please wait.")}
-	 {InputText bind(event:"<Control-s>" action:Press)} % You can also bind events
+	 {InputText bind(event:"<Control-s>" action:Press)} % You can also bind events (ici ctrl-s lance la fonction press)
 	 
-            % On lance les threads de lecture et de parsing
+      
+    % On lance les threads de lecture et de parsing
 	 SeparatedWordsPort = {NewPort SeparatedWordsStream}
 	 NbThreads = 4
 	 {LaunchThreads SeparatedWordsPort NbThreads}
@@ -98,6 +99,7 @@ define
 	 {InputText set(1:"")}
       end
    end
+
     % Appelle la procedure principale
    {Main}
 end
