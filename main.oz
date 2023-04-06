@@ -16,7 +16,9 @@ define
    proc {Browse Buf}
       {Browser.browse Buf}
    end
-   
+%  declare
+%  Head;
+
    %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
    %%% @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
@@ -28,15 +30,69 @@ define
    %%%                  <most_probable_words> := <atom> '|' <most_probable_words> 
    %%%                                           | nil
    %%%                  <probability/frequence> := <int> | <float>
+
    fun {Press}
-      {Browse press}
-      0
+      %%Q?: Comment on accède aux mots tapés? 
+      %%ici je vais les appeler s1 et s2 
+
+
+      %declare
+
+      %Ngramme myhead= Head;
+      %string arg= {Change_to_one_word s1 s2}
+      %Ngramme mygramme= {Looking_for myhead arg }
+      %mygramme.most_probable_words | mygramme.probability
+      
    end
+   fun {Change_to_one_word s1 s2}
+      %%Change s1 et s2 en un seul mot sans espace
+      %%dans l'arbre ils seront par ordre alphabétique donc on s'en fout
+      %%ca pose problème que pour deux duos qui mixés font pareil mais qui de base sont pas pareil 
+      %%donc heu pas ouf mais bon c'est temporaire
+      %%ah et on peut dégager les majuscules ici aussi c'est sympa
+      local A in 
+         string A= "jemange" %c'est un exemple 
+         A
+      end
+   end
+
+   fun{Looking_for Actual Recherche}
+      %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
+      %Actual c'est là où on en est dans le parcours de l'arbre, 
+      %Recherche c'est le string qu'on cherche
+      if (Actual.string==Recherche) then
+         Actual 
+      else 
+         if (Actual.string<Recherche) then 
+            {Looking_for Actual.right Recherche}
+         else 
+               {Looking_for Actual.left Recherche}
+         end
+      end
+   end
+
    
     %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
     %%% Les threads de parsing envoient leur resultat au port Port
    proc {LaunchThreads Port N}
         % TODO
+      skip
+   end
+   proc{ReadingFile Port Filename}
+      %%Fonction que vont accomplir les threads
+      %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words 
+      skip
+   end
+   proc{Looking_for_Ngramme String1 String2 String3}
+      %Cherche le Ngramme de l'arbre qui correspond au duo de mot trouvé
+      %String1 c'est le premier mot, String2 c'est le 2e, String3 c'est le mot d'après
+      %if existe pas encore, on le crée
+       
+      skip
+   end
+   proc{Change_probability String3 Ngramme}
+      %Ngramme c'est un objet qui a le premier mot, le deuxième, tous les autres mots déjà repérés après et leur probabilité
+      % On ajuste la probabilité grâce à string3 (qui est tjrs le même qu'au dessus)
       skip
    end
    
