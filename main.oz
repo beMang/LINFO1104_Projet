@@ -17,8 +17,8 @@ define
       {Browser.browse Buf}
    end
    
-local Head in 
-   Head= state(string : "nil" right: nil left: nil subtree: nil) 
+   local Head in 
+      Head= state(string : "nil" right: nil left: nil subtree: nil) 
 
    %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
