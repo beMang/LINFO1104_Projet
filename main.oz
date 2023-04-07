@@ -46,6 +46,21 @@ define
       0
       
    end
+<<<<<<< Updated upstream
+=======
+   
+   fun {Change_to_one_word s1 s2}
+      %%Change s1 et s2 en un seul mot sans espace
+      %%dans l'arbre ils seront par ordre alphabétique donc on s'en fout
+      %%ca pose problème que pour deux duos qui mixés font pareil mais qui de base sont pas pareil 
+      %%donc heu pas ouf mais bon c'est temporaire
+      %%ah et on peut dégager les majuscules ici aussi c'est sympa
+      local A in 
+         string A= "jemange" %c'est un exemple 
+         A
+      end
+   end
+>>>>>>> Stashed changes
 
    fun{Looking_for Actual Recherche}
       %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
