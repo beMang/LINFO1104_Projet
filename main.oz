@@ -16,6 +16,7 @@ define
    proc {Browse Buf}
       {Browser.browse Buf}
    end
+   
 local Head in 
    Head= state(string : "nil" right: nil left: nil subtree: nil) 
 
@@ -46,10 +47,10 @@ local Head in
       
    end
 
-   fun{Looking_for Actual Recherche1 Recherche2}
+   fun{Looking_for Actual Recherche}
       %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
       %Actual c'est là où on en est dans le parcours de l'arbre, 
-      %Recherche1 et 2 c'est les string qu'on cherche
+      %changer recherche en Recherche1 et 2 c'est les string qu'on cherche
       %refaire pareil que Looking_for_ngramme mais légèrement différent
       if (Actual.string==Recherche) then
          Actual 
