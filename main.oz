@@ -16,8 +16,8 @@ define
    proc {Browse Buf}
       {Browser.browse Buf}
    end
-%  declare
-%  Head;
+local Head in 
+   Head= state(string : "nil" right: nil left: nil subtree: nil) 
 
    %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
@@ -30,8 +30,8 @@ define
    %%%                  <most_probable_words> := <atom> '|' <most_probable_words> 
    %%%                                           | nil
    %%%                  <probability/frequence> := <int> | <float>
-   proc {Press}
-      nil % Fuck ne s'attend pas à avoir une valeur de retour donc on a une excpetion
+   fun {Press}
+       % Fuck ne s'attend pas à avoir une valeur de retour donc on a une excpetion
       %%Q?: Comment on accède aux mots tapés? 
       %%ici je vais les appeler s1 et s2 
 
@@ -42,24 +42,15 @@ define
       %string arg= {Change_to_one_word s1 s2}
       %Ngramme mygramme= {Looking_for myhead arg }
       %mygramme.most_probable_words | mygramme.probability
+      0
       
    end
-   fun {Change_to_one_word s1 s2}
-      %%Change s1 et s2 en un seul mot sans espace
-      %%dans l'arbre ils seront par ordre alphabétique donc on s'en fout
-      %%ca pose problème que pour deux duos qui mixés font pareil mais qui de base sont pas pareil 
-      %%donc heu pas ouf mais bon c'est temporaire
-      %%ah et on peut dégager les majuscules ici aussi c'est sympa
-      local A in 
-         string A= "jemange" %c'est un exemple 
-         A
-      end
-   end
 
-   fun{Looking_for Actual Recherche}
+   fun{Looking_for Actual Recherche1 Recherche2}
       %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
       %Actual c'est là où on en est dans le parcours de l'arbre, 
-      %Recherche c'est le string qu'on cherche
+      %Recherche1 et 2 c'est les string qu'on cherche
+      %refaire pareil que Looking_for_ngramme mais légèrement différent
       if (Actual.string==Recherche) then
          Actual 
       else 
@@ -83,12 +74,68 @@ define
       %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words 
       skip
    end
-   proc{Looking_for_Ngramme String1 String2 String3}
-      %Cherche le Ngramme de l'arbre qui correspond au duo de mot trouvé
-      %String1 c'est le premier mot, String2 c'est le 2e, String3 c'est le mot d'après
+   fun{Looking_for_Ngramme Actual String1 String2 }
+      %Cherche le record de l'arbre qui correspond au duo de mot trouvé
+      %String1 c'est le premier mot, String2 c'est le 2e
       %if existe pas encore, on le crée
-       
-      skip
+      %renvoie le record correspondant
+   
+      if (Actual.string==String1) then   %Si record est trouvé
+         if (String2==nil) then          %si on était déjà à la recherche du 2e mot      
+            Actual 
+         else
+            {Looking_for_Ngramme Actual.subtree String2 nil} %on passe à la recherche du 2e mot 
+         end
+      else
+         if (Actual.string>String1) then 
+            if (Actual.left==nil) then    %si en fait le record cherché existe pas encore
+               if (String2==nil) then     %savoir si on était à la recherche du premier ou du 2e mot
+                  local A in 
+                     %A= state (string: String1 right: nil left: nil value: nil )   %value doit pas être à nil mais à faire plus tard 
+                     A=0
+                     Actual.left=A 
+                     A
+                  end
+               else
+                  local B C in 
+                     %C= state(string: String2 right: nil left: nil value: nil)   %idem value pas à nil mais plus tard
+                     %ou alors on laisse value à nil et on le modifie dans la fonction principale
+                     %B= state (string: String1 right:nil left:nil subtree: C)
+                     C=0
+                     B=0
+                     Actual.left=B
+                     B
+                  end
+               end
+            else
+               
+               {Looking_for_Ngramme Actual.left String1 String2}
+            end
+         else
+            if (Actual.right==nil) then %%idem mais à droite
+               if (String2==nil) then 
+                  local A in 
+                     %A= state (string: String1 right: nil left: nil value: nil )   %value doit pas être à nil mais à faire plus tard 
+                     A=0
+                     Actual.right=A 
+                     A
+                  end
+               else
+                  local B C in 
+                     %C= state(string: String2 right: nil left: nil value: nil)   %idem value pas à nil mais plus tard
+                     %B= state (string: String1 right:nil left:nil subtree: C)
+                     C=0
+                     B=0
+                     Actual.right=B
+                     B
+                  end
+               end
+            else
+               {Looking_for_Ngramme Actual.right String1 String2}
+            end
+         end
+      end
+      
    end
    proc{Change_probability String3 Ngramme}
       %Ngramme c'est un objet qui a le premier mot, le deuxième, tous les autres mots déjà repérés après et leur probabilité
@@ -158,4 +205,5 @@ define
 
     % Appelle la procedure principale
    {Main}
+end
 end
