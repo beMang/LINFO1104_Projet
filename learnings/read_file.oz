@@ -1,22 +1,20 @@
 declare 
-proc {PrintNicely S}
-    local Temp in
-        Temp = {NewCell ""}
-        for C in S do
-            if C==10 then
-                {Browse @Temp}
-                Temp:=""
+proc {PrintNicely S Acc}
+    case S
+    of H|T then
+            if H==10 then
+                {Browse Acc}
+                {PrintNicely T nil}
             else
-                Temp:={List.append @Temp C|nil}
+                {PrintNicely T {List.append Acc H|nil}}
             end
-        end
-        {Browse @Temp}
+        [] nil then {Browse Acc}
     end
 end
 
 local Result in
     File={New Open.file init(name:'learnings/to_read.txt' flags:[read])}
     {File read(list:Result size:all)}
-    {PrintNicely Result}
+    {PrintNicely Result nil}
     {File close}
 end
