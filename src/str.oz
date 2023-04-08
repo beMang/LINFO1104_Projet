@@ -1,10 +1,19 @@
 %Ce fichier s'appelle str pour éviter les conflits avec String, mais fait référence à la gestion des chaines de caractère dans le projet
 functor
+import
+    Lst at 'lst.ozf' %Lst à la place de List pour évite les conflicts
+    Browser
 export
     compare:Compare
+    printNicely:PrintNicely
+    split:Split
 define
+    proc {Browse Buf}
+        {Browser.browse Buf}
+    end
+
+    %compare deux mots, sans prendre en compte les majuscules 
     fun{Compare String1 String2}
-        %%compare deux mots, sans prendre en compte les majuscules 
         %s1= String1.1
         %s2= String2.1
         %if (s1 >90) then 
@@ -32,5 +41,40 @@ define
                 
             end
         end
+    end
+
+    fun {SplitHelper S Carr Acc Result}
+        if Carr==nil then %A la fin de la chaine donc on renvoie le résultat
+            Result
+        else
+            case S
+            of H|T then
+                if {Lst.contains Carr H} then
+                    if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
+                        {SplitHelper T Carr nil Result} 
+                    else 
+                        {SplitHelper T Carr nil {List.append Result Acc|nil}}
+                    end
+                else
+                    {SplitHelper T Carr {List.append Acc H|nil} Result}
+                end
+            [] nil then %Fini de traiter la chaine
+                if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
+                    {SplitHelper nil nil nil Result} 
+                else
+                    {SplitHelper nil nil nil {List.append Result Acc|nil}}
+                end
+            end
+        end
+    end
+    % Sépare une chaine de caractère en une liste de chaine de caractère
+    % Carr contient les caractères utilisés pour séparé la liste S
+    fun {Split S Carr}
+        {SplitHelper S Carr nil nil}
+    end
+
+    %Affiche une chaine S mais sans les \n
+    proc {PrintNicely S}
+        {Browse {Split S [10]}}
     end
 end
