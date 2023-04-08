@@ -15,6 +15,18 @@ proc {PrintNicely S}
     {Browse {Split S [10]}}
 end
 
+
+%_______________LIST_AUX_________________ - Auxiliaire pour les listes/strings
+% Affiche le contenu d'une liste
+proc {PrintList L}
+    case L
+    of nil then skip
+    [] H|T then
+        {Browse H}
+        {PrintList T}
+    end
+end
+
 %Vérifie si L contient C
 fun {Contains L C}
     case L
@@ -77,5 +89,48 @@ fun {GetSentences File}
     {Split {ReadFile File} [10 46 63 33]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation
 end
 
-{Browse {GetSentences "tweets/part_1.txt"}}
-{PrintNicely {ReadFile "learnings/to_read.txt"}}
+
+%_______________PARSE_________________
+fun {GetPossibilitiesHelper WordsL Word1 Word2 Result}
+    case WordsL
+    of nil then Result
+    [] H|T then
+        if Word1==nil then
+            {GetPossibilitiesHelper T H Word2 Result} %Initialiser
+        else
+            if Word2==nil then
+                {GetPossibilitiesHelper T Word1 H Result} %Initialiser
+            else
+                {GetPossibilitiesHelper T Word2 H {List.append Result [Word1 Word2 H]|nil}} %C'est ici qu'on va choisir le format des éléments (ici une liste avec 3 éléments)
+            end
+        end
+    end
+end
+fun {GetPossibilities Sentence}
+    {GetPossibilitiesHelper {Split Sentence [32]} nil nil nil} %32 code Ascii de espace, donc on envoie les mots
+end
+
+fun{ParseFileHelper SentenceArray Acc}
+    case SentenceArray
+    of nil then Acc
+    [] H|T then
+        {ParseFileHelper T {List.append Acc {GetPossibilities H}}}
+    end
+end
+fun {ParseFile File}
+    {ParseFileHelper {GetSentences File} nil}
+end
+
+%___________TESTS______________ Quelques tests pour voir comment ça se comporte
+P = "Ceci est une phrase avec quelques mots et j'aimerais avoir la liste des mots qui se suivent"
+L1 = {GetPossibilities P}
+{PrintList L1} %Seem to work
+
+%Seem to work too
+L2 = {ParseFile "learnings/to_read.txt"}
+{Browse L2}
+{PrintList L2}
+
+
+%TO-DO better-parse :
+% Format word, handle special character (how ?)
