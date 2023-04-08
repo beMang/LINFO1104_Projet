@@ -14,6 +14,7 @@ define
             end
         end
     end
+    
     %Vérifie si L contient au moins un des éléments dans Carr (Pas utile mais je laisse on sait jamais)
     fun {ContainsOne L Carr}
         case L

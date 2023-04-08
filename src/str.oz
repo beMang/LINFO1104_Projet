@@ -6,6 +6,7 @@ export
     compare:Compare
     split:Split
     concat:Concat
+    toLower:ToLower
 define
     %compare deux mots, sans prendre en compte les majuscules 
     fun{Compare String1 String2}
@@ -62,6 +63,7 @@ define
             end
         end
     end
+
     % Sépare une chaine de caractère en une liste de chaine de caractère
     % Carr contient les caractères utilisés pour séparé la liste S
     fun {Split S Carr}
@@ -71,5 +73,17 @@ define
     %Concatène 2 chaine des caractères
     fun {Concat S1 S2}
         {List.append S1 S2}
+    end
+
+    fun {ToLowerHelper S Acc}
+        case S
+        of nil then Acc
+        [] H|T then
+            {ToLowerHelper T {List.append Acc {Char.toLower H}|nil}}
+        end
+    end
+    %Met tout en minuscule
+    fun {ToLower S}
+        {ToLowerHelper S nil}
     end
 end

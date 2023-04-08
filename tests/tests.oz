@@ -37,4 +37,8 @@ define
    %end
    Entier= {Str.compare "je" "tu"}
    {Browse Entier}
+
+   % Test toLower:
+   S = "START MAKING VENTILATORS NOW"
+   {Browse {String.toAtom {Str.toLower S}}}
 end

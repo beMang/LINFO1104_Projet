@@ -5,6 +5,9 @@ import
 export
     parseFile:ParseFile
 define
+    fun {FormatStr S}
+        {Str.toLower S}
+    end
     fun {GetSampleHelper WordsL Word1 Word2 Result}
         case WordsL
         of nil then Result
@@ -15,7 +18,11 @@ define
                 if Word2==nil then
                     {GetSampleHelper T Word1 H Result} %Initialiser
                 else
-                    {GetSampleHelper T Word2 H {List.append Result sample(w1:Word1 w2:Word2 val:H)|nil}} %C'est ici qu'on va choisir le format des éléments (ici une liste avec 3 éléments)
+                    {GetSampleHelper T Word2 H {List.append Result sample(
+                        w1:{FormatStr Word1} 
+                        w2:{FormatStr Word2} 
+                        val:{FormatStr H}
+                    )|nil}} %C'est ici qu'on va choisir le format des éléments sample (record ici)
                 end
             end
         end
