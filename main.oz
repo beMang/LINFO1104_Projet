@@ -1,20 +1,22 @@
 functor
 import 
-   QTk at 'x-oz://system/wp/QTk.ozf'
-   System
-   Application
-   Open
-   OS
-   Property
-   Browser
+	QTk at 'x-oz://system/wp/QTk.ozf'
+   Files at 'src/files.ozf'
+   Str at 'src/str.ozf'
+	System
+	Application
+	Open
+	OS
+	Property
+	Browser
 define
    %%% Pour ouvrir les fichiers
    class TextFile
-      from Open.file Open.text
+      	from Open.file Open.text
    end
 
    proc {Browse Buf}
-      {Browser.browse Buf}
+        {Browser.browse Buf}
    end
    
    local Head in 
@@ -44,7 +46,6 @@ define
       %Ngramme mygramme= {Looking_for myhead arg }
       %mygramme.most_probable_words | mygramme.probability
       0
-      
    end
 
    fun{Looking_for Actual Recherche}
@@ -143,42 +144,6 @@ define
       % On ajuste la probabilité grâce à string3 (qui est tjrs le même qu'au dessus)
       skip
    end
-
-
-   fun{Compare_string String1 String2}
-   %%compare deux mots, sans prendre en compte les majuscules 
-      %s1= String1.1
-      %s2= String2.1
-      %if (s1 >90) then 
-       %  s1=s1-32
-      %end
-      %if (s2>90) then 
-       %  s2=s2-32
-      %end
-      if (String1.1>String2.1) then 
-         1       %retourne une valeur positive si le premier string est plus loin dans l'alphabet que le 2e
-      elseif (String1.1<String2.1) then
-         ~1           %retourne une valeur négative si le premier string est plus tôt dans l'alphabet que le 2e
-      else
-         if (String1.2==nil) then 
-            if (String2.2 ==nil) then 
-               0           %retourne 0 si les deux mots sont les mêmes
-            else
-               ~1          %retourne une valeur négative si le premier string est le même que le 2e mais en plus court
-            end
-         
-         elseif (String2.2==nil) then 
-            1              %retourne une valeur positive si le premier string est le meme que le 2e mais en plus long
-         else
-            {Compare_string String1.2 String2.2}
-            
-         end
-      end
-   end
-      
-
-         
-
    
    %%% Ajouter vos fonctions et procédures auxiliaires ici
 
@@ -190,53 +155,42 @@ define
    in
       Args.'folder'
    end
-
-   %%% Decomnentez moi si besoin
-   %proc {ListAllFiles L}
-   %   case L of nil then skip
-   %   [] H|T then {Browse {String.toAtom H}} {ListAllFiles T}
-   %   end
-   %end
     
    %%% Procedure principale qui cree la fenetre et appelle les differentes procedures et fonctions
    proc {Main}
       TweetsFolder = {GetSentenceFolder}
    in
-      %% Fonction d'exemple qui liste tous les fichiers
-      %% contenus dans le dossier passe en Argument.
-      %% Inspirez vous en pour lire le contenu des fichiers
-      %% se trouvant dans le dossier
-      %%% N'appelez PAS cette fonction lors de la phase de
-      %%% soumission !!!
-      % {ListAllFiles {OS.getDir TweetsFolder}}
+      %METHOD MAIN
+
+      % Exemple pour accéder à la méthode compare :
+      {Browse {Str.compare "Adrien" "Laura"}}
+      {Browse {Str.compare "Laura" "Adrien"}}
+      {Browse {String.toAtom "Inshalla ça marche"}} %Pour imprimer des strings joliment
        
       local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort in
-	 {Property.put print foo(width:1000 depth:1000)}  % for stdout siz
-	 
-            % TODO
-	 
-            % Creation de l interface graphique
-	 Description=td(
-			title: "Text predictor"
-			lr(text(handle:InputText width:50 height:10 background:white foreground:black wrap:word) button(text:"Predict" width:15 action:Press))
-			text(handle:OutputText width:50 height:10 background:black foreground:white glue:w wrap:word)
-			action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
-			)
-	 
+     {Property.put print foo(width:1000 depth:1000)}  % for stdout siz
+     
+   % Creation de l interface graphique
+     Description=td(
+            title: "Text predictor"
+            lr(text(handle:InputText width:50 height:10 background:white foreground:black wrap:word) button(text:"Predict" width:15 action:Press))
+            text(handle:OutputText width:50 height:10 background:black foreground:white glue:w wrap:word)
+            action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
+            )
+     
    % Creation de la fenetre
-	 Window={QTk.build Description}
-	 {Window show}
-	 
-	 {InputText tk(insert 'end' "Loading... Please wait.")}
-	 {InputText bind(event:"<Control-s>" action:Press)} % You can also bind events (ici ctrl-s lance la fonction press)
-	 
+     Window={QTk.build Description}
+     {Window show}
+     
+     {InputText tk(insert 'end' "Loading... Please wait.")}
+     {InputText bind(event:"<Control-s>" action:Press)} % You can also bind events (ici ctrl-s lance la fonction press)
       
     % On lance les threads de lecture et de parsing
-	 SeparatedWordsPort = {NewPort SeparatedWordsStream}
-	 NbThreads = 4
-	 {LaunchThreads SeparatedWordsPort NbThreads}
-	 
-	 {InputText set(1:"")}
+     SeparatedWordsPort = {NewPort SeparatedWordsStream}
+     NbThreads = 4
+     {LaunchThreads SeparatedWordsPort NbThreads}
+     
+     {InputText set(1:"")}
       end
    end
 

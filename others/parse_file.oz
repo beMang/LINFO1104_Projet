@@ -22,7 +22,11 @@ proc {PrintList L}
     case L
     of nil then skip
     [] H|T then
-        {Browse H}
+        if {IsString H} then % Pour afficher proprement les strings
+            {Browse {String.toAtom H}}
+        else
+            {Browse H}
+        end
         {PrintList T}
     end
 end
@@ -101,7 +105,7 @@ fun {GetPossibilitiesHelper WordsL Word1 Word2 Result}
             if Word2==nil then
                 {GetPossibilitiesHelper T Word1 H Result} %Initialiser
             else
-                {GetPossibilitiesHelper T Word2 H {List.append Result [Word1 Word2 H]|nil}} %C'est ici qu'on va choisir le format des éléments (ici une liste avec 3 éléments)
+                {GetPossibilitiesHelper T Word2 H {List.append Result sample(w1:Word1 w2:Word2 val:H)|nil}} %C'est ici qu'on va choisir le format des éléments (ici une liste avec 3 éléments)
             end
         end
     end
@@ -122,15 +126,19 @@ fun {ParseFile File}
 end
 
 %___________TESTS______________ Quelques tests pour voir comment ça se comporte
+
 P = "Ceci est une phrase avec quelques mots et j'aimerais avoir la liste des mots qui se suivent"
 L1 = {GetPossibilities P}
 {PrintList L1} %Seem to work
 
 %Seem to work too
-L2 = {ParseFile "learnings/to_read.txt"}
+L2 = {ParseFile "others/to_read.txt"}
 {Browse L2}
 {PrintList L2}
 
+%Example of nice print
+L3 = ["Hello" "Je suis @"]
+{PrintList L3}
 
 %TO-DO better-parse :
 % Format word, handle special character (how ?)

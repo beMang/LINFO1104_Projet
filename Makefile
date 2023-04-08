@@ -10,13 +10,18 @@ else
 	OZENGINE = ozengine
 endif
 
-all : $(ENTRY_POINT)
+all : src/files.ozf src/str.ozf main.ozf tests/tests.ozf
+	make $^
 
 %.ozf: %.oz
 	$(OZC) -c $< -o "$@"
 
-run: $(ENTRY_POINT) 
+run: $(ENTRY_POINT)
 	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER)
 
 clean :
+	rm -f **/*.ozf
 	rm -f *.ozf
+
+tests: tests/tests.ozf
+	$(OZENGINE) tests/tests.ozf
