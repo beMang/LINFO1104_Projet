@@ -1,29 +1,8 @@
 functor  
-import
-    Browser
 export
-    printList:PrintList
     contains:Contains
     containsOne:ContainsOne
 define
-    proc {Browse Buf}
-        {Browser.browse Buf}
-    end
-
-    % Affiche le contenu d'une liste
-    proc {PrintList L}
-        case L
-        of nil then skip
-        [] H|T then
-            if {IsString H} then % Pour afficher proprement les strings
-                {Browse {String.toAtom H}}
-            else
-                {Browse H}
-            end
-            {PrintList T}
-        end
-    end
-
     %Vérifie si L contient C
     fun {Contains L C}
         case L

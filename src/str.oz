@@ -2,16 +2,11 @@
 functor
 import
     Lst at 'lst.ozf' %Lst à la place de List pour évite les conflicts
-    Browser
 export
     compare:Compare
-    printNicely:PrintNicely
     split:Split
+    concat:Concat
 define
-    proc {Browse Buf}
-        {Browser.browse Buf}
-    end
-
     %compare deux mots, sans prendre en compte les majuscules 
     fun{Compare String1 String2}
         %s1= String1.1
@@ -73,8 +68,8 @@ define
         {SplitHelper S Carr nil nil}
     end
 
-    %Affiche une chaine S mais sans les \n
-    proc {PrintNicely S}
-        {Browse {Split S [10]}}
+    %Concatène 2 chaine des caractères
+    fun {Concat S1 S2}
+        {List.append S1 S2}
     end
 end

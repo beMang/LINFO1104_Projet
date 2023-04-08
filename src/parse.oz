@@ -1,7 +1,7 @@
 functor  
 import
-    File at 'files.oz'
-    Str at 'str.oz'
+    File at 'files.ozf'
+    Str at 'str.ozf'
 export
     parseFile:ParseFile
 define
@@ -31,7 +31,7 @@ define
             {ParseFileHelper T {List.append Acc {GetSample H}}}
         end
     end
-    fun {ParseFile File}
-        {ParseFileHelper {GetSentences File} nil}
+    fun {ParseFile FileName}
+        {ParseFileHelper {File.getSentences FileName} nil}
     end
 end

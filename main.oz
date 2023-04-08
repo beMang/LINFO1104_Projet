@@ -1,8 +1,8 @@
 functor
 import 
 	QTk at 'x-oz://system/wp/QTk.ozf'
-   Files at 'src/files.ozf'
-   Str at 'src/str.ozf'
+   Parse at 'src/parse.ozf'
+   Debug at 'src/debug.ozf'
 	System
 	Application
 	Open
@@ -162,10 +162,10 @@ define
    in
       %METHOD MAIN
 
-      % Exemple pour accéder à la méthode compare :
-      {Browse {Str.compare "Adrien" "Laura"}}
-      {Browse {Str.compare "Laura" "Adrien"}}
-      {Browse {String.toAtom "Inshalla ça marche"}} %Pour imprimer des strings joliment
+      local Result in
+         Result = {Parse.parseFile "tweets/part_1.txt"}
+         {Debug.printSampleList Result} %Virer cette ligne pour l'affichage ça peut prendre bcp de temps
+      end
        
       local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort in
      {Property.put print foo(width:1000 depth:1000)}  % for stdout siz

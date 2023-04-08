@@ -2,7 +2,7 @@ functor
 import
 	Open
     Browser
-    Str at 'str.oz'
+    Str at 'str.ozf'
 export  
   	readFile:ReadFile
     getSentences:GetSentences
