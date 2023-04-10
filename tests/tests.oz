@@ -15,13 +15,6 @@ define
 
    Test2= "jem"
 
-   fun {Bete_fonction}
-      	local Myreturn in 
-         	Myreturn= state(essai: "je")
-         	Myreturn
-      end
-   end
-   {Browse 4}
 
    fun {Test_LookUp} 
       local D in 
@@ -44,8 +37,16 @@ define
    {Browse Entier}
 
    % Test toLower:
-   S = "START MAKING VENTILATORS NOW"
-   {Browse {String.toAtom {Str.toLower S}}}
+   fun {Test_toLower}
+      local S Mytest Verif in
+         S = "START MAKING VENTILATORS NOW"
+         Verif= 'start making ventilators now'   %je désire le contexte de cette phrase test
+         Mytest = {String.toAtom{Str.toLower S}}
+         %note: toAtom renvoit une chaine de caractères, pas un string, donc on ne peut pas y appliquer Mytest.1
+         Verif==Mytest
+      end
+   end
    {Browse {Test_LookUp}}
    {Browse {Test_Looking_for}}
+   {Browse {Test_toLower}}
 end
