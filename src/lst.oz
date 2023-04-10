@@ -1,9 +1,10 @@
 functor 
 import 
-    Str at '../src/str.ozf'
+    Str at 'str.ozf'
 export
     contains:Contains
     containsOne:ContainsOne
+    lookUp_or_create:LookUp_or_create
 define
     %Vérifie si L contient C
     fun {Contains L C}
@@ -35,7 +36,7 @@ define
          if (String2==nil) then          %si on était déjà à la recherche du 2e mot      
             Actual 
          else
-            {Looking_for_Ngramme Actual.subtree String2 nil} %on passe à la recherche du 2e mot 
+            {LookUp_or_create Actual.subtree String2 nil} %on passe à la recherche du 2e mot 
          end
       else
          if {Str.compare String1 Actual.string}==~1 then 
@@ -60,7 +61,7 @@ define
                end
             else
                
-               {Looking_for_Ngramme Actual.left String1 String2}
+               {LookUp_or_create Actual.left String1 String2}
             end
          else
             if (Actual.right==nil) then %%idem mais à droite
@@ -82,7 +83,7 @@ define
                   end
                end
             else
-               {Looking_for_Ngramme Actual.right String1 String2}
+               {LookUp_or_create Actual.right String1 String2}
             end
          end
       end

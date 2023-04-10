@@ -1,6 +1,7 @@
 functor
 import
    Str at '../src/str.ozf'
+   Lst at '../src/lst.ozf'
    Browser
 define
    proc {Browse Buf}
@@ -22,10 +23,12 @@ define
    end
    {Browse 4}
 
-   %fun {Test_looking_for_Ngramme}
-      %   D={Looking_for_Ngramme Test "Je" "mange"}
-      %  D==A
-   %end
+   fun {Test_LookUp} 
+      local D in 
+         D={Lst.lookUp_or_create Test "Je" "mange"}
+         D==A
+      end
+   end
    %fun {Test_Change_probability}
       %E=A.value.beaucoup
       %C= {Change_probability "beaucoup" A}
@@ -41,4 +44,5 @@ define
    % Test toLower:
    S = "START MAKING VENTILATORS NOW"
    {Browse {String.toAtom {Str.toLower S}}}
+   {Browse {Test_LookUp}}
 end
