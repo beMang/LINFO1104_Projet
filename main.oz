@@ -48,22 +48,6 @@ define
       0
    end
 
-   fun{Looking_for Actual Recherche}
-      %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
-      %Actual c'est là où on en est dans le parcours de l'arbre, 
-      %changer recherche en Recherche1 et 2 c'est les string qu'on cherche
-      %refaire pareil que Looking_for_ngramme mais légèrement différent
-      if (Actual.string==Recherche) then
-         Actual 
-      else 
-         if (Actual.string<Recherche) then 
-            {Looking_for Actual.right Recherche}
-         else 
-               {Looking_for Actual.left Recherche}
-         end
-      end
-   end
-
    
     %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
     %%% Les threads de parsing envoient leur resultat au port Port

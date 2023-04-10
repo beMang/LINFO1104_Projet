@@ -5,6 +5,7 @@ export
     contains:Contains
     containsOne:ContainsOne
     lookUp_or_create:LookUp_or_create
+    looking_for:Looking_for
 define
     %Vérifie si L contient C
     fun {Contains L C}
@@ -87,5 +88,33 @@ define
             end
          end
       end
-    end  
+    end
+
+    fun{Looking_for Actual Str1 Str2}
+        %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
+        %Actual c'est là où on en est dans le parcours de l'arbre, 
+        %Retourne la value du record du duo Str1 Str2
+        %Retourne 0 si pas trouvé
+        if {Str.compare Actual.string Str1} ==0 then   %Si record est trouvé
+            if (Str2==nil) then          %si on était déjà à la recherche du 2e mot      
+               Actual.value 
+            else
+               {Looking_for Actual.subtree Str2 nil} %on passe à la recherche du 2e mot 
+            end
+        else
+            if {Str.compare Str1 Actual.string}==~1 then 
+                if Actual.left==nil then 
+                    0
+                else
+                    {Looking_for Actual.left Str1 Str2}
+                end
+            else
+                if Actual.right==nil then 
+                    0
+                else
+                    {Looking_for Actual.right Str1 Str2}
+                end
+            end
+        end
+    end
 end

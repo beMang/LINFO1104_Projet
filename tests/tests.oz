@@ -34,10 +34,12 @@ define
       %C= {Change_probability "beaucoup" A}
       %A.value.beaucoup== E+1
    %end
-   %fun {Test_Looking_for}
-      %G={Looking_for Test "Je" "mange"}
-      %G==F
-   %end
+   fun {Test_Looking_for}
+      local G in 
+         G={Lst.looking_for Test "Je" "mange"}
+         G==F
+      end
+   end
    Entier= {Str.compare "je" "tu"}
    {Browse Entier}
 
@@ -45,4 +47,5 @@ define
    S = "START MAKING VENTILATORS NOW"
    {Browse {String.toAtom {Str.toLower S}}}
    {Browse {Test_LookUp}}
+   {Browse {Test_Looking_for}}
 end
