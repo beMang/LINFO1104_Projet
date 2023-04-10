@@ -1,7 +1,5 @@
 %Ce fichier s'appelle str pour éviter les conflits avec String, mais fait référence à la gestion des chaines de caractère dans le projet
 functor
-import
-    Lst at 'lst.ozf' %Lst à la place de List pour évite les conflicts
 export
     compare:Compare
     split:Split
@@ -37,7 +35,7 @@ define
         else
             case S
             of H|T then
-                if {Lst.contains Carr H} then
+                if {Member H Carr} then
                     if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
                         {SplitHelper T Carr nil Result} 
                     else 

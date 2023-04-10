@@ -10,7 +10,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : src/lst.ozf src/str.ozf src/debug.ozf src/files.ozf src/parse.ozf main.ozf tests/tests.ozf
+all : src/tree.ozf src/str.ozf src/debug.ozf src/files.ozf src/parse.ozf main.ozf tests/tests.ozf
 	make $^
 
 %.ozf: %.oz

@@ -1,7 +1,7 @@
 functor
 import
    Str at '../src/str.ozf'
-   Lst at '../src/lst.ozf'
+   Tree at '../src/tree.ozf'
    Browser
 define
    proc {Browse Buf}
@@ -18,7 +18,7 @@ define
 
    fun {Test_LookUp} 
       local D in 
-         D={Lst.lookUp_or_create Test "Je" "mange"}
+         D={Tree.lookUp_or_create Test "Je" "mange"}
          D==A
       end
    end
@@ -29,7 +29,7 @@ define
    %end
    fun {Test_Looking_for}
       local G in 
-         G={Lst.looking_for Test "Je" "mange"}
+         G={Tree.looking_for Test "Je" "mange"}
          G==F
       end
    end
