@@ -10,14 +10,6 @@ export
 define
     %compare deux mots, sans prendre en compte les majuscules 
     fun{Compare String1 String2}
-        %s1= String1.1
-        %s2= String2.1
-        %if (s1 >90) then 
-            %  s1=s1-32
-        %end
-        %if (s2>90) then 
-            %  s2=s2-32
-        %end
         if (String1.1>String2.1) then 
                 1       %retourne une valeur positive si le premier string est plus loin dans l'alphabet que le 2e
         elseif (String1.1<String2.1) then
