@@ -99,10 +99,12 @@ define
     proc{Change_probability String3 Ngramme}
       %Ngramme c'est un objet qui a le premier mot, le deuxième, tous les autres mots déjà repérés après et leur probabilité
       % On ajuste la probabilité grâce à string3 (qui est tjrs le même qu'au dessus)
-      skip
-    end
 
-    fun {Looking_for_in_value Val Mystring}
-        0
+      %local Val in {Arity Ngramme.value Val} end
+      %local A in A= {Contains Val String3} end
+    
+
+
+      skip
     end
 end
