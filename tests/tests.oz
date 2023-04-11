@@ -18,7 +18,7 @@ define
 
    fun {Test_LookUp} 
       local D in 
-         D={Tree.lookUp_or_create Test "Je" "mange"}
+         D={Tree.lookUp_or_create Test "Je" "cours"}
          D==A
       end
    end
