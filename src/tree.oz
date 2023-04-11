@@ -64,16 +64,16 @@ define
       %retourne un nouveau subtree adapté
       case SubTree
 
-      of nil then subtree(string:Str2 right:nil left:nil value:{Insert_in_value Str3 nil}) %cas où le deuxième mot n'vaiat jamais été rencontré
+      of nil then subtree(string:Str2 right:nil left:nil value:{InsertInValue Str3 nil}) %cas où le deuxième mot n'vaiat jamais été rencontré
      
       [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==0 then %cas où le deuxième mot a déjà été rencontré et on doit adapter value
-         subtree(string: Str2 right:R left:L value: {Insert_in_value Str3 V})
+         subtree(string: Str2 right:R left:L value: {InsertInValue Str3 V})
 
       [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==~1 then   %cas où le deuxième mot est plus haut dans l'ordre alphabétique 
-         subtree(string:Y right:R left:{Insert_in_subtree Str2 Str3 L} value:V)
+         subtree(string:Y right:R left:{InsertInSubtree Str2 Str3 L} value:V)
 
       [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==1 then  %cas où le deuxième mot est plus bas dans l'ordre alphabétique
-         subtree(string:Y right:{Insert_in_subtree Str2 Str3 R} left:L value:V)
+         subtree(string:Y right:{InsertInSubtree Str2 Str3 R} left:L value:V)
       else
          0
       end

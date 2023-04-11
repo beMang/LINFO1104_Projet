@@ -28,7 +28,7 @@ define
    end
    fun {Test_Insert_big_tree}
       local Mytree in 
-         Mytree = {Tree.insert_in_bigtree "Tu" "manges" 'des' Test}
+         Mytree = {Tree.insertInBigTree "Tu" "manges" 'des' Test}
          Mytree==Result_test_insert
       end
    end
@@ -67,4 +67,5 @@ define
    %{Browse {Test_Looking_for}}
    {Browse {Test_toLower}}
    {Browse {TestTreeAndLookUp}}
+   {Browse{Test_Insert_big_tree}}
 end
