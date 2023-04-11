@@ -8,33 +8,38 @@ define
       {Browser.browse Buf}
    end
 
-   A= state(string:"mange" right:nil left:nil value:F)
-   B= state(string:"bois" right: A left: nil value:nil)
-   Test= state(string :"Je" right: nil left:nil subtree:B)
-   F= state(beaucoup:3 bien:5 des:7)
+   A= subtree(string: "mange" right:nil left: nil value: F)
+   B= subtree(string: "bois" right: A left: nil value:nil)
+   Test= tree(string : "Je" right: nil left:nil subtree: B)
+   C=possibilities(des:1)
+   D=subtree(string: "manges" right:nil left:nil value:C)
+   E=tree(string:"Tu" right:nil left:nil subtree:D)
+   Result_test_insert= tree(string: "Je" right: E left:nil subtree:B)
+   F= possibilities(beaucoup: 3 bien: 5 des: 7)
+
+   Test2= "jem"
 
 
-   %fun {Test_LookUp} 
-   %   local D in 
-   %      D={Tree.lookUp_or_create Test "Je" "cours"}
-   %      D==A
-   %   end
-   %end
-   %%fun {Test_Change_probability}
-   %   %E=A.value.beaucoup
-   %   %C= {Change_probability "beaucoup" A}
-   %   %A.value.beaucoup== E+1
-   %%end
-   %fun {Test_Looking_for}
-   %   local G in 
-   %      G={Tree.looking_for Test "Je" "mange"}
-   %      G==F
-   %   end
-   %end
-
-
+   fun {Test_LookUp} 
+      local D in 
+         D={Tree.lookUp_or_create Test "Je" "cours"}
+         D==A
+      end
+   end
+   fun {Test_Insert_big_tree}
+      local Mytree in 
+         Mytree = {Tree.insert_in_bigtree "Tu" "manges" 'des' Test}
+         Mytree==Result_test_insert
+      end
+   end
+   fun {Test_Looking_for}
+      local G in 
+         G={Tree.looking_for Test "Je" "mange"}
+         G==F
+      end
+   end
    Entier= {Str.compare "je" "tu"}
-   {Browse Entier}
+
 
    % Test toLower:
    fun {Test_toLower}

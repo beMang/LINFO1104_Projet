@@ -40,6 +40,8 @@ define
    fun {InsertInBigTree StringToInsert Str2 Str3 Tree}
       %on insere un nouveau duo dans l'arbre avec leur 3e mot
       %retourne un nouveau bigtree adapté
+      %@pre: StringToInsert et Str2 sont des strings, Str3 est une chaine de caractère, Tree est un arbre sous la forme tree(string:_ right:_ left:_ subtree:_)
+      %@post: Tree sous la forme tree(string:_ right:_ left:_ subtree:_)
       case Tree
 
       of nil then tree(string:StringToInsert right:nil left:nil subtree:{InsertInSubtree Str2 Str3 nil}) %cas rencontré à la fin si on n'avait jamais rencontré le premier mot
@@ -62,16 +64,18 @@ define
       %retourne un nouveau subtree adapté
       case SubTree
 
-      of nil then tree(string:Str2 right:nil left:nil value:{InsertInValue Str3 nil}) %cas où le deuxième mot n'vaiat jamais été rencontré
+      of nil then subtree(string:Str2 right:nil left:nil value:{Insert_in_value Str3 nil}) %cas où le deuxième mot n'vaiat jamais été rencontré
      
-      [] tree(string:Y right:R left:L value:V) andthen {Str.compare Str2 Y}==0 then %cas où le deuxième mot a déjà été rencontré et on doit adapter value
-         tree(string: Str2 right:R left:L value: {InsertInValue Str3 V})
+      [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==0 then %cas où le deuxième mot a déjà été rencontré et on doit adapter value
+         subtree(string: Str2 right:R left:L value: {Insert_in_value Str3 V})
 
-      [] tree(string:Y right:R left:L value:V) andthen {Str.compare Str2 Y}==~1 then   %cas où le deuxième mot est plus haut dans l'ordre alphabétique 
-         tree(string:Y right:R left:{InsertInSubtree Str2 Str3 L} value:V)
+      [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==~1 then   %cas où le deuxième mot est plus haut dans l'ordre alphabétique 
+         subtree(string:Y right:R left:{Insert_in_subtree Str2 Str3 L} value:V)
 
-      [] tree(string:Y right:R left:L value:V) andthen {Str.compare Str2 Y}==1 then  %cas où le deuxième mot est plus bas dans l'ordre alphabétique
-         tree(string:Y right:{InsertInSubtree Str2 Str3 R} left:L value:V)
+      [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==1 then  %cas où le deuxième mot est plus bas dans l'ordre alphabétique
+         subtree(string:Y right:{Insert_in_subtree Str2 Str3 R} left:L value:V)
+      else
+         0
       end
    end
 
