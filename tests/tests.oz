@@ -3,6 +3,7 @@ import
    Str at '../src/str.ozf'
    Tree at '../src/tree.ozf'
    Browser
+   Application
 define
    proc {Browse Buf}
       {Browser.browse Buf}
@@ -17,32 +18,21 @@ define
    Result_test_insert= tree(string: "Je" right: E left:nil subtree:B)
    F= possibilities(beaucoup: 3 bien: 5 des: 7)
 
-   Test2= "jem"
-
-
-   fun {Test_LookUp} 
-      local D in 
-         D={Tree.lookUp_or_create Test "Je" "cours"}
-         D==A
-      end
-   end
-   fun {Test_Insert_big_tree}
+   fun {TestInsertBigTree}
       local Mytree in 
          Mytree = {Tree.insertInBigTree "Tu" "manges" 'des' Test}
          Mytree==Result_test_insert
       end
    end
-   fun {Test_Looking_for}
+   fun {TestLookUp}
       local G in 
-         G={Tree.looking_for Test "Je" "mange"}
+         G={Tree.lookUp Test "Je" "mange"}
          G==F
       end
    end
-   Entier= {Str.compare "je" "tu"}
 
 
-   % Test toLower:
-   fun {Test_toLower}
+   fun {TestToLower}
       local S Mytest Verif in
          S = "START MAKING VENTILATORS NOW"
          Verif= 'start making ventilators now'   %je désire le contexte de cette phrase test
@@ -53,19 +43,22 @@ define
    end
 
 
-   fun {TestTreeAndLookUp}
+   proc {TestTreeAndLookUp}
       local T1 T2 in
          T1 = {Tree.insertInBigTree "test1" "test2" test1 {Tree.insertInBigTree "test1" "test2" test1 nil}}
          T2 = {Tree.insertInBigTree "allo" "pompier" feu T1}
          {Browse {Tree.lookUp T1 "test1" "test2"}}
          {Browse {Tree.lookUp T2 "allo" "pompier"}}
       end
-      0
    end
 
-   %{Browse {Test_LookUp}}
-   %{Browse {Test_Looking_for}}
-   {Browse {Test_toLower}}
-   {Browse {TestTreeAndLookUp}}
-   {Browse{Test_Insert_big_tree}}
+
+   %On lance les tests
+   {Browse {TestToLower}}
+   {TestTreeAndLookUp}
+   {Browse {TestInsertBigTree}}
+   {Browse {TestLookUp}}
+
+   {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
+   {Application.exit 0}
 end

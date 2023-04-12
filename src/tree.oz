@@ -7,7 +7,6 @@ export
    insertInValue:InsertInValue
    insertInSubtree:InsertInSubtree
 define
-
    fun{LookUp Tree Str1 Str2}
         %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
         %Tree c'est là où on en est dans le parcours de l'arbre, 
@@ -97,6 +96,5 @@ define
             end
          end
       end
-   
    end
 end

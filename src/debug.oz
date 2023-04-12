@@ -37,7 +37,7 @@ define
         of nil then skip
         [] H|T then
             local W1 W2 Content Result in
-                W1 = {Str.concat "{w1: " H.w1}
+                W1 = {Str.concat "w1: " H.w1}
                 W2 = {Str.concat " - w2: " H.w2}
                 Content = {Str.concat " - val: " H.val}
                 Result = {Str.concat {Str.concat W1 W2} Content}
