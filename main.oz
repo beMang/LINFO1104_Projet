@@ -28,15 +28,6 @@ define
    proc {Press}
       % Fuck ne s'attend pas à avoir une valeur de retour donc on a une excpetion
       %%Q?: Comment on accède aux mots tapés? 
-      %%ici je vais les appeler s1 et s2 
-
-
-      %declare
-
-      %Ngramme myhead= Head;
-      %string arg= {Change_to_one_word s1 s2}
-      %Ngramme mygramme= {Looking_for myhead arg }
-      %mygramme.most_probable_words | mygramme.probability
       skip
    end
 
