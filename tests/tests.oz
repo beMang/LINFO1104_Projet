@@ -17,6 +17,7 @@ define
    E=tree(string:"Tu" right:nil left:nil subtree:D)
    Result_test_insert= tree(string: "Je" right: E left:nil subtree:B)
    F= possibilities(beaucoup: 3 bien: 5 des: 7)
+   G= possibilities(a:1 hier:4 manger:4)
 
    fun {TestInsertBigTree}
       local Mytree in 
@@ -59,13 +60,18 @@ define
       end
    end
 
+   fun {TestGetPrevision}
+      {Tree.getPrevision G}
+   end
+
 
    %On lance les tests
-   {Browse {TestToLower}}
-   {TestTreeAndLookUp}
-   {Browse {TestInsertBigTree}}
-   {Browse {TestLookUp}}
-   {Browse {TestTwoLastWord}}
+   %{Browse {TestToLower}}
+   %{TestTreeAndLookUp}
+   %{Browse {TestInsertBigTree}}
+   %{Browse {TestLookUp}}
+   %{Browse {TestTwoLastWord}}
+   {Browse {TestGetPrevision}}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}
