@@ -2,8 +2,12 @@ functor
 import
     File at 'files.ozf'
     Str at 'str.ozf'
+    Tree at 'tree.ozf'
+    Browser
 export
     parseFile:ParseFile
+    parseFiles:ParseFiles
+    getTreeFromList:GetTreeFromList
 define
     fun {FormatStr S}
         {Str.toLower S}
@@ -19,8 +23,8 @@ define
                     {GetSampleHelper T Word1 H Result} %Initialiser
                 else
                     {GetSampleHelper T Word2 H {List.append Result sample(
-                        w1:{FormatStr Word1} 
-                        w2:{FormatStr Word2} 
+                        w1:{FormatStr Word1}
+                        w2:{FormatStr Word2}
                         val:{FormatStr H}
                     )|nil}} %C'est ici qu'on va choisir le format des éléments sample (record ici)
                 end
@@ -41,4 +45,30 @@ define
     fun {ParseFile FileName}
         {ParseFileHelper {File.getSentences FileName} nil}
     end
+
+    fun {ParseFilesHelper N End Folder Acc}
+        if N==End then Acc
+        else
+            local FileName in
+                FileName = {Append "/part_" {Append {IntToString N} ".txt"}} %Nom du fichier twitter, rendre ça + modulable
+                {ParseFilesHelper N+1 End Folder {Append {ParseFile {Append Folder FileName}} Acc}}
+            end
+        end
+    end
+    fun {ParseFiles Begin End Folder}
+        {ParseFilesHelper Begin End Folder nil}
+    end
+
+    fun {GetTreeFromListHelper L Acc}
+        case L
+        of nil then Acc
+        [] H|T then %H is a sample
+            {GetTreeFromListHelper T {Tree.insertInBigTree H.w1 H.w2 {String.toAtom H.val} Acc}} %Pas oublier la conversion en atom
+        end
+    end
+    fun {GetTreeFromList L}
+        {GetTreeFromListHelper L nil}
+    end
+
+
 end

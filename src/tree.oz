@@ -14,7 +14,7 @@ define
         %Retourne 0 si pas trouvé
       if {Str.compare Tree.string Str1} ==0 then   %Si record est trouvé
          if (Str2==nil) then          %si on était déjà à la recherche du 2e mot      
-            Tree.value 
+            Tree.value
          else
             {LookUp Tree.subtree Str2 nil} %on passe à la recherche du 2e mot 
          end
@@ -53,7 +53,8 @@ define
 
       [] tree(string:Y right:R left:L subtree:S) andthen {Str.compare StringToInsert Y}==1 then %cas où notre string est plus bas dans l'alphabet
           tree(string:Y right:{InsertInBigTree StringToInsert Str2 Str3 R} left:L subtree:S) 
-         
+      else
+         {Exception.error aie}
       end
    end
 
@@ -74,7 +75,7 @@ define
       [] subtree( right:R left:L string:Y value:V) andthen {Str.compare Str2 Y}==1 then  %cas où le deuxième mot est plus bas dans l'ordre alphabétique
          subtree(string:Y right:{InsertInSubtree Str2 Str3 R} left:L value:V)
       else
-         0
+         {Exception.error aie}
       end
    end
 

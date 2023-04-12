@@ -3,6 +3,7 @@ import
 	QTk at 'x-oz://system/wp/QTk.ozf'
    Parse at 'src/parse.ozf'
    Debug at 'src/debug.ozf'
+   Tree at 'src/tree.ozf'
 	System
 	Application
 	Open
@@ -79,10 +80,10 @@ define
       TweetsFolder = {GetSentenceFolder}
    in
       %METHOD MAIN
-
-      local Result in
-         Result = {Parse.parseFile "tweets/part_1.txt"}
-         {Debug.printSampleList Result} %Virer cette ligne pour l'affichage ça peut prendre bcp de temps
+      local List MyTree in
+         List = {Parse.parseFiles 1 200 TweetsFolder} %contient une grosse liste sa mère
+         MyTree = {Parse.getTreeFromList List}
+         {Browse {Tree.lookUp MyTree "hand" "in"}} %Comment on s'y prend pour prédire
       end
        
       local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort in

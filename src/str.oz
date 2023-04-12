@@ -24,7 +24,6 @@ define
                     1              %retourne une valeur positive si le premier string est le meme que le 2e mais en plus long
             else
                     {Compare String1.2 String2.2}
-                
             end
         end
     end
