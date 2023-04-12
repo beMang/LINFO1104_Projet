@@ -3,8 +3,8 @@ functor
 export
     compare:Compare
     split:Split
-    concat:Concat
     toLower:ToLower
+    lastWord:LastWord
 define
     %compare deux mots, sans prendre en compte les majuscules 
     fun{Compare String1 String2}
@@ -59,11 +59,6 @@ define
         {SplitHelper S Carr nil nil}
     end
 
-    %Concatène 2 chaine des caractères
-    fun {Concat S1 S2}
-        {List.append S1 S2}
-    end
-
     fun {ToLowerHelper S Acc}
         case S
         of nil then Acc
@@ -74,5 +69,11 @@ define
     %Met tout en minuscule
     fun {ToLower S}
         {ToLowerHelper S nil}
+    end
+
+    fun{LastWord S N}
+        Splited = {Split S [32]}
+    in
+        {List.drop Splited {Length Splited}-N}
     end
 end

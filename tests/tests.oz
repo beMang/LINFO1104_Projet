@@ -42,6 +42,13 @@ define
       end
    end
 
+   fun {TestTwoLastWord}
+      S = "ceci est une phrase"
+      LW = {Str.lastWord S 2}
+   in
+      LW==["une" "phrase"]
+   end
+
 
    proc {TestTreeAndLookUp}
       local T1 T2 in
@@ -58,6 +65,7 @@ define
    {TestTreeAndLookUp}
    {Browse {TestInsertBigTree}}
    {Browse {TestLookUp}}
+   {Browse {TestTwoLastWord}}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}

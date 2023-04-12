@@ -1,4 +1,4 @@
-TWEETS_FOLDER="tweets"
+TWEETS_FOLDER="tweets" #si pas envie d'attendre à chaque fois mettre smaller_data pour plus petit set de donnée
 UNAME_S := $(shell uname -s)
 ENTRY_POINT=main.ozf
 
