@@ -33,11 +33,12 @@ define
       Input = {InputText get($)}
       TwoLast = {Str.lastWord Input 2}
    in
-      local Prediction Text in
+      local Prediction Text Final in
          Prediction = {Tree.lookUp MyTree {Nth TwoLast 1} {Nth TwoLast 2}}
-         Text = {VirtualString.toString {Value.toVirtualString Prediction 20 25}} %On convertit le record en string (c'est un début)
+         Final= {Tree.getPrevision Prediction}
+         Text = {VirtualString.toString {Value.toVirtualString Final 20 25}} %On convertit le record en string (c'est un début)
          {OutputText set(1:Text)}
-         Prediction %Il faut encore retravailler ce résultat pour matcher les spécifications
+         Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
       end
    end
    
