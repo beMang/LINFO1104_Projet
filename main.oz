@@ -44,12 +44,16 @@ define
    end
 
    fun {LaunchThreadsHelper Files Folder P N}
-         ToProcess = {Length Files} div N 
+         ToProcess = {Length Files} div N
          X
          Y %ne sert à rien mais pour pas planter
    in
       if N==1 then
-         {ProcessFiles Files Folder P}
+         thread
+            X = {ProcessFiles Files Folder P}
+         end
+         {Wait X}
+         X
       else
          thread 
             X = {LaunchThreadsHelper {List.drop Files ToProcess} Folder P N-1}
@@ -66,7 +70,7 @@ define
       case Files
       of nil then 0 % Code succès
       [] H|T then
-         {ReadingFile P {String.toAtom {Append Folder {Append "/" H}}}}
+         {ReadingFile P {Append Folder {Append "/" H}}}
          {ProcessFiles T Folder P}
       end
    end
@@ -107,7 +111,7 @@ define
          
          % On lance les threads de lecture et de parsing
          SeparatedWordsPort = {NewPort SeparatedWordsStream}
-         NbThreads = 8
+         NbThreads = 4
          {LaunchThreads SeparatedWordsPort NbThreads}
          
          {InputText set(1:"")}
