@@ -79,6 +79,7 @@ define
                         w2:{FormatStr Word2}
                         val:{FormatStr H}
                     )}
+                    {GetSampleHelperPort T Word2 H P}
                 end
             end
         end
@@ -99,5 +100,4 @@ define
     proc {ParseFilePort FileName P}
         {ParseFileHelperPort {File.getSentences FileName} P}
     end
-    
 end
