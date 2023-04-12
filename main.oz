@@ -30,18 +30,61 @@ define
       %%Q?: Comment on accède aux mots tapés? 
       skip
    end
-
+   
     %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
     %%% Les threads de parsing envoient leur resultat au port Port
-   proc {LaunchThreads Port N}
-        % TODO
-      skip
+   proc {LaunchThreads P N}
+      Files = {OS.getDir {GetSentenceFolder}}
+   in
+      if {LaunchThreadsHelper Files {GetSentenceFolder} P N}==0 then 
+         {Port.send P nil} 
+      else 
+         {Browse aie} 
+      end
    end
 
-   proc{ReadingFile Port Filename}
-      %%Fonction que vont accomplir les threads
-      %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words 
-      skip
+   fun {LaunchThreadsHelper Files Folder P N}
+         ToProcess = {Length Files} div N 
+         X
+         Y %ne sert à rien mais pour pas planter
+   in
+      if N==1 then
+         {ProcessFiles Files Folder P}
+      else
+         thread 
+            X = {LaunchThreadsHelper {List.drop Files ToProcess} Folder P N-1}
+         end
+         Y = {ProcessFiles {List.take Files ToProcess} Folder P}
+         {Wait X}
+         X
+      end
+   end
+
+
+   %Parse les fichiers dans la liste Files
+   fun {ProcessFiles Files Folder P}
+      case Files
+      of nil then 0 % Code succès
+      [] H|T then
+         {ReadingFile P {String.toAtom {Append Folder {Append "/" H}}}}
+         {ProcessFiles T Folder P}
+      end
+   end
+
+   proc {SendListToPort L P} %Refaire le code de parse pour pas avoir cette imondice
+      case L 
+      of nil then skip
+      [] H|T then 
+         {Port.send P H}
+         {SendListToPort T P}
+      end
+   end
+   %%Fonction que vont accomplir les threads
+   %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words
+   proc{ReadingFile P FileName}
+      List = {Parse.parseFile FileName}
+   in
+      {SendListToPort List P}
    end
 
    %%% Fetch Tweets Folder from CLI Arguments
@@ -54,15 +97,7 @@ define
     
    %%% Procedure principale qui cree la fenetre et appelle les differentes procedures et fonctions
    proc {Main}
-      TweetsFolder = {GetSentenceFolder}
-   in
-      local List MyTree in
-         List = {Parse.parseFiles 1 200 TweetsFolder} %contient une grosse liste sa mère
-         MyTree = {Parse.getTreeFromList List}
-         {Browse {Tree.lookUp MyTree "hand" "in"}} %Comment on s'y prend pour prédire
-      end
-       
-      local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort in
+      local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort MyTree in
          {Property.put print foo(width:1000 depth:1000)}  % for stdout siz
       
          % Creation de l interface graphique
@@ -79,15 +114,21 @@ define
          
          {InputText tk(insert 'end' "Loading... Please wait.")}
          {InputText bind(event:"<Control-s>" action:Press)} % You can also bind events (ici ctrl-s lance la fonction press)
-            
+         
          % On lance les threads de lecture et de parsing
          SeparatedWordsPort = {NewPort SeparatedWordsStream}
-         NbThreads = 4
+         NbThreads = 8
          {LaunchThreads SeparatedWordsPort NbThreads}
          
          {InputText set(1:"")}
+         
+         %Création de l'arbre : QUESTION : faudra t'il mettre ça dans des threads aussi et avoir plusieurs petits arbres à rassembler.
+         MyTree = {Tree.getTreeFromList SeparatedWordsStream}
+         
+         %Test d'exemple :
+         {Browse {Tree.lookUp MyTree "hand" "in"}}
+         {Browse {Tree.lookUp MyTree "i" "love"}}
       end
    end
-
    {Main}
 end

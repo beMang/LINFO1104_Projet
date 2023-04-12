@@ -7,7 +7,6 @@ import
 export
     parseFile:ParseFile
     parseFiles:ParseFiles
-    getTreeFromList:GetTreeFromList
 define
     fun {FormatStr S}
         {Str.toLower S}
@@ -35,6 +34,7 @@ define
         {GetSampleHelper {Str.split Sentence [32]} nil nil nil} %32 code Ascii de espace, donc on envoie les mots
     end
     
+    %Fonctions parsant un fichier, fonctionne avec un accumulateur (donc thread principal)
     fun{ParseFileHelper SentenceArray Acc}
         case SentenceArray
         of nil then Acc
@@ -46,6 +46,8 @@ define
         {ParseFileHelper {File.getSentences FileName} nil}
     end
 
+
+    %Parse plusieurs fichiers (thread principal)
     fun {ParseFilesHelper N End Folder Acc}
         if N==End then Acc
         else
@@ -58,17 +60,4 @@ define
     fun {ParseFiles Begin End Folder}
         {ParseFilesHelper Begin End Folder nil}
     end
-
-    fun {GetTreeFromListHelper L Acc}
-        case L
-        of nil then Acc
-        [] H|T then %H is a sample
-            {GetTreeFromListHelper T {Tree.insertInBigTree H.w1 H.w2 {String.toAtom H.val} Acc}} %Pas oublier la conversion en atom
-        end
-    end
-    fun {GetTreeFromList L}
-        {GetTreeFromListHelper L nil}
-    end
-
-
 end

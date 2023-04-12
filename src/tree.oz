@@ -6,6 +6,7 @@ export
    insertInBigTree:InsertInBigTree
    insertInValue:InsertInValue
    insertInSubtree:InsertInSubtree
+   getTreeFromList:GetTreeFromList
 define
    fun{LookUp Tree Str1 Str2}
         %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
@@ -97,5 +98,20 @@ define
             end
          end
       end
+   end
+
+   % Créée l'arbre à partir d'une liste L de sample
+   fun {GetTreeFromListHelper L Acc}
+      case L
+      of nil then Acc
+      [] H|T then %H is a sample
+         if H==nil then Acc
+         else
+            {GetTreeFromListHelper T {InsertInBigTree H.w1 H.w2 {String.toAtom H.val} Acc}} %Pas oublier la conversion en atom
+         end
+      end
+   end
+   fun {GetTreeFromList L}
+      {GetTreeFromListHelper L nil}
    end
 end
