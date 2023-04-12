@@ -7,6 +7,7 @@ import
 export
     parseFile:ParseFile
     parseFiles:ParseFiles
+    parseFilePort:ParseFilePort
 define
     fun {FormatStr S}
         {Str.toLower S}
@@ -60,4 +61,43 @@ define
     fun {ParseFiles Begin End Folder}
         {ParseFilesHelper Begin End Folder nil}
     end
+
+
+    %VERSION qui utlise les ports :
+    proc {GetSampleHelperPort WordsL Word1 Word2 P}
+        case WordsL
+        of nil then skip
+        [] H|T then
+            if Word1==nil then
+                {GetSampleHelperPort T H Word2 P} %Initialiser
+            else
+                if Word2==nil then
+                    {GetSampleHelperPort T Word1 H P} %Initialiser
+                else
+                    {Port.send P sample(
+                        w1:{FormatStr Word1}
+                        w2:{FormatStr Word2}
+                        val:{FormatStr H}
+                    )}
+                end
+            end
+        end
+    end
+    proc {GetSamplePort Sentence P}
+        {GetSampleHelperPort {Str.split Sentence [32]} nil nil P} %32 code Ascii de espace, donc on envoie les mots
+    end
+    
+    %Fonctions parsant un fichier, fonctionne avec un accumulateur (donc thread principal)
+    proc{ParseFileHelperPort SentenceArray P}
+        case SentenceArray
+        of nil then skip
+        [] H|T then
+            {GetSamplePort H P}
+            {ParseFileHelperPort T P}
+        end
+    end
+    proc {ParseFilePort FileName P}
+        {ParseFileHelperPort {File.getSentences FileName} P}
+    end
+    
 end

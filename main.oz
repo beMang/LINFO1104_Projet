@@ -71,20 +71,10 @@ define
       end
    end
 
-   proc {SendListToPort L P} %Refaire le code de parse pour pas avoir cette imondice
-      case L 
-      of nil then skip
-      [] H|T then 
-         {Port.send P H}
-         {SendListToPort T P}
-      end
-   end
    %%Fonction que vont accomplir les threads
    %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words
    proc{ReadingFile P FileName}
-      List = {Parse.parseFile FileName}
-   in
-      {SendListToPort List P}
+      {Parse.parseFilePort FileName P}
    end
 
    %%% Fetch Tweets Folder from CLI Arguments
