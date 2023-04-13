@@ -2,21 +2,15 @@ functor
 import 
 	QTk at 'x-oz://system/wp/QTk.ozf'
    Parse at 'src/parse.ozf'
-   Debug at 'src/debug.ozf'
    Tree at 'src/tree.ozf'
    Str at 'src/str.ozf'
-	System
+   Possibility at 'src/possibility.ozf'
 	Application
-	Open
 	OS
 	Property
-	Browser
+	%Browser
 define
    local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort MyTree in
-   proc {Browse Buf}
-        {Browser.browse Buf}
-   end
-
    
    %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
@@ -34,9 +28,9 @@ define
       TwoLast = {Str.lastWord Input 2}
    in
       local Prediction Text Final in
-         Prediction = {Tree.lookUp MyTree {Nth TwoLast 1} {Nth TwoLast 2}}
-         Final= {Tree.getPrevision Prediction}
-         Text = {VirtualString.toString {Value.toVirtualString Final 20 25}} %On convertit le record en string (c'est un début)
+         Prediction = {Tree.lookUp MyTree {Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}}
+         Final= {Possibility.getPrevision Prediction}
+         Text = {VirtualString.toString {Value.toVirtualString Final 20 25}}
          {OutputText set(1:Text)}
          Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
       end
@@ -50,7 +44,7 @@ define
       if {LaunchThreadsHelper Files {GetSentenceFolder} P N}==0 then 
          {Port.send P nil} 
       else 
-         {Browse aie} 
+         {Exception.error "Erreur lors du parsing des fichiers."}
       end
    end
 
