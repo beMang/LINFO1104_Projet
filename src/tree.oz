@@ -3,9 +3,6 @@ import
     Str at 'str.ozf'
 export
    lookUp:LookUp
-   insertInBigTree:InsertInBigTree
-   %insertInValue:InsertInValue ne sont pas censées être accédées à l'extérieur du module
-   %insertInSubtree:InsertInSubtree
    getTreeFromList:GetTreeFromList
 define
    fun{LookUp Tree Str1 Str2}
@@ -35,8 +32,6 @@ define
          end
       end
    end
-
-
 
    fun {InsertInBigTree StringToInsert Str2 Str3 Tree}
       %on insere un nouveau duo dans l'arbre avec leur 3e mot
@@ -108,12 +103,80 @@ define
       [] H|T then %H is a sample
          if H==nil then Acc
          else
-            {GetTreeFromListHelper T {InsertInBigTree H.w1 H.w2 {String.toAtom H.val} Acc}} %Pas oublier la conversion en atom
+            {GetTreeFromListHelper T {InsertInTree [H.w1 H.w2 {String.toAtom H.val}] Acc}} %Pas oublier la conversion en atom
          end
       end
    end
-
    fun {GetTreeFromList L}
       {GetTreeFromListHelper L nil}
+   end
+
+   % Généralisation N-gramme :
+
+   %Insère une entrée dans l'arbre, avec une liste de mots (et plus 3 arguments comme avant)
+   %Leaf représente les records qui contiennent un champ "value" et contenant un record possibilities
+   %Pas le cas des records "tree"
+   fun {InsertInTree Words Tree}
+      Size = {Length Words}
+   in
+      case Words
+      of nil then Tree
+      [] H|T then
+         case Tree
+         of nil then
+            if Size==2 then %On regarde si on traite les 2 derniers mots.
+               leaf(string:H right:nil left:nil value:{InsertContentLeaf {Nth Words 2} nil}) %Jamais rencontré ce mot (on le rencontre à la fin) et c'est le dernier !
+            else
+               tree(string:H right:nil left:nil subtree:{InsertInTree T nil}) %Jamais rencontré ce mot (on le rencontre à la fin)
+            end
+   
+         [] tree(string:Y right:R left:L subtree:S) andthen {Str.compare Y H}==0 then     %cas où le 1er mot a déjà été rencontré, alors on doit ajuster le subtree
+               tree(string:H right:R left:L subtree:{InsertInTree T S})
+
+         [] tree(string:Y right:R left:L subtree:S) andthen {Str.compare H Y}==~1 then    %cas où notre string est plus haut dans l'alphabet
+               tree(string:Y right:R left:{InsertInTree Words L} subtree:S)
+
+         [] tree(string:Y right:R left:L subtree:S) andthen {Str.compare H Y}==1 then %cas où notre string est plus bas dans l'alphabet
+            tree(string:Y right:{InsertInTree Words R} left:L subtree:S)
+         
+         [] leaf(right:R left:L string:Y value:V) andthen {Str.compare H Y}==0 then %cas où le dernier mot a déjà été rencontré et on doit adapter value
+            if Size==2 then
+               leaf(string:H right:R left:L value: {InsertContentLeaf {Nth Words 2} V})
+            else {Exception.error "Cas non traité lors de la création de la feuille"} end
+      
+         [] leaf( right:R left:L string:Y value:V) andthen {Str.compare H Y}==~1 then   %cas où le dernier mot est plus haut dans l'ordre alphabétique
+            if Size==2 then
+               leaf(string:Y right:R left:{InsertInTree Words L} value:V)
+            else {Exception.error "Cas non traité lors de la création de la feuille"} end
+      
+         [] leaf( right:R left:L string:Y value:V) andthen {Str.compare H Y}==1 then  %cas où le dernier mot est plus bas dans l'ordre alphabétique
+            if Size==2 then
+               leaf(string:Y right:{InsertInTree Words R} left:L value:V)
+            else {Exception.error "Cas non traité lors de la création de la feuille"} end
+
+         else
+            {Exception.error "Cas non traité dans la création de l'arbre"}
+         end
+      else
+         {Exception.error "Cas non traité dans la création de l'arbre"}
+      end
+   end
+
+   % Insère la valeur str dans le record de possiblité d'une leaf
+   fun {InsertContentLeaf Str Val}
+      case Val
+      of nil then 
+         {AdjoinList possibilities() [Str#1]}
+      else
+         local Keys Nb in 
+            Keys= {Arity Val}
+            if ({Member Str Keys}) then 
+               Nb= Val.Str
+               {AdjoinList Val [Str#(Nb+1)]}
+            else
+               {AdjoinList Val [Str#1]} 
+            end
+         end
+      end
    end
 end

@@ -20,9 +20,10 @@ define
 
     % Ajoute du contenu à un fichier
     proc {AppendFile FileName Content}
-    F={New Open.file init(name:FileName flags: [write create append] mode:  mode(owner: [read write] group: [read write]))}
+    File={New Open.file init(name:FileName flags: [write create append] mode:  mode(owner: [read write] group: [read write]))}
     in
-        {F write(vs:Content)}
+        {File write(vs:Content)}
+        {File close}
     end
 
     %Renvoie les lignes d'un fichier
