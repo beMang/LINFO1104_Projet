@@ -74,6 +74,9 @@ define
     fun{LastWord S N}
         Splited = {Split S [32]}
     in
-        {List.drop Splited {Length Splited}-N}
+        if {Length Splited}-N <0 then nil
+        else
+            {List.drop Splited {Length Splited}-N}
+        end
     end
 end

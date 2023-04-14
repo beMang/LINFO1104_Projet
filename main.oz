@@ -27,12 +27,22 @@ define
       Input = {InputText get($)}
       TwoLast = {Str.lastWord Input 2}
    in
-      local Prediction Text Final in
-         Prediction = {Tree.lookUp MyTree {Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}}
-         Final= {Possibility.getPrevision Prediction}
-         Text = {VirtualString.toString {Value.toVirtualString Final 20 25}}
-         {OutputText set(1:Text)}
-         Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
+      if TwoLast==nil then %Si pas assez de mot pour la prédiction
+         {OutputText set(1:"")}
+         nil
+      else
+         local Prediction Text Final in
+            Prediction = {Tree.lookUp MyTree {Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}}
+            if Prediction==0 then
+               {OutputText set(1:"")}
+               nil 
+            else
+               Final= {Possibility.getPrevision Prediction}
+               Text = {VirtualString.toString {Value.toVirtualString Final 20 25}}
+               {OutputText set(1:Text)}
+               Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
+            end
+         end
       end
    end
    
