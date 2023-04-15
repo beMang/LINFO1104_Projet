@@ -32,7 +32,7 @@ define
          nil
       else
          local Prediction Text Final in
-            Prediction = {Tree.lookUp MyTree {Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}}
+            Prediction = {Tree.lookUp MyTree [{Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}]}
             if Prediction==0 then
                {OutputText set(1:"")}
                nil 
@@ -111,7 +111,14 @@ define
          % Creation de l interface graphique
          Description=td(
             title: "Text predictor"
-            lr(text(handle:InputText width:50 height:10 background:white foreground:black wrap:word) button(text:"Predict" width:15 action:proc{$}X in X = {Press}end))
+            lr(
+               text(handle:InputText width:50 height:10 background:white foreground:black wrap:word)
+               td(
+                  button(text:"Predict" width:15 background:blue action:proc{$}X in X = {Press}end)
+                  button(text:"Save text" width:15 background:green action:proc{$}X in X = {Press}end) %Encore rien de fonctionel
+                  button(text:"Exit" width:15 background:red action:proc{$}{Application.exit 0}end)
+               )
+            )
             text(handle:OutputText width:50 height:10 background:black foreground:white glue:w wrap:word)
             action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
          )
