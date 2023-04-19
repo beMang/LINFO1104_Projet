@@ -23,5 +23,5 @@ clean :
 	rm -f **/*.ozf
 	rm -f *.ozf
 
-tests: tests/tests.ozf
+tests: tests/tests.ozf 
 	$(OZENGINE) tests/tests.ozf

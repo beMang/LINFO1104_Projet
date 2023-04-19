@@ -9,8 +9,9 @@ export
     parseFiles:ParseFiles
     parseFilePort:ParseFilePort
 define
-    fun {FormatStr S}
+    fun {FormatStr S} %%on l'utilise pour virer les symboles nuls
         {Str.toLower S}
+
     end
     fun {GetSampleHelper WordsL Word1 Word2 Result}
         case WordsL
