@@ -6,7 +6,7 @@ export
     toLower:ToLower
     lastWord:LastWord
 define
-    %compare deux mots, sans prendre en compte les majuscules 
+    %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
         if (String1.1>String2.1) then 
                 1       %retourne une valeur positive si le premier string est plus loin dans l'alphabet que le 2e
@@ -23,7 +23,7 @@ define
             elseif (String2.2==nil) then 
                     1              %retourne une valeur positive si le premier string est le meme que le 2e mais en plus long
             else
-                    {Compare String1.2 String2.2}
+                {Compare String1.2 String2.2}
             end
         end
     end

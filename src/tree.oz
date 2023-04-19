@@ -110,7 +110,7 @@ define
       [] H|T then %H is a sample
          if H==nil then Acc
          else
-            {GetTreeFromListHelper T {InsertInTree [H.w1 H.w2 {String.toAtom H.val}] Acc}} %A adapter si on veut un N-Gramme
+            {GetTreeFromListHelper T {InsertInTree H Acc}} %A adapter si on veut un N-Gramme
          end
       end
    end

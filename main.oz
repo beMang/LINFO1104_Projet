@@ -8,7 +8,7 @@ import
 	Application
 	OS
 	Property
-	%Browser
+	Browser
 define
    local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort MyTree in
    
@@ -60,8 +60,8 @@ define
 
    fun {LaunchThreadsHelper Files Folder P N}
          ToProcess = {Length Files} div N
-         X
-         Y %ne sert à rien mais pour pas planter
+         X %Pour voir si les threads ont fini
+         Y
    in
       if N==1 then
          thread
@@ -70,11 +70,13 @@ define
          {Wait X}
          X
       else
-         thread 
-            X = {LaunchThreadsHelper {List.drop Files ToProcess} Folder P N-1}
+         thread
+            {Thread.setThisPriority high}
+            Y = {ProcessFiles {List.take Files ToProcess} Folder P}
          end
-         Y = {ProcessFiles {List.take Files ToProcess} Folder P}
-         {Wait X}
+         X = {LaunchThreadsHelper {List.drop Files ToProcess} Folder P N-1}
+         {Wait Y}  %Attendre que notre thread ait fini
+         {Wait X} %Attendre que les threads lancés aient finis
          X
       end
    end
@@ -137,7 +139,7 @@ define
 
          %Création de l'arbre : QUESTION : faudra t'il mettre ça dans des threads aussi et avoir plusieurs petits arbres à rassembler.
          local X in
-            thread 
+            thread
                MyTree = {Tree.getTreeFromList SeparatedWordsStream}
                X = 0
             end

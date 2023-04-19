@@ -1,7 +1,7 @@
 # Projet OZ Twitoz
 
 ## TODO :
-* Séparer la création des arbres dans des threads (fct de fusion d'arbre sera nécessaire)
+* Rendre insertInTree récursive terminal
 * Bien respecter la valeur de retour
 * Décider les extensions
 

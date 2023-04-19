@@ -74,11 +74,11 @@ define
                 if Word2==nil then
                     {GetSampleHelperPort T Word1 H P} %Initialiser
                 else
-                    {Port.send P sample(
-                        w1:{FormatStr Word1}
-                        w2:{FormatStr Word2}
-                        val:{FormatStr H}
-                    )}
+                    {Port.send P [
+                        {FormatStr Word1}
+                        {FormatStr Word2}
+                        {String.toAtom {FormatStr H}}
+                    ]}
                     {GetSampleHelperPort T Word2 H P}
                 end
             end
