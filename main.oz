@@ -51,6 +51,12 @@ define
    proc {LaunchThreads P N}
       Files = {OS.getDir {GetSentenceFolder}}
    in
+      %Création de l'arbre : QUESTION : faudra t'il mettre ça dans des threads aussi et avoir plusieurs petits arbres à rassembler.
+      local X in
+         thread
+            MyTree = {Tree.getTreeFromList SeparatedWordsStream}
+         end
+      end
       if {LaunchThreadsHelper Files {GetSentenceFolder} P N}==0 then 
          {Port.send P nil} 
       else 
@@ -136,15 +142,6 @@ define
          SeparatedWordsPort = {NewPort SeparatedWordsStream}
          NbThreads = 12
          {LaunchThreads SeparatedWordsPort NbThreads}
-
-         %Création de l'arbre : QUESTION : faudra t'il mettre ça dans des threads aussi et avoir plusieurs petits arbres à rassembler.
-         local X in
-            thread
-               MyTree = {Tree.getTreeFromList SeparatedWordsStream}
-               X = 0
-            end
-            {Wait X}
-         end
          
          {InputText set(1:"")}
    end
