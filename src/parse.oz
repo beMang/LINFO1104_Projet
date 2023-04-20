@@ -9,10 +9,29 @@ export
     parseFiles:ParseFiles
     parseFilePort:ParseFilePort
 define
-    fun {FormatStr S} %%on l'utilise pour virer les symboles nuls
+    fun {FormatStr S} %%on l'utilise pour virer les symboles nuls 
         {Str.toLower S}
-
     end
+
+    fun {DeleteCarBegin MyString}
+        case MyString
+        of H|T then
+            case H 
+            of 64 then T
+            [] 40 then T 
+            [] 35 then T 
+            [] 91 then T 
+            [] 45 then T 
+            [] 34 then T 
+            else 
+                MyString
+            end
+        else
+            0
+        end
+    end
+
+
     fun {GetSampleHelper WordsL Word1 Word2 Result}
         case WordsL
         of nil then Result
