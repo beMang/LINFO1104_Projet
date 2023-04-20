@@ -2,11 +2,14 @@ functor
 import
 	Open
     Str at 'str.ozf'
+    OS
+    Browser
 export  
   	readFile:ReadFile
     getSentences:GetSentences
     getLines:GetLines
     appendFile:AppendFile
+    save:Save
 define 
    % Renvoie le contenu d'un fichier
     fun {ReadFile FileName}
@@ -34,5 +37,18 @@ define
     %Renvoie les phrases d'un fichier
     fun {GetSentences File}
         {Str.split {ReadFile File} [10 46 63 33 34]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet
+    end
+
+    %Permet d'écrire dans le dossier de sauvegarde
+    %Content est le contenu à sauvegarder
+    %Name le nom du fichier dans le dossier save
+    %Append si le fichier doit être étendu ou pas
+    fun {Save Content Name AppendF}
+        if AppendF then
+            {AppendFile {Append "save/" Name} Content}
+            0
+        else
+            ~1 %TODO
+        end
     end
 end

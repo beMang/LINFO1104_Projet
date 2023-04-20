@@ -110,7 +110,7 @@ define
    in
       Args.'folder'
    end
-    
+
    %%% Procedure principale qui cree la fenetre et appelle les differentes procedures et fonctions
    proc {Main}
       %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz
@@ -125,7 +125,7 @@ define
       NbThreads = 12
       {LaunchThreads SeparatedWordsPort NbThreads}
 
-      {GUI.clear}
+      {GUI.clear} %On nettoie les champs de texte
    end
 
    {Main}

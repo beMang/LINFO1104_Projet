@@ -38,16 +38,16 @@ define
                     if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
                         {SplitHelper T Carr nil Result} 
                     else 
-                        {SplitHelper T Carr nil {List.append Result Acc|nil}}
+                        {SplitHelper T Carr nil {Append Result Acc|nil}}
                     end
                 else
-                    {SplitHelper T Carr {List.append Acc H|nil} Result}
+                    {SplitHelper T Carr {Append Acc H|nil} Result}
                 end
             [] nil then %Fini de traiter la chaine
                 if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
                     {SplitHelper nil nil nil Result} 
                 else
-                    {SplitHelper nil nil nil {List.append Result Acc|nil}}
+                    {SplitHelper nil nil nil {Append Result Acc|nil}}
                 end
             end
         end
@@ -63,7 +63,7 @@ define
         case S
         of nil then Acc
         [] H|T then
-            {ToLowerHelper T {List.append Acc {Char.toLower H}|nil}}
+            {ToLowerHelper T {Append Acc {Char.toLower H}|nil}}
         end
     end
     %Met tout en minuscule

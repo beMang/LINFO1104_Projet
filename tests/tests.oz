@@ -21,7 +21,7 @@ define
 
    fun {TestInsertBigTree}
       local Mytree in 
-         Mytree = {Tree.insertInBigTree "Tu" "manges" 'des' Test}
+         Mytree = {Tree.insertInTree ["Tu" "manges" 'des'] Test}
          Mytree==Result_test_insert
       end
    end

@@ -1,11 +1,11 @@
 %Fichier qui gère l'interface utilisateur
-
 functor
 import
     QTk at 'x-oz://system/wp/QTk.ozf'
 	Application
 	System
 	Browser
+    File at 'files.ozf'
 export
     getDescription:GetDescription
 	getEntry:GetEntry
@@ -15,43 +15,47 @@ export
 define
 	InputText OutputText
 
-	%Construit la descrition de la fenêtre
+	%Construit la description de la fenêtre
     fun {GetDescription Press}
         Radio Check
-        Menu=menu(command(text:"Command"
-                    action:proc{$} {System.show command} end)
+        Menu1=menu(
+            command(text:"Sauvegarder" action: proc{$} X in X = {File.save {Append {GetEntry} "\n"} "history.txt" true} end) %Sauvegarde historique
+            command(text:"Quitter"action:proc{$} {Application.exit 0} end)
             separator
             checkbutton(text:"Checkbutton"
                         action:proc{$} {System.show checkbutton} end
                         init:false
                         return:Check)
-            radiobutton(text:"Radiobutton 1"
-                        action:proc{$} {System.show radiobutton} end
-                        group:radiogroup
-                        init:true
-                        return:Radio)
-             radiobutton(text:"Radiobutton 2"
-                        action:proc{$} {System.show radiobutton} end
-                        group:radiogroup
-                        init:false)
             cascade(text:"Cascade"
                      action:proc{$} {System.show cascade} end
                      menu:menu(tearoff:false
                                radiobutton(text:"Radiobutton 3"
-                                           action:proc{$} {System.show radiobutton} end
-                                           group:radiogroup))))
+                                        action:proc{$} {System.show radiobutton} end
+                                        group:radiogroup)
+                                radiobutton(text:"Radiobutton 1"
+                                        action:proc{$} {System.show radiobutton} end
+                                        group:radiogroup
+                                        init:true
+                                        return:Radio)
+                                radiobutton(text:"Radiobutton 2"
+                                        action:proc{$} {System.show radiobutton} end
+                                        group:radiogroup
+                                        init:false)
+                                )))
         Description=td(
             title: "Text predictor"
-            menubutton(glue:nw text:"File" menu:Menu)
+            lr(menubutton(glue:nw text:"File" menu:Menu1)
+                glue:nw
+            )
             lr(
-               text(handle:InputText width:50 height:10 background:white foreground:black wrap:word)
-               td(
-                  	button(text:"Predict" width:15 background:blue action:proc{$}X in X = {Press}end)
-                  	button(text:"Save text" width:15 background:green action:proc{$}X in X = {Press}end) %Encore rien de fonctionel
-                	button(text:"Exit" width:15 background:red action:proc{$}{Application.exit 0}end)
+                glue:nwse
+                text(handle:InputText width:60 height:15 background:white foreground:black wrap:word setgrid:true)
+                td(
+                    glue:se
+                  	button(text:"Predict" width:15 height:2 background:blue action:proc{$}X in X = {Press}end)
                )
             )
-            text(handle:OutputText width:50 height:10 background:black foreground:white glue:w wrap:word)
+            text(handle:OutputText width:60 height:15 background:black foreground:white glue:w wrap:word setgrid:true)
         	action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
         )
 		in
