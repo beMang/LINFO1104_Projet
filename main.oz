@@ -5,13 +5,13 @@ import
    Tree at 'src/tree.ozf'
    Str at 'src/str.ozf'
    Possibility at 'src/possibility.ozf'
+   GUI at 'src/GUI.ozf'
 	Application
 	OS
 	Property
-	Browser
 define
-   local NbThreads InputText OutputText Description Window SeparatedWordsStream SeparatedWordsPort MyTree in
-   
+   NbThreads Window SeparatedWordsStream SeparatedWordsPort MyTree
+
    %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
    %%% @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
@@ -24,22 +24,21 @@ define
    %%%                                           | nil
    %%%                  <probability/frequence> := <int> | <float>
    fun {Press}
-      Input = {InputText get($)}
-      TwoLast = {Str.lastWord Input 2}
+      TwoLast = {Str.lastWord {GUI.getEntry} 2}
    in
       if TwoLast==nil then %Si pas assez de mot pour la prédiction
-         {OutputText set(1:"")}
+         {GUI.setOutput ""}
          nil
       else
          local Prediction Text Final in
             Prediction = {Tree.lookUp MyTree [{Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}]}
             if Prediction==0 then
-               {OutputText set(1:"")}
+               {GUI.setOutput ""}
                nil 
             else
                Final= {Possibility.getPrevision Prediction}
                Text = {VirtualString.toString {Value.toVirtualString Final 20 25}}
-               {OutputText set(1:Text)}
+               {GUI.setOutput Text}
                Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
             end
          end
@@ -114,37 +113,20 @@ define
     
    %%% Procedure principale qui cree la fenetre et appelle les differentes procedures et fonctions
    proc {Main}
-         {Property.put print foo(width:1000 depth:1000)}  % for stdout siz
-      
-         % Creation de l interface graphique
-         Description=td(
-            title: "Text predictor"
-            lr(
-               text(handle:InputText width:50 height:10 background:white foreground:black wrap:word)
-               td(
-                  button(text:"Predict" width:15 background:blue action:proc{$}X in X = {Press}end)
-                  button(text:"Save text" width:15 background:green action:proc{$}X in X = {Press}end) %Encore rien de fonctionel
-                  button(text:"Exit" width:15 background:red action:proc{$}{Application.exit 0}end)
-               )
-            )
-            text(handle:OutputText width:50 height:10 background:black foreground:white glue:w wrap:word)
-            action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
-         )
-      
-         % Creation de la fenetre
-         Window={QTk.build Description}
-         {Window show}
+      %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz
          
-         {InputText tk(insert 'end' "Loading... Please wait.")}
-         {InputText bind(event:"<Control-s>" action:proc{$}X in X = {Press}end)} % You can also bind events (ici ctrl-s lance la fonction press)
+      % Creation de la fenetre
+      Window={QTk.build {GUI.getDescription Press}}
+      {Window show}
+      {GUI.init Press}
          
-         % On lance les threads de lecture et de parsing
-         SeparatedWordsPort = {NewPort SeparatedWordsStream}
-         NbThreads = 12
-         {LaunchThreads SeparatedWordsPort NbThreads}
-         
-         {InputText set(1:"")}
+      % On lance les threads de lecture et de parsing
+      SeparatedWordsPort = {NewPort SeparatedWordsStream}
+      NbThreads = 12
+      {LaunchThreads SeparatedWordsPort NbThreads}
+
+      {GUI.clear}
    end
+
    {Main}
-   end
 end
