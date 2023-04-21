@@ -1,12 +1,11 @@
 # Projet OZ Twitoz
 
-## Runer les tests: 
-ozengine tests/tests.ozf si make tests marche pas
-
 ## TODO :
 * Bien respecter la valeur de retour
 * Trier mieux les mots (dégager @, ', #, (,), [, ],  ) -> Laura
-* Décider les extensions
+* Extension 1 : base de donnée custom **
+* Extension 2 : historique **
+* Extension 3 : proposer d'autres n-grammes *
 
 ## Commentaires des extensions :
 

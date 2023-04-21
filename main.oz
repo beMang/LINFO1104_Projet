@@ -6,13 +6,12 @@ import
    Str at 'src/str.ozf'
    Possibility at 'src/possibility.ozf'
    GUI at 'src/GUI.ozf'
+   FileM at 'src/files.ozf'
 	Application
 	OS
-	Property
 define
-   NbThreads Window SeparatedWordsStream SeparatedWordsPort MyTree
+   Window SeparatedWordsStream SeparatedWordsPort MyTree
 
-   %%% /!\ Fonction testee /!\
    %%% @pre : les threads sont "ready"
    %%% @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
    %%%        Affiche la prediction la plus probable du prochain mot selon les deux derniers mots entres
@@ -26,6 +25,7 @@ define
    fun {Press}
       TwoLast = {Str.lastWord {GUI.getEntry} 2}
    in
+      {Wait MyTree} %On attend que l'arbre ait fini d'être créé
       if TwoLast==nil then %Si pas assez de mot pour la prédiction
          {GUI.setOutput ""}
          nil
@@ -48,15 +48,14 @@ define
    %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
    %%% Les threads de parsing envoient leur resultat au port Port
    proc {LaunchThreads P N}
-      Files = {OS.getDir {GetSentenceFolder}}
+      Files = {OS.getDir {FileM.getSentenceFolder}}
    in
-      %Création de l'arbre : QUESTION : faudra t'il mettre ça dans des threads aussi et avoir plusieurs petits arbres à rassembler.
       local X in
          thread
             MyTree = {Tree.getTreeFromList SeparatedWordsStream}
          end
       end
-      if {LaunchThreadsHelper Files {GetSentenceFolder} P N}==0 then 
+      if {LaunchThreadsHelper Files {FileM.getSentenceFolder} P N}==0 then 
          {Port.send P nil} 
       else 
          {Exception.error "Erreur lors du parsing des fichiers."}
@@ -64,9 +63,7 @@ define
    end
 
    fun {LaunchThreadsHelper Files Folder P N}
-         ToProcess = {Length Files} div N
-         X %Pour voir si les threads ont fini
-         Y
+         ToProcess = {Length Files} div N X Y
    in
       if N==1 then
          thread
@@ -92,41 +89,23 @@ define
       case Files
       of nil then 0 % Code succès
       [] H|T then
-         {ReadingFile P {Append Folder {Append "/" H}}}
+         {Parse.parseFilePort {Append Folder {Append "/" H}} P}
          {ProcessFiles T Folder P}
       end
    end
 
-   %%Fonction que vont accomplir les threads
-   %%Lis le tweet et récupère tous les duos de mots pour les mettre dans l'arbre de N-Words
-   proc{ReadingFile P FileName}
-      {Parse.parseFilePort FileName P}
-   end
-
-   %%% Fetch Tweets Folder from CLI Arguments
-   %%% See the Makefile for an example of how it is called
-   fun {GetSentenceFolder}
-      Args = {Application.getArgs record('folder'(single type:string optional:false))}
-   in
-      Args.'folder'
-   end
-
-   %%% Procedure principale qui cree la fenetre et appelle les differentes procedures et fonctions
    proc {Main}
-      %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz
-         
+      %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz à quoi ça sert
+
       % Creation de la fenetre
       Window={QTk.build {GUI.getDescription Press}}
       {Window show}
       {GUI.init Press}
-         
       % On lance les threads de lecture et de parsing
       SeparatedWordsPort = {NewPort SeparatedWordsStream}
-      NbThreads = 12
-      {LaunchThreads SeparatedWordsPort NbThreads}
+      {LaunchThreads SeparatedWordsPort 4}
 
       {GUI.clear} %On nettoie les champs de texte
    end
-
    {Main}
 end

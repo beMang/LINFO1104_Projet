@@ -3,13 +3,14 @@ import
 	Open
     Str at 'str.ozf'
     OS
-    Browser
+    Application
 export  
   	readFile:ReadFile
     getSentences:GetSentences
     getLines:GetLines
     appendFile:AppendFile
     save:Save
+    getSentenceFolder:GetSentenceFolder
 define 
    % Renvoie le contenu d'un fichier
     fun {ReadFile FileName}
@@ -50,5 +51,13 @@ define
         else
             ~1 %TODO
         end
+    end
+
+    % Fetch Tweets Folder from CLI Arguments
+    % See the Makefile for an example of how it is called
+    fun {GetSentenceFolder}
+        Args = {Application.getArgs record('folder'(single type:string optional:false))}
+    in
+        Args.'folder'
     end
 end
