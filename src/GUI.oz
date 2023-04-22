@@ -15,36 +15,16 @@ export
 define
 	InputText OutputText
 
-	%Construit la description de la fenêtre
-    fun {GetDescription Press}
-        Radio Check
+	%Construit la description de la fenêtre principale
+    fun {GetDescription Press ReloadProc}
+        Radio Check C R
         Menu1=menu(
             command(text:"Sauvegarder" action: proc{$} X in X = 
                 {File.save {Append {GetEntry} "\n"} "history.txt" true} 
                 {DialogBox "Historique sauvegardé"}
             end) %Sauvegarde historique
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
-            separator
-            checkbutton(text:"Spawn window"
-                        action:proc{$} {DialogBox "Ceci est un message"} end
-                        init:false
-                        return:Check)
-            cascade(text:"Cascade"
-                     action:proc{$} {System.show cascade} end
-                     menu:menu(tearoff:false
-                               radiobutton(text:"Radiobutton 3"
-                                        action:proc{$} {System.show radiobutton} end
-                                        group:radiogroup)
-                                radiobutton(text:"Radiobutton 1"
-                                        action:proc{$} {System.show radiobutton} end
-                                        group:radiogroup
-                                        init:true
-                                        return:Radio)
-                                radiobutton(text:"Radiobutton 2"
-                                        action:proc{$} {DialogBox "Ceci est un message"} end
-                                        group:radiogroup
-                                        init:false)
-                                )))
+        )
         Menu2=menu(
             command(text:"Add dataset" action:proc{$} {System.show 'new dataset'} end) %Sauvegarde historique
             command(text:"Select datasets" action:SelectDatasetWindow)
@@ -66,7 +46,7 @@ define
                     padx:5
                   	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}X in X = {Press}end)
                     button(text:"Next" width:15 height:2 background:blue pady:5 action:proc{$} {System.show 'Show next proba'} end)
-                    button(text:"Reload" width:15 height:2 background:green pady:5 action:Reload)
+                    button(text:"Reload" width:15 height:2 background:green pady:5 action:proc{$} {Reload ReloadProc}end)
                     button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end)
                )
             )
@@ -100,20 +80,24 @@ define
     %Fait apparaitre une nouvelle fenêtre
     proc {DialogBox Message}
         Description=td(
-            message(aspect:400 init:Message padx:50 pady:50)
-            button(text:"OK" width:4 background:green action:proc{$}X in {Window close} end)
+            title:""
+            message(aspect:600 init:Message padx:50 pady:8)
+            button(text:"OK" width:4 background:green action:proc{$} {Window close} end pady:8)
             )
         Window={QTk.build Description}
     in
         {Window show}
     end
 
+    %Fenêtre pour choisir les datasets à utiliser
     proc {SelectDatasetWindow}
+        Handle
         Desc=td(
-            checkbutton(text:"Default" action:proc{$} {System.show 'hey'} end)
-            checkbutton(text:"History" init:true)
-            checkbutton(text:"Custom1" init:true)
-            button(text:"OK" width:4 background:green pady:5 action:proc{$}X in {Window close} end)
+            title:"Select datasets"
+            checkbutton(glue:w text:"Default" init:true padx:100 handle:Handle selectcolor:black)
+            checkbutton(glue:w text:"History" init:true padx:100 selectcolor:black)
+            checkbutton(glue:w text:"Custom1" init:false padx:100 selectcolor:black)
+            button(text:"OK" width:4 background:green pady:5 action:proc{$} {Window close} end)
         )
         Window={QTk.build Desc}
     in
@@ -121,8 +105,8 @@ define
     end
 
     %Lance le rechargement de l'arbre
-    proc {Reload}
-        {System.show {String.toAtom "Reloading ?"}}
+    proc {Reload MyReload}
+        {MyReload}
         {OutputText tk(insert 'end' "Loading... Please wait.")}
         {Clear}
     end

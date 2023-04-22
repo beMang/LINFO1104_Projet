@@ -7,7 +7,6 @@ import
    Possibility at 'src/possibility.ozf'
    GUI at 'src/GUI.ozf'
    FileM at 'src/files.ozf'
-	Application
 	OS
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree
@@ -83,7 +82,6 @@ define
       end
    end
 
-
    %Parse les fichiers dans la liste Files
    fun {ProcessFiles Files Folder P}
       case Files
@@ -94,11 +92,15 @@ define
       end
    end
 
+   proc {Reload}
+      MyTree = nil
+   end
+
    proc {Main}
       %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz à quoi ça sert
 
       % Creation de la fenetre
-      Window={QTk.build {GUI.getDescription Press}}
+      Window={QTk.build {GUI.getDescription Press Reload}}
       {Window show}
       {GUI.init Press}
       % On lance les threads de lecture et de parsing
