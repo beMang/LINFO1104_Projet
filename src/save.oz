@@ -3,20 +3,27 @@ import
     Files at 'files.ozf'
     Str at 'str.ozf'
     Application
+    System
 export
     getFoldersToLoad:GetFoldersToLoad
     save:Save
+    loadDataSet:LoadDataSet
+    setDataSet:SetDataset
+    writeDataSet:WriteDataSet
 define
     %Permet d'écrire dans le dossier de sauvegarde
     %Content est le contenu à sauvegarder
     %Name le nom du fichier dans le dossier save
-    %Append si le fichier doit être étendu ou pas
-    fun {Save Content Name AppendF}
-        if AppendF then
-            {Files.appendFile {Append "save/" Name} Content}
-            0
+    %AppendF si le fichier doit être étendu ou pas
+    proc {Save Content Name AppendF}
+        if Content==nil then skip
+        elseif Content=="\n" then skip
         else
-            ~1 %TODO
+            if AppendF then
+                {Files.appendFile {Append "save/" Name} Content}
+            else
+                {Files.writeFileTruncate {Append "save/" Name} Content}
+            end
         end
     end
 
@@ -30,27 +37,105 @@ define
 
     %Va lire le fichier de configuration save/custom_dataset pour aller voir les dossiers à charger
     fun {GetFoldersToLoad}
-        {GetFoldersToLoadHelper {Files.getSentences "save/custom_dataset"} nil}
+        {GetFoldersToLoadHelper {LoadDataSet} nil}
     end
     fun {GetFoldersToLoadHelper Lines Acc}
-        L Key Value
+        L
     in
         case Lines
         of nil then Acc
         [] H|T then
-            L = {Str.split H [32]} %Split l'espace
-            Key = {Nth L 1}
-            Value = {String.toAtom {Nth L 2}}
-            if Key=="default" then
-                if Value=='true' then
+            if H.key=="default" then
+                if H.value=="true" then
                     {GetFoldersToLoadHelper T {Append [{GetSentenceFolder}] Acc}}
                 else
                     {GetFoldersToLoadHelper T Acc}
                 end
             else
-                if Value=='true' then {GetFoldersToLoadHelper T {Append [Key] Acc}}
+                if H.value=="true" then {GetFoldersToLoadHelper T {Append [H.key] Acc}}
                 else {GetFoldersToLoadHelper T Acc} end
             end
+        end
+    end
+
+    %Dataset management :
+
+    %Renvoie un dataset avec la clé name:active ajoutée/mise à jour
+    fun {SetDataset Name Active DataSet}
+        if {DataSetExist Name DataSet} then
+            {ReplaceKey Name Active DataSet nil}
+        else {Append DataSet [set(key:Name value:Active)]} end
+    end
+    fun {ReplaceKey Name Active DataSet Acc}
+        case DataSet
+        of nil then Acc
+        [] H|T then
+            if H.key==Name then
+                {ReplaceKey Name Active T {Append Acc [set(key:Name value:Active)]}}
+            else
+                {ReplaceKey Name Active T {Append Acc [set(key:H.key value:H.value)]}}
+            end
+        end
+    end
+
+    %TODO : enlève une clé d'un dataset OU faire une fct reset data_set
+    fun {RemoveDataset Name}
+        body
+    end
+
+    %Vérifie que set existe ou pas
+    fun{DataSetExist Name DataSet}
+        {DataSetExistHelper Name DataSet}
+    end
+    fun {DataSetExistHelper Name Datas}
+        case Datas
+        of nil then false
+        [] H|T then
+            if H.key==Name then true
+            else {DataSetExistHelper Name T} end
+        end
+    end
+
+    %Récupère une clé
+    fun {GetKey Name DataSet}
+        {GetKeyHelper Name DataSet}
+    end
+    fun {GetKeyHelper Name Datas}
+        case Datas
+        of nil then false
+        [] H|T then
+            if H.key==Name then H.value
+            else {DataSetExistHelper Name T} end
+        end
+    end
+
+    %Renvoie une liste de record du type (key:dossier_set value:active_ou_pas)
+    fun{LoadDataSet}
+        {LoadDataSetHelper {Files.getSentences "save/custom_dataset"} nil}
+    end
+    fun{LoadDataSetHelper Lines Acc}
+        L
+    in
+        case Lines
+        of nil then Acc
+        [] H|T then
+            L = {Str.split H [32]}
+            {LoadDataSetHelper T {Append Acc [set(key: {Nth L 1} value: {Nth L 2})]}}
+        end
+    end
+
+    proc{WriteDataSet Datas}
+        ToWrite = {DataSetToText Datas nil}
+    in
+        {Save ToWrite "custom_dataset" false}
+    end
+
+    %Prend un dataset et le converti en texte pour l'écrire dans un fichier
+    fun {DataSetToText Datas Acc}
+        case Datas
+        of nil then Acc
+        [] H|T then
+            {DataSetToText T {Append Acc {Append H.key {Append " " {Append H.value "\n"}}}}}
         end
     end
 end

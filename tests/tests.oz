@@ -62,6 +62,8 @@ define
       LW==["une" "phrase"]
    end
 
+   %Files Tests :
+
    proc {TestGetFolders}
       Folders = {Save.getFoldersToLoad}
    in
@@ -74,6 +76,10 @@ define
       {DisplayList F}
    end
 
+   proc {TestIsDir Name}
+      {System.show {Files.isDir Name}}
+   end
+
 
    %On lance les tests
    %{Browse {TestToLower}}
@@ -83,6 +89,7 @@ define
    %{Browse {TestTwoLastWord}}
    {TestGetFolders}
    {TestGetAllFiles}
+   {TestIsDir "srcf"}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}

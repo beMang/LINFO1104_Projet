@@ -6,6 +6,7 @@
 * Extension 1 : base de donnée custom **
 * Extension 2 : historique **
 * Extension 3 : proposer d'autres n-grammes *
+* Si on a le time : revoir comment on lit les fichiers (pas tout en 1 coup)
 
 ## Commentaires des extensions :
 

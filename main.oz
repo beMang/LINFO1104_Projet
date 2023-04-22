@@ -90,15 +90,11 @@ define
       end
    end
 
-   proc {Reload}
-      MyTree = nil
-   end
-
    proc {Main}
       %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz à quoi ça sert
 
       % Creation de la fenetre
-      Window={QTk.build {GUI.getDescription Press Reload}}
+      Window={QTk.build {GUI.getDescription Press}}
       {Window show}
       {GUI.init Press}
       % On lance les threads de lecture et de parsing

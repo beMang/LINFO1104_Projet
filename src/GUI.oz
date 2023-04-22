@@ -4,8 +4,8 @@ import
     QTk at 'x-oz://system/wp/QTk.ozf'
 	Application
 	System
-	Browser
-    File at 'files.ozf'
+    Save at 'save.ozf'
+    Files at 'files.ozf'
 export
     getDescription:GetDescription
 	getEntry:GetEntry
@@ -16,18 +16,18 @@ define
 	InputText OutputText
 
 	%Construit la description de la fenêtre principale
-    fun {GetDescription Press ReloadProc}
+    fun {GetDescription Press}
         Radio Check C R
         Menu1=menu(
-            command(text:"Sauvegarder" action: proc{$} X in X= 
-                {File.save {Append {GetEntry} "\n"} "history.txt" true} 
+            command(text:"Sauvegarder" action: proc{$}
+                {Save.save {Append {GetEntry} "\n"} "history/history.txt" true}
                 {DialogBox "Historique sauvegardé"}
             end) %Sauvegarde historique
             command(text:"Image" action:proc{$} {ShowImage} end)
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
         Menu2=menu(
-            command(text:"Add dataset" action:proc{$} {System.show 'new dataset'} end) %Sauvegarde historique
+            command(text:"Add dataset" action:AddDataSetWindow) %Sauvegarde historique
             command(text:"Select datasets" action:SelectDatasetWindow)
             command(text: "Reset datasets" action:proc{$} {System.show 'reset datasets'} end)
         )
@@ -47,7 +47,10 @@ define
                     padx:5
                   	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}X in X = {Press}end)
                     button(text:"Next" width:15 height:2 background:blue pady:5 action:proc{$} {System.show 'Show next proba'} end)
-                    button(text:"Reload" width:15 height:2 background:green pady:5 action:proc{$} {Reload ReloadProc}end)
+                    button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
+                        {Save.save {Append {GetEntry} "\n"} "history/history.txt" true}
+                        {DialogBox "Historique sauvegardé"}end
+                    )
                     button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end)
                )
             )
@@ -93,24 +96,42 @@ define
     %Fenêtre pour choisir les datasets à utiliser
     proc {SelectDatasetWindow}
         Handle
+        Desc={BuildDescDataSet {Save.loadDataSet} td(title:"Select datasets") Window 2}
+        Window={QTk.build Desc}
+    in
+        {Window show}
+    end
+    fun {BuildDescDataSet DataSet Acc Window Inc}
+        case DataSet
+        of nil then {Record.adjoin Acc td(button(text:"OK" width:4 background:green pady:5 action:proc{$} {Window close} end))}
+        [] H|T then
+            {BuildDescDataSet T {Record.adjoin Acc td(Inc:checkbutton(glue:w text:H.key init:true padx:100 selectcolor:black))} Window Inc+1}
+        end
+    end
+
+    proc {AddDataSetWindow}
+        InputAddHandle
         Desc=td(
-            title:"Select datasets"
-            checkbutton(glue:w text:"Default" init:true padx:100 handle:Handle selectcolor:black)
-            checkbutton(glue:w text:"History" init:true padx:100 selectcolor:black)
-            checkbutton(glue:w text:"Custom1" init:false padx:100 selectcolor:black)
-            button(text:"OK" width:4 background:green pady:5 action:proc{$} {Window close} end)
+            title:"Add dataset"
+            text(handle:InputAddHandle background:white foreground:black width:20 height:2 pady:10)
+            checkbutton(glue:w text:"Active" init:true padx:70 pady:5 selectcolor:black)
+            button(text:"OK" width:4 background:green pady:5 action:proc{$} 
+                if {Files.isDir {InputAddHandle get($)}} then
+                    local DataSet in
+                        DataSet={Save.setDataSet {InputAddHandle get($)} "true" {Save.loadDataSet}}
+                        {Save.writeDataSet DataSet}
+                    end
+                    {Window close}
+                else
+                    {InputAddHandle set(1:"Dossier invalide")}
+                end
+            end)
         )
         Window={QTk.build Desc}
     in
         {Window show}
     end
 
-    %Lance le rechargement de l'arbre
-    proc {Reload MyReload}
-        {MyReload}
-        {OutputText tk(insert 'end' "Loading... Please wait.")}
-        {Clear}
-    end
     %Teste image Peter VR
     proc {ShowImage}
         Image = {QTk.newImage photo(url:'272331001_4808050022621105_5325763678366432642_n.png')}
