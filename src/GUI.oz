@@ -23,6 +23,7 @@ define
                 {File.save {Append {GetEntry} "\n"} "history.txt" true} 
                 {DialogBox "Historique sauvegardé"}
             end) %Sauvegarde historique
+            command(text:"Image" action:proc{$} {ShowImage} end)
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
         Menu2=menu(
@@ -111,7 +112,15 @@ define
         {Clear}
     end
     %Teste image Peter VR
-    fun {MyImage}
-        {QTk.newImage photo(file: '/home/laura/oz-projet-twitoz/src/272331001_4808050022621105_5325763678366432642_n.pgm')}
+    proc {ShowImage}
+        Image = {QTk.newImage photo(url:'image_test.png')}
+        Desc = td(
+            title:"Image"
+            label(image:Image height:1000 width:1000)
+        )
+        Window={QTk.build Desc}
+    in
+        {System.show 'hey'}
+        {Window show}
     end
 end
