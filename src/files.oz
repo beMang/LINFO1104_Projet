@@ -37,7 +37,7 @@ define
 
     %Renvoie les phrases d'un fichier
     fun {GetSentences File}
-        {Str.split {ReadFile File} [10 46 63 33 34]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet
+        {Str.split {ReadFile File} [10 46 63 33 34 40 41]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet, 40 41-> parenthèses
     end
 
     %Permet d'écrire dans le dossier de sauvegarde
