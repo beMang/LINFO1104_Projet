@@ -7,26 +7,29 @@ export
     parseFilePort:ParseFilePort
 define
     fun {FormatStr S} %%on l'utilise pour virer les symboles nuls 
-        {Str.toLower S}
+        local S2 in 
+            S2={Str.toLower S}
+            {DeleteCarBegin S2}
+        end
     end
 
     fun {DeleteCarBegin MyString}
         case MyString
-        of H|T then
+        of nil then nil
+        [] H|T then
             case H 
             of 64 then T
             [] 40 then T 
             [] 35 then T 
             [] 91 then T 
             [] 45 then T 
-            [] 34 then T 
             else 
                 MyString
             end
-        else
-            0
         end
     end
+
+    
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P
     proc {GetSampleHelperPort WordsL Word1 Word2 P}

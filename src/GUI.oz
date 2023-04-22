@@ -19,7 +19,7 @@ define
     fun {GetDescription Press ReloadProc}
         Radio Check C R
         Menu1=menu(
-            command(text:"Sauvegarder" action: proc{$} X in X = 
+            command(text:"Sauvegarder" action: proc{$} X in X= 
                 {File.save {Append {GetEntry} "\n"} "history.txt" true} 
                 {DialogBox "Historique sauvegardé"}
             end) %Sauvegarde historique
@@ -109,5 +109,9 @@ define
         {MyReload}
         {OutputText tk(insert 'end' "Loading... Please wait.")}
         {Clear}
+    end
+    %Teste image Peter VR
+    fun {MyImage}
+        {QTk.newImage photo(file: '/home/laura/oz-projet-twitoz/src/272331001_4808050022621105_5325763678366432642_n.pgm')}
     end
 end
