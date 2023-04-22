@@ -45,9 +45,6 @@ define
       case Words
       of nil then Tree
       [] H|T then
-         if Words.1==nil then
-             Tree
-         else 
          case Tree
          of nil then
             if Size==2 then %On regarde si on traite les 2 derniers mots.
@@ -82,7 +79,6 @@ define
 
          else
             {Exception.error "Cas non traité dans la création de l'arbre"}
-         end
          end
       else
          {Exception.error "Cas non traité dans la création de l'arbre"}

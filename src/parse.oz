@@ -42,11 +42,18 @@ define
                 if Word2==nil then
                     {GetSampleHelperPort T Word1 H P} %Initialiser
                 else
-                    {Port.send P [
-                        {FormatStr Word1}
-                        {FormatStr Word2}
-                        {String.toAtom {FormatStr H}}
-                    ]}
+                    local W1={FormatStr Word1} W2={FormatStr Word2} W3={String.toAtom {FormatStr H}} in
+                        if W1==nil then skip
+                        elseif W2==nil then skip
+                        elseif W3==nil then skip
+                        else
+                            {Port.send P [
+                                {FormatStr Word1}
+                                {FormatStr Word2}
+                                {String.toAtom {FormatStr H}}
+                            ]}
+                        end
+                    end
                     {GetSampleHelperPort T Word2 H P}
                 end
             end

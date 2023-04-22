@@ -24,7 +24,6 @@ define
    fun {Press}
       TwoLast = {Str.lastWord {GUI.getEntry} 2}
    in
-      {Wait MyTree} %On attend que l'arbre ait fini d'être créé
       if TwoLast==nil then %Si pas assez de mot pour la prédiction
          {GUI.setOutput ""}
          nil
@@ -106,7 +105,8 @@ define
       % On lance les threads de lecture et de parsing
       SeparatedWordsPort = {NewPort SeparatedWordsStream}
       {LaunchThreads SeparatedWordsPort 4}
-
+      
+      {Wait MyTree}
       {GUI.clear} %On nettoie les champs de texte
    end
    {Main}
