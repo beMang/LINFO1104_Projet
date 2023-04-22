@@ -11,7 +11,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : src/possibility.ozf src/tree.ozf src/str.ozf src/files.ozf src/parse.ozf src/GUI.ozf main.ozf tests/tests.ozf
+all : src/possibility.ozf src/tree.ozf src/str.ozf src/files.ozf src/parse.ozf src/GUI.ozf src/save.ozf main.ozf tests/tests.ozf
 	make $^
 
 %.ozf: %.oz
@@ -25,6 +25,6 @@ clean :
 	rm -f *.ozf
 
 tests :
-	$(OZENGINE) $(ENTRY_TEST)
+	$(OZENGINE) $(ENTRY_TEST) --folder $(TWEETS_FOLDER)
 
 .PHONY: tests

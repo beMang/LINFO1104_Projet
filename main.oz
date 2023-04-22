@@ -7,7 +7,6 @@ import
    Possibility at 'src/possibility.ozf'
    GUI at 'src/GUI.ozf'
    FileM at 'src/files.ozf'
-	OS
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree
 
@@ -46,35 +45,35 @@ define
    %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
    %%% Les threads de parsing envoient leur resultat au port Port
    proc {LaunchThreads P N}
-      Files = {OS.getDir {FileM.getSentenceFolder}}
+      Files = {FileM.getAllFilesToLoad}
    in
       local X in
          thread
             MyTree = {Tree.getTreeFromList SeparatedWordsStream}
          end
       end
-      if {LaunchThreadsHelper Files {FileM.getSentenceFolder} P N}==0 then 
+      if {LaunchThreadsHelper Files P N}==0 then 
          {Port.send P nil} 
       else 
          {Exception.error "Erreur lors du parsing des fichiers."}
       end
    end
 
-   fun {LaunchThreadsHelper Files Folder P N}
+   fun {LaunchThreadsHelper Files P N}
          ToProcess = {Length Files} div N X Y
    in
       if N==1 then
          thread
-            X = {ProcessFiles Files Folder P}
+            X = {ProcessFiles Files P}
          end
          {Wait X}
          X
       else
          thread
             {Thread.setThisPriority high}
-            Y = {ProcessFiles {List.take Files ToProcess} Folder P}
+            Y = {ProcessFiles {List.take Files ToProcess} P}
          end
-         X = {LaunchThreadsHelper {List.drop Files ToProcess} Folder P N-1}
+         X = {LaunchThreadsHelper {List.drop Files ToProcess} P N-1}
          {Wait Y}  %Attendre que notre thread ait fini
          {Wait X} %Attendre que les threads lancés aient finis
          X
@@ -82,12 +81,12 @@ define
    end
 
    %Parse les fichiers dans la liste Files
-   fun {ProcessFiles Files Folder P}
+   fun {ProcessFiles Files P}
       case Files
       of nil then 0 % Code succès
       [] H|T then
-         {Parse.parseFilePort {Append Folder {Append "/" H}} P}
-         {ProcessFiles T Folder P}
+         {Parse.parseFilePort H P}
+         {ProcessFiles T P}
       end
    end
 

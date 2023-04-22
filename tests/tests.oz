@@ -2,11 +2,23 @@ functor
 import
    Str at '../src/str.ozf'
    Tree at '../src/tree.ozf'
+   Save at '../src/save.ozf'
+   Files at '../src/files.ozf'
    Browser
+   System
    Application
 define
    proc {Browse Buf}
       {Browser.browse Buf}
+   end
+
+   proc {DisplayList L}
+      case L
+      of nil then skip
+      [] H|T then
+         {System.show {String.toAtom H}}
+         {DisplayList T}
+      end
    end
 
    A= subtree(string: "mange" right:nil left: nil value: F)
@@ -50,18 +62,16 @@ define
       LW==["une" "phrase"]
    end
 
-
-   proc {TestTreeAndLookUp}
-      local T1 T2 in
-         T1 = {Tree.insertInBigTree "test1" "test2" test1 {Tree.insertInBigTree "test1" "test2" test1 nil}}
-         T2 = {Tree.insertInBigTree "allo" "pompier" feu T1}
-         {Browse {Tree.lookUp T1 "test1" "test2"}}
-         {Browse {Tree.lookUp T2 "allo" "pompier"}}
-      end
+   proc {TestGetFolders}
+      Folders = {Save.getFoldersToLoad}
+   in
+      {DisplayList Folders}
    end
 
-   fun {TestGetPrevision}
-      {Tree.getPrevision G}
+   proc {TestGetAllFiles}
+      F = {Files.getAllFilesToLoad}
+   in
+      {DisplayList F}
    end
 
 
@@ -71,7 +81,8 @@ define
    %{Browse {TestInsertBigTree}}
    %{Browse {TestLookUp}}
    %{Browse {TestTwoLastWord}}
-   {Browse {TestGetPrevision}}
+   {TestGetFolders}
+   {TestGetAllFiles}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}
