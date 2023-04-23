@@ -6,6 +6,7 @@ import
 	System
     Save at 'save.ozf'
     Files at 'files.ozf'
+    Str at 'str.ozf'
 export
     getDescription:GetDescription
 	getEntry:GetEntry
@@ -95,17 +96,51 @@ define
 
     %Fenêtre pour choisir les datasets à utiliser
     proc {SelectDatasetWindow}
-        Handle
-        Desc={BuildDescDataSet {Save.loadDataSet} td(title:"Select datasets") Window 2}
+        DataSet = {Save.loadDataSet}
+        DescriptionAndHandle={BuildDescDataSet DataSet [td(title:"Select datasets") h()] Window 1 DataSet}
+        Desc = {Nth DescriptionAndHandle 1}
         Window={QTk.build Desc}
     in
         {Window show}
     end
-    fun {BuildDescDataSet DataSet Acc Window Inc}
+    fun {BuildDescDataSet DataSet Acc Window Inc CompleteDataSet}
         case DataSet
-        of nil then {Record.adjoin Acc td(button(text:"OK" width:4 background:green pady:5 action:proc{$} {Window close} end))}
+        of nil then [
+                    {Record.adjoin 
+                        {Nth Acc 1} 
+                        td(Inc:button(text:"OK" width:4 background:green pady:5 action:proc{$} {CloseSelectDataSetWindow Window {Nth Acc 2} CompleteDataSet} end))
+                    } 
+                    {Nth Acc 2}
+                    ]
         [] H|T then
-            {BuildDescDataSet T {Record.adjoin Acc td(Inc:checkbutton(glue:w text:H.key init:true padx:100 selectcolor:black))} Window Inc+1}
+            local Handle Key={String.toAtom H.key} in
+                {BuildDescDataSet 
+                    T 
+                    [
+                        {Record.adjoin {Nth Acc 1} td(Inc:checkbutton(glue:w handle:Handle text:H.key init:{Str.convertToBool H.value} padx:100 selectcolor:black))}
+                        {Record.adjoin {Nth Acc 2} h(Key:Handle)}
+                    ]
+                    Window 
+                    Inc+1
+                    CompleteDataSet
+                }
+            end
+        end
+    end
+    %Enregistre le dataset et ferme la fenêtre
+    proc {CloseSelectDataSetWindow W Handles DataSet}
+        NewDataSet={UpdateDataSetWithHandles Handles DataSet DataSet}
+    in
+        {Save.writeDataSet NewDataSet}
+        {W close}
+    end
+    %Renvoie un dataset actualisé avec les valeurs du record Handles
+    fun {UpdateDataSetWithHandles Handles DataSet Acc}
+        case DataSet of nil then Acc
+        [] H|T then
+            local Key={String.toAtom H.key} Value={Handles.Key get($)} in
+                {UpdateDataSetWithHandles Handles T {Save.setDataSet H.key {Str.convertBoolToStr Value} Acc}}
+            end
         end
     end
 

@@ -5,6 +5,8 @@ export
     split:Split
     toLower:ToLower
     lastWord:LastWord
+    convertToBool:ConverToBool
+    convertBoolToStr:ConvertBoolToStr
 define
     %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
@@ -78,5 +80,19 @@ define
         else
             {List.drop Splited {Length Splited}-N}
         end
+    end
+
+    %Converti une chaine de caractère en booléen
+    fun {ConverToBool S}
+        if S=="true" then true
+        elseif S=='true' then true
+        elseif S==true then true
+        else false end
+    end
+
+    %Converti un boolean en chaine de caractère (pour l'écriture de la sauvegarde)
+    fun {ConvertBoolToStr B}
+        if B == true then "true"
+        else "false" end
     end
 end

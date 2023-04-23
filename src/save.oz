@@ -52,7 +52,12 @@ define
                     {GetFoldersToLoadHelper T Acc}
                 end
             else
-                if H.value=="true" then {GetFoldersToLoadHelper T {Append [H.key] Acc}}
+                if H.value=="true" then
+                    if {Files.isDir H.key} then {GetFoldersToLoadHelper T {Append [H.key] Acc}}
+                    else 
+                        {System.show {String.toAtom "Erreur : Dossier invalide dans la configuration"}}
+                        {GetFoldersToLoadHelper T Acc} 
+                    end
                 else {GetFoldersToLoadHelper T Acc} end
             end
         end
@@ -124,9 +129,11 @@ define
         end
     end
 
+    %Sauvegarde un dataset sur le disque dur
     proc{WriteDataSet Datas}
         ToWrite = {DataSetToText Datas nil}
     in
+        {System.show saving}
         {Save ToWrite "custom_dataset" false}
     end
 

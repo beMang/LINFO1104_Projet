@@ -1,2 +1,3 @@
-default true
+default false
 save/history true
+smaller_data true
