@@ -47,7 +47,7 @@ define
                 td(
                     padx:5
                   	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}X in X = {Press}end)
-                    button(text:"Next" width:15 height:2 background:blue pady:5 action:proc{$} {System.show 'Show next proba'} end)
+                    button(text:"Next" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$} {System.show 'Show next proba'} end)
                     button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
                         {Save.saveInHistory {GetEntry}}
                         {DialogBox "Historique sauvegardé"}end
