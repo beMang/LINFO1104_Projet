@@ -28,16 +28,22 @@ define
          {GUI.setOutput ""}
          nil
       else
-         local Prediction Text Final in
+         local Prediction Text Final Final2 in
             Prediction = {Tree.lookUp MyTree [{Parse.formatStr {Nth TwoLast 1}} {Parse.formatStr {Nth TwoLast 2}}]}
             if Prediction==0 then
                {GUI.setOutput ""}
                nil 
             else
                Final= {Possibility.getPrevision Prediction}
-               Text = {VirtualString.toString {Value.toVirtualString Final 20 25}}
+               case Final.1        %Travail du résultat pour ne renvoyer qu'un mot
+               of H|T then 
+                  Final2=Final.1
+                  Text = {VirtualString.toString {Value.toVirtualString Final2.1 20 25}}
+               else
+                  Text = {VirtualString.toString {Value.toVirtualString Final.1 20 25}}
+               end
                {GUI.setOutput Text}
-               Final  %Il faut encore retravailler ce résultat pour matcher les spécifications
+               Final  
             end
          end
       end

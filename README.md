@@ -6,6 +6,8 @@
 * Extension 1 : base de donnée custom **
 * Extension 2 : historique **
 * Extension 3 : proposer d'autres n-grammes *
+* Bouton next: on peut, dans le cas où deux mots ont la même probabilité d'arriver, proposer le premier de la liste
+puis quand on appuye sur next proposer le suivant. Du coup ce bouton servirait uniquement quand on a plrs possibilités.
 * Si on a le time : revoir comment on lit les fichiers (pas tout en 1 coup)
 
 ## Commentaires des extensions :
