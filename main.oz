@@ -7,6 +7,7 @@ import
    Possibility at 'src/possibility.ozf'
    GUI at 'src/GUI.ozf'
    FileM at 'src/files.ozf'
+   Property
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree
 
@@ -28,7 +29,7 @@ define
          nil
       else
          local Prediction Text Final in
-            Prediction = {Tree.lookUp MyTree [{Str.toLower {Nth TwoLast 1}} {Str.toLower {Nth TwoLast 2}}]}
+            Prediction = {Tree.lookUp MyTree [{Parse.formatStr {Nth TwoLast 1}} {Parse.formatStr {Nth TwoLast 2}}]}
             if Prediction==0 then
                {GUI.setOutput ""}
                nil 
@@ -91,7 +92,7 @@ define
    end
 
    proc {Main}
-      %{Property.put print foo(width:1000 depth:1000)}  % for stdout siz à quoi ça sert
+      {Property.put print foo(width:1000 depth:1000)}  %pour afficher bcp sur le terminal (stdout)
 
       % Creation de la fenetre
       Window={QTk.build {GUI.getDescription Press}}

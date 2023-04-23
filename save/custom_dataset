@@ -1,3 +1,2 @@
-default false
-save/history true
-smaller_data true
+Default true
+History false
