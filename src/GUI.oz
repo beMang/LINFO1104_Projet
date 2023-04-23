@@ -30,7 +30,7 @@ define
         Menu2=menu(
             command(text:"Add dataset" action:AddDataSetWindow) %Sauvegarde historique
             command(text:"Select datasets" action:SelectDatasetWindow)
-            command(text: "Reset datasets" action:proc{$} {System.show 'reset datasets'} end)
+            command(text: "Reset datasets" action:proc{$} {Save.resetDataSet} {DialogBox "Datasets successfully reset"} end)
         )
         Description=td(
             title: "Text predictor"
@@ -49,7 +49,7 @@ define
                   	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}X in X = {Press}end)
                     button(text:"Next" width:15 height:2 background:blue pady:5 action:proc{$} {System.show 'Show next proba'} end)
                     button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
-                        {Save.save {Append {GetEntry} "\n"} "history/history.txt" true}
+                        {Save.saveInHistory {GetEntry}}
                         {DialogBox "Historique sauvegardé"}end
                     )
                     button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end)

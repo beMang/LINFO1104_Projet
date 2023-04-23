@@ -1,3 +1,4 @@
+%Ce fichier gère tout ce qui est sauvegarde de l'historique ainsi que des base de données custom à utiliser ou pas
 functor
 import
     Files at 'files.ozf'
@@ -8,8 +9,10 @@ export
     getFoldersToLoad:GetFoldersToLoad
     save:Save
     loadDataSet:LoadDataSet
+    resetDataSet:ResetDataSet
     setDataSet:SetDataset
     writeDataSet:WriteDataSet
+    saveInHistory:SaveInHistory
 define
     %Permet d'écrire dans le dossier de sauvegarde
     %Content est le contenu à sauvegarder
@@ -35,6 +38,29 @@ define
         Args.'folder'
     end
 
+    fun {GetHistoryFolder}
+        "save/history/"
+    end
+
+    fun {GetHistoryFile}
+        {Append {GetHistoryFolder} "history"}
+    end
+
+    proc {InitHistory}
+        DataSet={LoadDataSet}
+        UpdateDataSet
+    in
+        if {DataSetExist "History" DataSet}==false then %Si la clé n'est pas initialisée
+            UpdateDataSet={SetDataset "History" "false" DataSet}
+            {WriteDataSet UpdateDataSet}
+        end
+    end
+
+    proc {SaveInHistory Content}
+        {Save {Append Content "\n"} "history/history" true}
+        {InitHistory}
+    end
+
     %Va lire le fichier de configuration save/custom_dataset pour aller voir les dossiers à charger
     fun {GetFoldersToLoad}
         {GetFoldersToLoadHelper {LoadDataSet} nil}
@@ -45,9 +71,15 @@ define
         case Lines
         of nil then Acc
         [] H|T then
-            if H.key=="default" then
+            if H.key=="Default" then
                 if H.value=="true" then
                     {GetFoldersToLoadHelper T {Append [{GetSentenceFolder}] Acc}}
+                else
+                    {GetFoldersToLoadHelper T Acc}
+                end
+            elseif H.key=="History" then
+                if H.value=="true" then
+                    {GetFoldersToLoadHelper T {Append [{GetHistoryFolder}] Acc}}
                 else
                     {GetFoldersToLoadHelper T Acc}
                 end
@@ -83,9 +115,11 @@ define
         end
     end
 
-    %TODO : enlève une clé d'un dataset OU faire une fct reset data_set
-    fun {RemoveDataset Name}
-        body
+    %Réinitialise le dataset avec le default à true et history à false
+    proc {ResetDataSet}
+        ResetDataSet = [set(key:"Default" value:"true") set(key:"History" value:"false")]
+    in
+        {WriteDataSet ResetDataSet}
     end
 
     %Vérifie que set existe ou pas
@@ -133,7 +167,6 @@ define
     proc{WriteDataSet Datas}
         ToWrite = {DataSetToText Datas nil}
     in
-        {System.show saving}
         {Save ToWrite "custom_dataset" false}
     end
 

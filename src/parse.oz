@@ -3,33 +3,17 @@ import
     File at 'files.ozf'
     Str at 'str.ozf'
     Tree at 'tree.ozf'
+    System
+    Open
 export
     parseFilePort:ParseFilePort
+    formatStr:FormatStr
 define
-    fun {FormatStr S} %%on l'utilise pour virer les symboles nuls 
-        local S2 in 
-            S2={Str.toLower S}
-            {DeleteCarBegin S2}
+    fun {FormatStr S} %on l'utilise pour virer les symboles nuls 
+        local S2 in
+            {Str.deleteCarBegin {Str.toLower S}}
         end
     end
-
-    fun {DeleteCarBegin MyString}
-        case MyString
-        of nil then nil
-        [] H|T then
-            case H 
-            of 64 then T
-            [] 35 then T 
-            [] 91 then T 
-            [] 45 then T 
-            else 
-                MyString
-            end
-        end
-    end
-            
-
-    
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P
     proc {GetSampleHelperPort WordsL Word1 Word2 P}
@@ -64,15 +48,30 @@ define
     end
     
     %Fonctions parsant un fichier, fonctionnant avec un port, les résultats sont envoyés à celui-ci
-    proc{ParseFileHelperPort SentenceArray P}
+    proc{ParseSentences SentenceArray P}
         case SentenceArray
         of nil then skip
         [] H|T then
             {GetSamplePort H P}
-            {ParseFileHelperPort T P}
+            {ParseSentences T P}
         end
     end
+    %Parse un fichier où F est un TextFile
+    proc {ParseFile F P}
+        Line={F getS($)}
+    in
+        if Line\=false then 
+            {ParseSentences {Str.getSentences Line} P} 
+            {ParseFile F P}
+        else skip end
+    end
+
+    class TextFile  %Pour pouvoir utiliser les méthodes getS
+        from Open.file Open.text  
+    end
     proc {ParseFilePort FileName P}
-        {ParseFileHelperPort {File.getSentences FileName} P}
+        F = {New TextFile init(name:FileName flags:[read])}
+    in
+        {ParseFile F P}
     end
 end

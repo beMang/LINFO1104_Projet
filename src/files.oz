@@ -69,7 +69,6 @@ define
     fun {GetAllFilesToLoad}
         {GetAllFilesToLoadHelper {Save.getFoldersToLoad} nil}
     end
-
     fun {GetAllFilesToLoadHelper Folders Acc}
         case Folders
         of nil then Acc
@@ -78,6 +77,7 @@ define
         end
     end
 
+    %Fusionne une liste de fichier en y ajoutant pour chaque élément de la liste le préfixe Folder
     fun {AddFolderToListFile Folder F Acc}
         case F
         of nil then Acc

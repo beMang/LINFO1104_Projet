@@ -5,8 +5,10 @@ export
     split:Split
     toLower:ToLower
     lastWord:LastWord
+    deleteCarBegin:DeleteCarBegin
     convertToBool:ConverToBool
     convertBoolToStr:ConvertBoolToStr
+    getSentences:GetSentences
 define
     %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
@@ -73,6 +75,22 @@ define
         {ToLowerHelper S nil}
     end
 
+    %Retire certains caractères au début des mots
+    fun {DeleteCarBegin MyString}
+        case MyString
+        of nil then nil
+        [] H|T then
+            case H 
+            of 64 then T
+            [] 35 then T 
+            [] 91 then T 
+            [] 45 then T 
+            else 
+                MyString
+            end
+        end
+    end
+
     fun{LastWord S N}
         Splited = {Split S [32]}
     in
@@ -80,6 +98,11 @@ define
         else
             {List.drop Splited {Length Splited}-N}
         end
+    end
+
+    %Renvoie les phrases d'une chaine de caractère
+    fun {GetSentences S}
+        {Split S [10 46 63 33 34 40 41]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet, 40 41-> parenthèses
     end
 
     %Converti une chaine de caractère en booléen
