@@ -7,6 +7,7 @@ import
    Browser
    System
    Application
+   Correction at '../src/correction.ozf'
 define
    proc {Browse Buf}
       {Browser.browse Buf}
@@ -31,6 +32,12 @@ define
    F= possibilities(beaucoup: 3 bien: 5 des: 7)
    G= possibilities(a:1 hier:4 manger:4)
 
+   proc {TestCorrection}
+      %{System.show {Correction.getNewWord E ["Je" "mange"] 'pas'}}
+      {System.show {Correction.getNewWord E ["Je" "mange"] nil}}
+
+   end
+
    fun {TestInsertBigTree}
       local Mytree in 
          Mytree = {Tree.insertInTree ["Tu" "manges" 'des'] Test}
@@ -48,7 +55,7 @@ define
    fun {TestToLower}
       local S Mytest Verif in
          S = "START MAKING VENTILATORS NOW"
-         Verif= 'start making ventilators now'   %je désire le contexte de cette phrase test
+         Verif= 'start making ventilators now'  
          Mytest = {String.toAtom{Str.toLower S}}
          %note: toAtom renvoit une chaine de caractères, pas un string, donc on ne peut pas y appliquer Mytest.1
          Verif==Mytest
@@ -87,9 +94,10 @@ define
    %{Browse {TestInsertBigTree}}
    %{Browse {TestLookUp}}
    %{Browse {TestTwoLastWord}}
-   {TestGetFolders}
-   {TestGetAllFiles}
-   {TestIsDir "srcf"}
+   %{TestGetFolders}
+   %{TestGetAllFiles}
+   %{TestIsDir "srcf"}
+   {TestCorrection}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}

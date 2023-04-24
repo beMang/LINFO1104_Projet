@@ -1,4 +1,4 @@
-functor %Module qui s'occupe de traiter la tructur possiblities
+functor %Module qui s'occupe de traiter la tructur possibilities
 export 
     getPrevision:GetPrevision
 define
@@ -44,8 +44,9 @@ define
     end
 
     fun {GetWordMax Prevision Mykees Acc Number}
-        %retourne le mot qui est le lus fréquent
+        %retourne le mot qui est le plus fréquent
         %Acc doit etre à nil au début et Number à 0
+
         case Mykees 
         of nil then Acc 
         [] H|T then 
