@@ -7,6 +7,7 @@ import
     Save at 'save.ozf'
     Files at 'files.ozf'
     Str at 'str.ozf'
+    Open
 export
     getDescription:GetDescription
 	getEntry:GetEntry
@@ -20,10 +21,11 @@ define
     fun {GetDescription Press}
         Radio Check C R
         Menu1=menu(
-            command(text:"Sauvegarder" action: proc{$}
+            command(text:"Save" action: proc{$}
                 {Save.save {Append {GetEntry} "\n"} "history/history.txt" true}
-                {DialogBox "Historique sauvegardé"}
+                {DialogBox "History saved"}
             end) %Sauvegarde historique
+            command(text:"Reload" action: proc{$} {ReloadApp} end)
             command(text:"Image" action:proc{$} {ShowImage} end)
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
@@ -50,7 +52,7 @@ define
                     button(text:"Next" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$} {System.show 'Show next proba'} end)
                     button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
                         {Save.saveInHistory {GetEntry}}
-                        {DialogBox "Historique sauvegardé"}end
+                        {DialogBox "History saved"}end
                     )
                     button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end)
                )
@@ -178,5 +180,30 @@ define
     in
         {System.show 'hey'}
         {Window show}
+    end
+
+    %Pas déclaratif mais autorisé (source - forum moodle : https://moodle.uclouvain.be/mod/forum/discuss.php?d=82591)
+    class Shell from Open.pipe Open.text 
+        meth init 
+           Open.pipe,init(cmd:"sh" args:["-s"])  
+        end 
+        meth cmd(Cmd)  
+           Open.text,putS(Cmd)  
+        end 
+        meth show 
+           case Open.text,getS($) of false then 
+              {System.show 'Shell has died.'} {self close}
+           elseof S then {System.show S}
+           end 
+        end 
+    end
+
+    %Reloading the app :
+    proc {ReloadApp}
+        S = {New Shell init}
+    in
+        {S cmd('make run')}
+        {S close}
+        {Application.exit 0}
     end
 end
