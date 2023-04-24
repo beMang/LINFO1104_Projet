@@ -198,7 +198,7 @@ define
         end 
     end
 
-    %Reloading the app :
+    %Reloading the app to reload the tree with new dataset for example
     proc {ReloadApp}
         S = {New Shell init}
     in
