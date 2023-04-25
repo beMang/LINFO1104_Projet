@@ -43,7 +43,7 @@ define
                   Text = {VirtualString.toString {Value.toVirtualString Final.1 20 25}}
                end
                {GUI.setOutput Text}
-               Final  
+               Final
             end
          end
       end
@@ -109,7 +109,8 @@ define
       {LaunchThreads SeparatedWordsPort 4}
       
       {Wait MyTree}
-      {GUI.clear} %On nettoie les champs de texte
+      {GUI.clear}
+      %%ENDOFCODE%%
    end
    {Main}
 end

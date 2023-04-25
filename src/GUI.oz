@@ -171,7 +171,7 @@ define
 
     %Teste image Peter VR
     proc {ShowImage}
-        Image = {QTk.newImage photo(url:'272331001_4808050022621105_5325763678366432642_n.png')}
+        Image = {QTk.newImage photo(url:'img.png')}
         Desc = td(
             title:"Image"
             label(image:Image height:1000 width:1000)
