@@ -77,7 +77,7 @@ define
         end
     end
 
-    %Fusionne une liste de fichier en y ajoutant pour chaque élément de la liste le préfixe Folder
+    %Fusionne une liste de fichiers en y ajoutant pour chaque élément de la liste le préfixe Folder
     fun {AddFolderToListFile Folder F Acc}
         case F
         of nil then Acc

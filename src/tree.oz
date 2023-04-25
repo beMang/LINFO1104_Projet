@@ -8,7 +8,6 @@ export
 define
 
    %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
-   %Tree c'est là où on en est dans le parcours de l'arbre, 
    %Retourne la value du record pour la liste de mot L (dans le cas de 2-gramme, la liste aura une longueur 2)
    %Retourne 0 si pas trouvé
    fun{LookUp Tree L}
@@ -114,6 +113,7 @@ define
          end
       end
    end
+
    fun {GetTreeFromList L}
       {GetTreeFromListHelper L nil}
    end

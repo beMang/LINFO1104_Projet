@@ -33,9 +33,12 @@ define
    G= possibilities(a:1 hier:4 manger:4)
 
    proc {TestCorrection}
-      %{System.show {Correction.getNewWord E ["Je" "mange"] 'pas'}}
-      {System.show {Correction.getNewWord E ["Je" "mange"] nil}}
-
+      local A in
+         A= ["Je" "mange"]
+         {System.show {Correction.getNewWord Test [{Nth A 1} {Nth A 2}] 'pas'}}
+      end
+      
+      
    end
 
    fun {TestInsertBigTree}
@@ -46,7 +49,7 @@ define
    end
    fun {TestLookUp}
       local G in 
-         G={Tree.lookUp Test "Je" "mange"}
+         G={Tree.lookUp Test ["Je" "mange"]}
          G==F
       end
    end
@@ -98,6 +101,8 @@ define
    %{TestGetAllFiles}
    %{TestIsDir "srcf"}
    {TestCorrection}
+   
+   
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}

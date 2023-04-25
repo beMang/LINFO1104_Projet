@@ -145,7 +145,7 @@ define
             end
         end
     end
-
+    %Procédure effectuée par le bouton Add Dataset
     proc {AddDataSetWindow}
         InputAddHandle
         Desc=td(
@@ -198,7 +198,7 @@ define
         end 
     end
 
-    %Reloading the app to reload the tree with new dataset for example
+    %Recalcule l'arbre pour prendre en compte les modifications effectuées
     proc {ReloadApp}
         S = {New Shell init}
     in

@@ -9,10 +9,9 @@ export
     parseFilePort:ParseFilePort
     formatStr:FormatStr
 define
-    fun {FormatStr S} %on l'utilise pour virer les symboles nuls 
-        local S2 in
-            {Str.deleteCarBegin {Str.toLower S}}
-        end
+    %Retire les symboles inutiles des mots
+    fun {FormatStr S}
+        {Str.deleteCarBegin {Str.toLower S}}
     end
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P

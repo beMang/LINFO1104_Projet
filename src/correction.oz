@@ -12,8 +12,9 @@ define
         local Values Prevision Prevision2 BestWord TwoWords in 
             %TwoWords= {GetTwoFirstWords Words nil}
            
-            
+            {System.show "Coucou"}
             Values= {Tr.lookUp Tree TwoWords}
+            {System.show "Coucou"}
             Prevision= {Possibility.getPrevision Values}
             %case Prevision.1        
              %   of H|T then 
@@ -21,8 +22,8 @@ define
                %     BestWord=Prevision2.1
                % else
                     %BestWord=Prevision.1
-                    BestWord="Yeah"
-                    {System.show BestWord}
+            BestWord="Yeah"
+            {System.show BestWord}
                 %end
             if {Verif Tree TwoWords LastWord}==0 then
                 BestWord 

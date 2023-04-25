@@ -31,7 +31,7 @@ define
     end
 
     % Fetch Tweets Folder from CLI Arguments
-    % See the Makefile for an example of how it is called
+    % Voir le Makefile pour un exemple d'appel de cette fonction
     fun {GetSentenceFolder}
         Args = {Application.getArgs record('folder'(single type:string optional:false))}
     in
@@ -55,7 +55,7 @@ define
             {WriteDataSet UpdateDataSet}
         end
     end
-
+    %Sauve dans l'historique ce qui est écrit par l'utilisateur
     proc {SaveInHistory Content}
         {Save {Append Content "\n"} "history/history" true}
         {InitHistory}

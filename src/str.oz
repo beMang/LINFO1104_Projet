@@ -90,7 +90,7 @@ define
             end
         end
     end
-
+    %Récupère les N derniers mots d'une entrée
     fun{LastWord S N}
         Splited = {Split S [32]}
     in
