@@ -8,11 +8,8 @@ export
     getNewWord:GetNewWord
 define
 
-    fun {GetNewWord Tree TwoWords LastWord }  %je trouve pas le bon format à donner dans les tests à TwoWords mais c'est sur la bonne voie
-        local Values Prevision Prevision2 BestWord TwoWords in 
-            %TwoWords= {GetTwoFirstWords Words nil}
-           
-            {System.show "Coucou"}
+    fun {GetNewWord Tree TwoWords LastWord}  %je trouve pas le bon format à donner dans les tests à TwoWords mais c'est sur la bonne voie
+        local Values Prevision Prevision2 BestWord in 
             Values= {Tr.lookUp Tree TwoWords}
             {System.show "Coucou"}
             Prevision= {Possibility.getPrevision Values}

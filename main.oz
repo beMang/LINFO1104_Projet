@@ -11,20 +11,20 @@ import
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree
 
-   %%% @pre : les threads sont "ready"
-   %%% @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
-   %%%        Affiche la prediction la plus probable du prochain mot selon les deux derniers mots entres
-   %%% @return: Retourne une liste contenant la liste du/des mot(s) le(s) plus probable(s) accompagnee de 
-   %%%          la probabilite/frequence la plus elevee. 
-   %%%          La valeur de retour doit prendre la forme:
-   %%%                  <return_val> := <most_probable_words> '|' <probability/frequence> '|' nil
-   %%%                  <most_probable_words> := <atom> '|' <most_probable_words> 
-   %%%                                           | nil
-   %%%                  <probability/frequence> := <int> | <float>
+   /* @pre : les threads sont "ready"
+   @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
+         Affiche la prediction la plus probable du prochain mot selon les deux derniers mots entres
+   @return: Retourne une liste contenant la liste du/des mot(s) le(s) plus probable(s) accompagnee de 
+         la probabilite/frequence la plus elevee. 
+         La valeur de retour doit prendre la forme:
+                  <return_val> := <most_probable_words> '|' <probability/frequence> '|' nil
+                  <most_probable_words> := <atom> '|' <most_probable_words> 
+                                           | nil
+                  <probability/frequence> := <int> | <float> */
    fun {Press}
       TwoLast = {Str.lastWord {GUI.getEntry} 2}
    in
-      if TwoLast==nil then %Si pas assez de mot pour la prédiction
+      if TwoLast==nil then /*Si pas assez de mot pour la prédiction */
          {GUI.setOutput ""}
          nil
       else
@@ -35,7 +35,7 @@ define
                nil 
             else
                Final= {Possibility.getPrevision Prediction}
-               case Final.1        %Travail du résultat pour ne renvoyer qu'un mot
+               case Final.1        /*Travail du résultat pour ne renvoyer qu'un mot*/
                of H|T then 
                   Final2=Final.1
                   Text = {VirtualString.toString {Value.toVirtualString Final2.1 20 25}}
@@ -49,8 +49,8 @@ define
       end
    end
    
-   %%% Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
-   %%% Les threads de parsing envoient leur resultat au port Port
+   /* Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
+   Les threads de parsing envoient leur resultat au port Port */
    proc {LaunchThreads P N}
       Files = {FileM.getAllFilesToLoad}
    in
@@ -81,30 +81,30 @@ define
             Y = {ProcessFiles {List.take Files ToProcess} P}
          end
          X = {LaunchThreadsHelper {List.drop Files ToProcess} P N-1}
-         {Wait Y}  %Attendre que notre thread ait fini
-         {Wait X} %Attendre que les threads lancés aient finis
+         {Wait Y}  /*Attendre que notre thread ait fini*/
+         {Wait X} /*Attendre que les threads lancés aient finis*/
          X
       end
    end
 
-   %Parse les fichiers dans la liste Files
+   /*Parse les fichiers dans la liste Files*/
    fun {ProcessFiles Files P}
       case Files
-      of nil then 0 % Code succès
+      of nil then 0
       [] H|T then
          {Parse.parseFilePort H P}
          {ProcessFiles T P}
       end
    end
-
+   
    proc {Main}
-      {Property.put print foo(width:1000 depth:1000)}  %pour afficher bcp sur le terminal (stdout)
+      {Property.put print foo(width:1000 depth:1000)}  /*pour afficher bcp sur le terminal (stdout)*/
 
-      % Creation de la fenetre
+      /*Creation de la fenetre*/
       Window={QTk.build {GUI.getDescription Press}}
       {Window show}
       {GUI.init Press}
-      % On lance les threads de lecture et de parsing
+      /*On lance les threads de lecture et de parsing*/
       SeparatedWordsPort = {NewPort SeparatedWordsStream}
       {LaunchThreads SeparatedWordsPort 4}
       
