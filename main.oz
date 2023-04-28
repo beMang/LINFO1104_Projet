@@ -1,15 +1,17 @@
 functor
 import 
 	QTk at 'x-oz://system/wp/QTk.ozf'
-   Parse at 'src/parse.ozf'
-   Tree at 'src/tree.ozf'
-   Str at 'src/str.ozf'
-   Possibility at 'src/possibility.ozf'
-   GUI at 'src/GUI.ozf'
-   FileM at 'src/files.ozf'
+   Parse at './parse.ozf'
+   Tree at './tree.ozf'
+   Str at './str.ozf'
+   Possibility at './possibility.ozf'
+   GUI at './GUI.ozf'
+   FileM at './files.ozf'
    Property
+   Application
+   System
 define
-   Window SeparatedWordsStream SeparatedWordsPort MyTree
+   Window SeparatedWordsStream SeparatedWordsPort MyTree InputText
 
    /* @pre : les threads sont "ready"
    @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
@@ -101,9 +103,9 @@ define
       {Property.put print foo(width:1000 depth:1000)}  /*pour afficher bcp sur le terminal (stdout)*/
 
       /*Creation de la fenetre*/
-      Window={QTk.build {GUI.getDescription Press}}
+      Window={QTk.build {GUI.getDescription Press InputText}}
       {Window show}
-      {GUI.init Press}
+      {GUI.init Press InputText}
       /*On lance les threads de lecture et de parsing*/
       SeparatedWordsPort = {NewPort SeparatedWordsStream}
       {LaunchThreads SeparatedWordsPort 4}

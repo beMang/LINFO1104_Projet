@@ -11,7 +11,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : src/correction.ozf src/possibility.ozf src/tree.ozf src/str.ozf src/files.ozf src/parse.ozf src/GUI.ozf src/save.ozf main.ozf tests/tests.ozf
+all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
 	make $^
 
 %.ozf: %.oz

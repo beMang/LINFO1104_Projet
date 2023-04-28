@@ -18,7 +18,7 @@ define
 	InputText OutputText
 
 	%Construit la description de la fenêtre principale
-    fun {GetDescription Press}
+    fun {GetDescription Press HandleMain}
         Radio Check C R
         Menu1=menu(
             command(text:"Save" action: proc{$}
@@ -26,7 +26,7 @@ define
                 {DialogBox "History saved"}
             end) %Sauvegarde historique
             command(text:"Reload" action: proc{$} {ReloadApp} end)
-            command(text:"Image" action:proc{$} {ShowImage} end)
+            %command(text:"Image" action:proc{$} {ShowImage} end)
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
         Menu2=menu(
@@ -43,7 +43,7 @@ define
             lr(
                 td(
                     padx:5
-                    text(handle:InputText width:60 height:15 background:white foreground:black wrap:word setgrid:true)
+                    text(handle:HandleMain width:60 height:15 background:white foreground:black wrap:word setgrid:true)
                     text(handle:OutputText width:60 height:15 background:black foreground:white glue:w wrap:word setgrid:true)
                 )
                 td(
@@ -73,7 +73,8 @@ define
 		{OutputText set(1:Text)}
 	end
 
-	proc {Init Press}
+	proc {Init Press HandleInput}
+        InputText = HandleInput
 		{OutputText tk(insert 'end' "Loading... Please wait.")}
       	{InputText bind(event:"<Control-s>" action:proc{$}X in X = {Press}end)} %Bind events
 	end
@@ -169,6 +170,7 @@ define
         {Window show}
     end
 
+    /*
     %Teste image Peter VR
     proc {ShowImage}
         Image = {QTk.newImage photo(url:'img.png')}
@@ -181,6 +183,7 @@ define
         {System.show 'hey'}
         {Window show}
     end
+    */
 
     %Pas déclaratif mais autorisé (source - forum moodle : https://moodle.uclouvain.be/mod/forum/discuss.php?d=82591)
     class Shell from Open.pipe Open.text 
