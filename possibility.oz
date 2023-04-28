@@ -13,7 +13,7 @@ define
         {Int.toFloat NumberOcc NumbFloat}
         {Int.toFloat Total TotFloat}
         Probability= NumbFloat/TotFloat
-        TheWord|Probability
+        TheWord|Probability|nil
         end
     end
     %retourne la somme des occurences du duo de mots grâce à possibilities
@@ -44,7 +44,7 @@ define
     fun {GetWordMax Prevision Mykees Acc Number}
         %Acc doit etre à nil au début et Number à 0
         case Mykees 
-        of nil then Acc 
+        of nil then Acc|nil
         [] H|T then 
         if (Number<Prevision.H) then
             {GetWordMax Prevision T H Prevision.H}

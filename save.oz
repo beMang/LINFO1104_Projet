@@ -30,12 +30,28 @@ define
         end
     end
 
+    fun {GetArgs}
+        {Application.getArgs record(
+            'folder'(single type:string optional:false) 
+            'custom_dataset'(single type:string default:false optional:false)
+        )}
+    end
+    
     % Fetch Tweets Folder from CLI Arguments
     % Voir le Makefile pour un exemple d'appel de cette fonction
     fun {GetSentenceFolder}
-        Args = {Application.getArgs record('folder'(single type:string optional:false))}
+        Args = {GetArgs}
     in
         Args.'folder'
+    end
+
+    fun {IsCustomDataSetExtensionActive}
+        Args = {GetArgs}
+    in
+        if Args==false then false
+        else
+            if Args.'custom_dataset'=="true" then true else false end
+        end
     end
 
     fun {GetHistoryFolder}
@@ -63,7 +79,11 @@ define
 
     %Va lire le fichier de configuration save/custom_dataset pour aller voir les dossiers à charger
     fun {GetFoldersToLoad}
-        {GetFoldersToLoadHelper {LoadDataSet} nil}
+        if {IsCustomDataSetExtensionActive} == true then %Si on demande de charger d'autres base de donnée
+            {GetFoldersToLoadHelper {LoadDataSet} nil}
+        else
+            [{GetSentenceFolder}]
+        end
     end
     fun {GetFoldersToLoadHelper Lines Acc}
         L
