@@ -7,6 +7,7 @@ import
    Possibility at './possibility.ozf'
    GUI at './GUI.ozf'
    FileM at './files.ozf'
+   Correction at './correction.ozf'
    Property
    Application
    System
@@ -50,6 +51,16 @@ define
          end
       end
    end
+
+   fun {MyCorrection}
+      local Text TwoWords ToChange ThreeWords in 
+          Text= {GUI.getEntry}
+          ThreeWords= {Str.lastWord Text 3}
+          TwoWords= [{Nth ThreeWords 1} {Nth ThreeWords 2}]
+          ToChange= {Nth ThreeWords 3}
+          {Correction.getNewWord MyTree TwoWords ToChange}
+      end
+  end
    
    /* Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
    Les threads de parsing envoient leur resultat au port Port */
@@ -103,7 +114,7 @@ define
       {Property.put print foo(width:1000 depth:1000)}  /*pour afficher bcp sur le terminal (stdout)*/
 
       /*Creation de la fenetre*/
-      Window={QTk.build {GUI.getDescription Press InputText}}
+      Window={QTk.build {GUI.getDescription Press MyCorrection InputText}}
       {Window show}
       {GUI.init Press InputText}
       /*On lance les threads de lecture et de parsing*/

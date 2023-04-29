@@ -8,17 +8,19 @@ import
     Files at 'files.ozf'
     Str at 'str.ozf'
     Open
+    Correction at 'correction.ozf'
 export
     getDescription:GetDescription
 	getEntry:GetEntry
 	setOutput:SetOutput
 	init:Init
 	clear:Clear
+    correction:Correction
 define
 	InputText OutputText
 
 	%Construit la description de la fenêtre principale
-    fun {GetDescription Press HandleMain}
+    fun {GetDescription Press MyCorrection HandleMain}
         Radio Check C R
         Menu1=menu(
             command(text:"Save" action: proc{$}
@@ -49,6 +51,7 @@ define
                 td(
                     padx:5
                   	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end)
+                    %button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {MyCorrection}}end)
                     %button(text:"Next" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$} {System.show 'Show next proba'} end)
                     button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
                         {Save.saveInHistory {GetEntry}}
@@ -67,6 +70,10 @@ define
 	fun {GetEntry}
 		{InputText get($)}
 	end
+    
+
+
+
 
 	%Modifie le texte affiché
 	proc {SetOutput Text}

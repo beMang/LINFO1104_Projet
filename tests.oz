@@ -33,12 +33,12 @@ define
    G= possibilities(a:1 hier:4 manger:4)
 
    proc {TestCorrection}
-      local A in
-         A= ["Je" "mange"]
-         {System.show {Correction.getNewWord Test ["Je" "mange"] 'pas'}}
+      local A TwoWords ToChange in
+         A=["Je" "mange" "pas"]
+         TwoWords= [{Nth A 1} {Nth A 2}]
+         ToChange= {Nth A 3}
+         {System.show {Correction.getNewWord Test TwoWords ToChange}}
       end
-      
-      
    end
 
    fun {TestInsertBigTree}

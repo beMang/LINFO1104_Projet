@@ -40,25 +40,12 @@ define
         "Whore" %TODO
     end
 
-    fun {GetTwoFirstWords Words Acc}   %j'y arrive paas ptn de bordel
-        case Words
-        of T|nil then Acc
-        [] H|T then 
-            if Acc==nil then 
-                {GetTwoFirstWords T H}
-            else
-                {GetTwoFirstWords T Acc|H}
-            end
-        end
-    end
  
     %Renvoie 1 si le mot entré par l'utilisateur est dans les values
     %Renvoie 0 sinon
     fun {Verif Tree TwoWords LastWord}
         local Values Find in
-            %TwoWords= {GetTwoFirstWords Words nil}
             Values= {Tr.lookUp Tree TwoWords}
-            %ToChange= {GetLastWord Words nil}
             Find= {VerifHelper Values LastWord}
             Find
         end
@@ -81,12 +68,5 @@ define
     end
 
     %Renvoie le dernier mot d'une liste de mots
-    fun {GetLastWord Words Acc}
-        case Words
-        of nil then Acc
-        [] H|T then 
-            {GetLastWord T H}
-        end
-    end
 end
 
