@@ -17,16 +17,13 @@ export
 	clear:Clear
     correction:Correction
 define
-	InputText OutputText
+	InputText OutputText Correction
 
 	%Construit la description de la fenêtre principale
     fun {GetDescription Press MyCorrection HandleMain}
         Radio Check C R
+        Correction = MyCorrection
         Menu1=menu(
-            command(text:"Save" action: proc{$}
-                {Save.save {Append {GetEntry} "\n"} "history/history.txt" true}
-                {DialogBox "History saved"}
-            end) %Sauvegarde historique
             command(text:"Reload" action: proc{$} {ReloadApp} end)
             %command(text:"Image" action:proc{$} {ShowImage} end)
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
@@ -38,27 +35,18 @@ define
         )
         Description=td(
             title: "Text predictor"
-            lr(menubutton(glue:nw text:"File" menu:Menu1)
-                menubutton(glue:nw text:"Dataset" menu:Menu2)
-                glue:nw
-            )
-            lr(
-                td(
+            1:{BuildMenu Menu1 Menu2}
+            2:lr(
+                1:td(
                     padx:5
                     text(handle:HandleMain width:60 height:15 background:white foreground:black wrap:word setgrid:true)
                     text(handle:OutputText width:60 height:15 background:black foreground:white glue:w wrap:word setgrid:true)
                 )
-                td(
-                    padx:5
-                  	button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end)
-                    %button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {MyCorrection}}end)
-                    %button(text:"Next" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$} {System.show 'Show next proba'} end)
-                    button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
-                        {Save.saveInHistory {GetEntry}}
-                        {DialogBox "History saved"}end
-                    )
-                    button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end)
-               )
+                2:{BuildButtons
+                    ['history' 'custom_dataset' 'correction']
+                    td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end))
+                    2
+                }
             )
         	action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
         )
@@ -66,24 +54,69 @@ define
 			Description
     end
 
+    %Renvoie la description du menu en haut de l'application en fonction des extensions activées ou pas
+    fun {BuildMenu Menu1 Menu2}
+        if {Save.isExtensionActive 'custom_dataset'} then
+            lr(menubutton(glue:nw text:"File" menu:Menu1)
+                    menubutton(glue:nw text:"Dataset" menu:Menu2)
+                    glue:nw
+            )
+        else
+            lr(menubutton(glue:nw text:"File" menu:Menu1)
+                glue:nw
+            )
+        end
+    end
+
+    %Construit la description des boutons en fonction de si les extensions sont activées ou pas
+    fun {BuildButtons L Acc I}
+        case L 
+        of nil then
+            {Record.adjoin Acc td(padx:5 I:button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end))}
+        [] H|T then
+            case H
+            of 'correction' then
+                if {Save.isExtensionActive H} then
+                    {BuildButtons
+                        T
+                        {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {Correction}}end))}
+                        I+1
+                    }
+                else {BuildButtons T Acc I} end
+            [] 'history' then
+                if{Save.isExtensionActive H} then
+                    {BuildButtons
+                        T
+                        {Record.adjoin Acc td(I:button(text:"Save" width:15 height:2 background:green pady:5 action:proc{$}
+                            {Save.saveInHistory {GetEntry}}
+                            {DialogBox "History saved"}end
+                        ))}
+                        I+1
+                    }
+                else {BuildButtons T Acc I} end
+            else {BuildButtons T Acc I} end
+        end
+    end
+
 	%Récupère le texte entré par l'utilisateur
 	fun {GetEntry}
 		{InputText get($)}
 	end
-    
-
-
-
 
 	%Modifie le texte affiché
 	proc {SetOutput Text}
 		{OutputText set(1:Text)}
 	end
 
+    %Initialise l'interface et bind les raccourcis claviers (entre autre pour la complétion auto)
 	proc {Init Press HandleInput}
         InputText = HandleInput
 		{OutputText tk(insert 'end' "Loading... Please wait.")}
-      	{InputText bind(event:"<Control-s>" action:proc{$}X in X = {Press}end)} %Bind events
+      	{InputText bind(event:"<Control-s>" action:proc{$}X in X = {Press}end)}
+        if {Save.isExtensionActive 'automatic'} then
+            {InputText bind(event:"<KeyPress-space>" action:proc{$}{System.show "Automatic"}end )}
+            {InputText bind(event:"<KeyPress-BackSpace>" action:proc{$}{System.show "Automatic"}end )}
+        end
 	end
 
     %Nettoie les champs
@@ -117,7 +150,7 @@ define
         case DataSet
         of nil then [
                     {Record.adjoin 
-                        {Nth Acc 1} 
+                        {Nth Acc 1}
                         td(Inc:button(text:"OK" width:4 background:green pady:5 action:proc{$} {CloseSelectDataSetWindow Window {Nth Acc 2} CompleteDataSet} end))
                     } 
                     {Nth Acc 2}
@@ -137,6 +170,7 @@ define
             end
         end
     end
+
     %Enregistre le dataset et ferme la fenêtre
     proc {CloseSelectDataSetWindow W Handles DataSet}
         NewDataSet={UpdateDataSetWithHandles Handles DataSet DataSet}
@@ -177,21 +211,8 @@ define
         {Window show}
     end
 
-    /*
-    %Teste image Peter VR
-    proc {ShowImage}
-        Image = {QTk.newImage photo(url:'img.png')}
-        Desc = td(
-            title:"Image"
-            label(image:Image height:1000 width:1000)
-        )
-        Window={QTk.build Desc}
-    in
-        {System.show 'hey'}
-        {Window show}
-    end
-    */
 
+    %TO REMOVE FOR INGINIOUS VERSION :
     %Pas déclaratif mais autorisé (source - forum moodle : https://moodle.uclouvain.be/mod/forum/discuss.php?d=82591)
     class Shell from Open.pipe Open.text 
         meth init 
@@ -208,7 +229,7 @@ define
         end 
     end
 
-    %Recalcule l'arbre pour prendre en compte les modifications effectuées
+    %Redémarre l'application pour prendre en compte certaines modifications
     proc {ReloadApp}
         S = {New Shell init}
     in

@@ -8,6 +8,7 @@ import
 export
     getFoldersToLoad:GetFoldersToLoad
     save:Save
+    isExtensionActive:IsExtensionActive
     loadDataSet:LoadDataSet
     resetDataSet:ResetDataSet
     setDataSet:SetDataset
@@ -34,6 +35,9 @@ define
         {Application.getArgs record(
             'folder'(single type:string optional:false) 
             'custom_dataset'(single type:string default:false optional:false)
+            'history'(single type:string default:false optional:false)
+            'automatic'(single type:string default:false optional:false)
+            'correction'(single type:string default:false optional:false)
         )}
     end
     
@@ -45,13 +49,10 @@ define
         Args.'folder'
     end
 
-    fun {IsCustomDataSetExtensionActive}
+    fun {IsExtensionActive Name}
         Args = {GetArgs}
     in
-        if Args==false then false
-        else
-            if Args.'custom_dataset'=="true" then true else false end
-        end
+        if Args.Name=="true" then true else false end
     end
 
     fun {GetHistoryFolder}
@@ -79,7 +80,7 @@ define
 
     %Va lire le fichier de configuration save/custom_dataset pour aller voir les dossiers à charger
     fun {GetFoldersToLoad}
-        if {IsCustomDataSetExtensionActive} == true then %Si on demande de charger d'autres base de donnée
+        if {IsExtensionActive 'custom_dataset'} == true then %Si on demande de charger d'autres base de donnée
             {GetFoldersToLoadHelper {LoadDataSet} nil}
         else
             [{GetSentenceFolder}]

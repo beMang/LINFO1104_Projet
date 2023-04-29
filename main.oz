@@ -53,14 +53,13 @@ define
    end
 
    fun {MyCorrection}
-      local Text TwoWords ToChange ThreeWords in 
-          Text= {GUI.getEntry}
-          ThreeWords= {Str.lastWord Text 3}
-          TwoWords= [{Nth ThreeWords 1} {Nth ThreeWords 2}]
-          ToChange= {Nth ThreeWords 3}
-          {Correction.getNewWord MyTree TwoWords ToChange}
-      end
-  end
+      Text= {GUI.getEntry}
+      ThreeWords= {Str.lastWord Text 3}
+      TwoWords= [{Nth ThreeWords 1} {Nth ThreeWords 2}]
+      ToChange= {Nth ThreeWords 3}
+   in
+      {Correction.getNewWord MyTree TwoWords ToChange}
+   end
    
    /* Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
    Les threads de parsing envoient leur resultat au port Port */

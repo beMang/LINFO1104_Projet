@@ -11,20 +11,22 @@ else
 	OZENGINE = ozengine
 endif
 
-all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf tests.ozf
+all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
 	make $^
 
 %.ozf: %.oz
 	$(OZC) -c $< -o "$@"
 
 run: $(ENTRY_POINT)
-	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) --custom_dataset false
+	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) --custom_dataset false --history false --automatic false --correction false
 
 clean :
 	rm -f **/*.ozf
 	rm -f *.ozf
 
-tests :
+tests : tests.ozf
+	make
+	make $^
 	$(OZENGINE) $(ENTRY_TEST) --folder $(TWEETS_FOLDER)
 
 .PHONY: tests
