@@ -8,20 +8,17 @@ export
     getNewWord:GetNewWord
 define
 
-    fun {GetNewWord Tree TwoWords LastWord}  %je trouve pas le bon format à donner dans les tests à TwoWords mais c'est sur la bonne voie
+    fun {GetNewWord Tree TwoWords LastWord}  
         local Values Prevision Prevision2 BestWord in 
             Values= {Tr.lookUp Tree TwoWords}
-            {System.show "Coucou"}
             Prevision= {Possibility.getPrevision Values}
-            %case Prevision.1        
-             %   of H|T then 
-              %      Prevision2=Prevision.1
-               %     BestWord=Prevision2.1
-               % else
-                    %BestWord=Prevision.1
-            BestWord="Yeah"
-            {System.show BestWord}
-                %end
+            case Prevision.1        
+                of H|T then 
+                    Prevision2=Prevision.1
+                    BestWord=Prevision2.1
+                else
+                    BestWord=Prevision.1
+                end
             if {Verif Tree TwoWords LastWord}==0 then
                 BestWord 
             else
@@ -78,6 +75,8 @@ define
             else
                 {VerifHelper T Word}
             end
+        else
+            0
         end
     end
 

@@ -1,13 +1,13 @@
 functor
 import
-   Str at '../src/str.ozf'
-   Tree at '../src/tree.ozf'
-   Save at '../src/save.ozf'
-   Files at '../src/files.ozf'
+   Str at 'str.ozf'
+   Tree at 'tree.ozf'
+   Save at 'save.ozf'
+   Files at 'files.ozf'
    Browser
    System
    Application
-   Correction at '../src/correction.ozf'
+   Correction at 'correction.ozf'
 define
    proc {Browse Buf}
       {Browser.browse Buf}
@@ -35,7 +35,7 @@ define
    proc {TestCorrection}
       local A in
          A= ["Je" "mange"]
-         {System.show {Correction.getNewWord Test [{Nth A 1} {Nth A 2}] 'pas'}}
+         {System.show {Correction.getNewWord Test ["Je" "mange"] 'pas'}}
       end
       
       

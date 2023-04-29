@@ -1,7 +1,7 @@
 TWEETS_FOLDER="tweets" #si pas envie d'attendre à chaque fois mettre smaller_data pour plus petit set de donnée
 UNAME_S := $(shell uname -s)
 ENTRY_POINT=main.ozf
-ENTRY_TEST=tests/tests.ozf
+ENTRY_TEST=tests.ozf
 
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
@@ -11,7 +11,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
+all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf tests.ozf
 	make $^
 
 %.ozf: %.oz
