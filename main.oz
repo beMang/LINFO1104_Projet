@@ -29,13 +29,13 @@ define
    in
       if TwoLast==nil then /*Si pas assez de mot pour la prédiction */
          {GUI.setOutput ""}
-         nil
+         [[nil] 0]
       else
          local Prediction Text Final Final2 in
             Prediction = {Tree.lookUp MyTree [{Parse.formatStr {Nth TwoLast 1}} {Parse.formatStr {Nth TwoLast 2}}]}
             if Prediction==0 then
                {GUI.setOutput ""}
-               nil 
+               [[nil] 0]
             else
                Final= {Possibility.getPrevision Prediction}
                case Final.1        /*Travail du résultat pour ne renvoyer qu'un mot*/

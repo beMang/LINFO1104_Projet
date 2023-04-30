@@ -24,8 +24,7 @@ define
         Radio Check C R
         Correction = MyCorrection
         Menu1=menu(
-            command(text:"Reload" action: proc{$} {ReloadApp} end)
-            %command(text:"Image" action:proc{$} {ShowImage} end)
+            command(text:"Reload" action: proc{$} {ReloadApp} end) %Remove on inginious submission for tests
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
         Menu2=menu(
