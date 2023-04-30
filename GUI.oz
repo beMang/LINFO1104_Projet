@@ -17,12 +17,12 @@ export
 	clear:Clear
     correction:Correction
 define
-	InputText OutputText Correction
+	InputText OutputText CorrectionAction
 
 	%Construit la description de la fenêtre principale
     fun {GetDescription Press MyCorrection HandleMain}
         Radio Check C R
-        Correction = MyCorrection
+        CorrectionAction = MyCorrection
         Menu1=menu(
             command(text:"Reload" action: proc{$} {ReloadApp} end) %Remove on inginious submission for tests
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
@@ -78,7 +78,7 @@ define
                 if {Save.isExtensionActive H} then
                     {BuildButtons
                         T
-                        {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {Correction}}end))}
+                        {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {CorrectionAction}}end))}
                         I+1
                     }
                 else {BuildButtons T Acc I} end

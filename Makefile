@@ -18,7 +18,7 @@ all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.oz
 	$(OZC) -c $< -o "$@"
 
 run: $(ENTRY_POINT)
-	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) --custom_dataset false --history false --automatic false --correction false
+	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) --custom_dataset true --history false --automatic false --correction true
 
 clean :
 	rm -f **/*.ozf
