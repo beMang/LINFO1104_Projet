@@ -15,14 +15,12 @@ export
 	setOutput:SetOutput
 	init:Init
 	clear:Clear
-    correction:Correction
 define
-	InputText OutputText CorrectionAction
+	InputText OutputText
 
 	%Construit la description de la fenêtre principale
     fun {GetDescription Press MyCorrection HandleMain}
         Radio Check C R
-        CorrectionAction = MyCorrection
         Menu1=menu(
             command(text:"Reload" action: proc{$} {ReloadApp} end) %Remove on inginious submission for tests
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
@@ -45,6 +43,7 @@ define
                     ['history' 'custom_dataset' 'correction']
                     td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end))
                     2
+                    MyCorrection
                 }
             )
         	action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
@@ -68,7 +67,7 @@ define
     end
 
     %Construit la description des boutons en fonction de si les extensions sont activées ou pas
-    fun {BuildButtons L Acc I}
+    fun {BuildButtons L Acc I CorrectionAction}
         case L 
         of nil then
             {Record.adjoin Acc td(padx:5 I:button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end))}
@@ -80,8 +79,9 @@ define
                         T
                         {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {CorrectionAction}}end))}
                         I+1
+                        CorrectionAction
                     }
-                else {BuildButtons T Acc I} end
+                else {BuildButtons T Acc I CorrectionAction} end
             [] 'history' then
                 if{Save.isExtensionActive H} then
                     {BuildButtons
@@ -91,9 +91,10 @@ define
                             {DialogBox "History saved"}end
                         ))}
                         I+1
+                        CorrectionAction
                     }
-                else {BuildButtons T Acc I} end
-            else {BuildButtons T Acc I} end
+                else {BuildButtons T Acc I CorrectionAction} end
+            else {BuildButtons T Acc I CorrectionAction} end
         end
     end
 

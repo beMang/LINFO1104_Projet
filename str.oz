@@ -9,6 +9,7 @@ export
     convertToBool:ConverToBool
     convertBoolToStr:ConvertBoolToStr
     getSentences:GetSentences
+    getLastCharExceptSpace:GetLastCharExceptSpace
 define
     %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
@@ -56,7 +57,6 @@ define
             end
         end
     end
-
     % Sépare une chaine de caractère en une liste de chaine de caractère
     % Carr contient les caractères utilisés pour séparé la liste S
     fun {Split S Carr}
@@ -117,5 +117,17 @@ define
     fun {ConvertBoolToStr B}
         if B == true then "true"
         else "false" end
+    end
+
+    fun {GetLastCharExceptSpace S}
+        {GetLastCharExceptSpaceHelper S nil}
+    end
+    fun {GetLastCharExceptSpaceHelper S Acc}
+        case S
+        of nil then Acc
+        [] H|T then
+            if H\=32 then {GetLastCharExceptSpaceHelper T H}
+            else {GetLastCharExceptSpaceHelper T Acc} end
+        end
     end
 end

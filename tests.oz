@@ -90,6 +90,13 @@ define
       {System.show {Files.isDir Name}}
    end
 
+   proc {TestLastChar}
+      S1 = "bonjour les amis"
+      S2 = "bonjour les amis ?  "
+   in
+      {Browse {Str.getLastCharExceptSpace S1}}
+      {Browse {Str.getLastCharExceptSpace S2}}
+   end
 
    %On lance les tests
    %{Browse {TestToLower}}
@@ -101,7 +108,8 @@ define
    %{TestGetAllFiles}
    %{TestIsDir "srcf"}
    {TestCorrection}
-   
+   {TestLastChar}
+
    
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
