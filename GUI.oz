@@ -16,7 +16,7 @@ export
 	init:Init
 	clear:Clear
 define
-	InputText OutputText
+	InputText OutputText PressAction CorrectionAction
 
 	%Construit la description de la fenêtre principale
     fun {GetDescription Press MyCorrection HandleMain}
@@ -43,12 +43,13 @@ define
                     ['history' 'custom_dataset' 'correction']
                     td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end))
                     2
-                    MyCorrection
                 }
             )
         	action:proc{$}{Application.exit 0} end % quitte le programme quand la fenetre est fermee
         )
 		in
+            PressAction=Press
+            CorrectionAction=MyCorrection
 			Description
     end
 
@@ -67,7 +68,7 @@ define
     end
 
     %Construit la description des boutons en fonction de si les extensions sont activées ou pas
-    fun {BuildButtons L Acc I CorrectionAction}
+    fun {BuildButtons L Acc I}
         case L 
         of nil then
             {Record.adjoin Acc td(padx:5 I:button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end))}
@@ -79,9 +80,8 @@ define
                         T
                         {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {CorrectionAction}}end))}
                         I+1
-                        CorrectionAction
                     }
-                else {BuildButtons T Acc I CorrectionAction} end
+                else {BuildButtons T Acc I} end
             [] 'history' then
                 if{Save.isExtensionActive H} then
                     {BuildButtons
@@ -91,10 +91,9 @@ define
                             {DialogBox "History saved"}end
                         ))}
                         I+1
-                        CorrectionAction
                     }
-                else {BuildButtons T Acc I CorrectionAction} end
-            else {BuildButtons T Acc I CorrectionAction} end
+                else {BuildButtons T Acc I} end
+            else {BuildButtons T Acc I} end
         end
     end
 
@@ -108,14 +107,18 @@ define
 		{OutputText set(1:Text)}
 	end
 
+    proc {SetInput Text}
+		{InputText set(1:Text)}
+	end
+
     %Initialise l'interface et bind les raccourcis claviers (entre autre pour la complétion auto)
 	proc {Init Press HandleInput}
         InputText = HandleInput
 		{OutputText tk(insert 'end' "Loading... Please wait.")}
       	{InputText bind(event:"<Control-s>" action:proc{$}X in X = {Press}end)}
         if {Save.isExtensionActive 'automatic'} then
-            {InputText bind(event:"<KeyPress-space>" action:proc{$}{System.show "Automatic"}end )}
-            {InputText bind(event:"<KeyPress-BackSpace>" action:proc{$}{System.show "Automatic"}end )}
+            {InputText bind(event:"<KeyPress-space>" action:CompleteAfterSpace)}
+            {InputText bind(event:"<KeyPress-BackSpace>" action:CompleteAfterBackSpace)}
         end
 	end
 
@@ -236,5 +239,25 @@ define
         {S cmd('make run')}
         {S close}
         {Application.exit 0}
+    end
+
+    proc {CompleteAfterSpace}
+        LastChar = {Str.getLastCharExceptSpace {GetEntry}} TwoLastWord Prediction NewWord
+    in
+        if {Member LastChar [10 46 63 33 34 40 41]} then skip %on fait rien si début de phrase
+        else
+            TwoLastWord = {Str.lastWord {GetEntry} 2}
+            if TwoLastWord==nil then skip
+            else
+                Prediction = {PressAction}
+                if Prediction.1\=[nil] then
+                    {SetInput {Append {GetEntry} {Atom.toString Prediction.1.1}}}
+                end
+            end
+        end
+    end
+
+    proc {CompleteAfterBackSpace}
+        {System.show todo}
     end
 end
