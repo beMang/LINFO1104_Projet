@@ -258,6 +258,6 @@ define
     end
 
     proc {CompleteAfterBackSpace}
-        {System.show todo}
+        {SetInput {Str.removeLastWord {GetEntry}}}
     end
 end

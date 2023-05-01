@@ -10,6 +10,7 @@ export
     convertBoolToStr:ConvertBoolToStr
     getSentences:GetSentences
     getLastCharExceptSpace:GetLastCharExceptSpace
+    removeLastWord:RemoveLastWord
 define
     %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
@@ -75,7 +76,7 @@ define
         {ToLowerHelper S nil}
     end
 
-    %Retire certains caractères au début des mots
+    %Retire certains caractères au début d'un mot
     fun {DeleteCarBegin MyString}
         case MyString
         of nil then nil
@@ -90,6 +91,7 @@ define
             end
         end
     end
+
     %Récupère les N derniers mots d'une entrée
     fun{LastWord S N}
         Splited = {Split S [32]}
@@ -97,6 +99,20 @@ define
         if {Length Splited}-N <0 then nil
         else
             {List.drop Splited {Length Splited}-N}
+        end
+    end
+
+    %Récupère les N derniers mots d'une entrée si le dernier caractère n'est pas
+    fun{RemoveLastWord S}
+        Splited = {Split S [32]}
+    in
+        {RemoveLastWordHelper Splited nil}
+    end
+    fun {RemoveLastWordHelper Words Acc}
+        case Words
+        of nil then Acc
+        [] H|nil then Acc
+        [] H|T then {RemoveLastWordHelper T {Append Acc {Append H " "}}}
         end
     end
 
