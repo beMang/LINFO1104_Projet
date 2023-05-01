@@ -41,7 +41,7 @@ define
                 )
                 2:{BuildButtons
                     ['history' 'custom_dataset' 'correction']
-                    td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$}{System.show {Press}}end))
+                    td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$} X in X={Press}end))
                     2
                 }
             )

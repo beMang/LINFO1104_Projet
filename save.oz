@@ -38,6 +38,8 @@ define
             'history'(single type:string default:false optional:false)
             'automatic'(single type:string default:false optional:false)
             'correction'(single type:string default:false optional:false)
+            'better_parse'(single type:string default:false optional:false)
+            'more_gramme'(single type:string default:false optional:false)
         )}
     end
     

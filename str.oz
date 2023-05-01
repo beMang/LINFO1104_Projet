@@ -1,5 +1,7 @@
 %Ce fichier s'appelle str pour éviter les conflits avec String, mais fait référence à la gestion des chaines de caractère dans le projet
 functor
+import
+    System
 export
     compare:Compare
     split:Split
@@ -11,6 +13,7 @@ export
     getSentences:GetSentences
     getLastCharExceptSpace:GetLastCharExceptSpace
     removeLastWord:RemoveLastWord
+    splitAndRemoveNotAlphaNum:SplitAndRemoveNotAlphaNum
 define
     %compare deux mots, sans prendre en compte les majuscules
     fun{Compare String1 String2}
@@ -146,4 +149,48 @@ define
             else {GetLastCharExceptSpaceHelper T Acc} end
         end
     end
+
+    %Vérifie si un caractère est alphanumérique ou pas
+    fun {IsAlphaNum C} %Condition : C doit déjà être en lower
+        if C>=97 then
+            if C =< 122 then true
+            else false end
+        else
+            if C >= 48 then
+                if C =< 57 then true
+                else false end
+            else
+                false
+            end
+        end
+    end
+
+    fun {SplitAndRemoveNotAlphaNumHelper S Acc Result}
+        C 
+    in
+        case S
+        of H|T then
+            C = {Char.toLower H}
+            if {IsAlphaNum C}==false then
+                if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
+                    {SplitAndRemoveNotAlphaNumHelper T nil Result} 
+                else 
+                    {SplitAndRemoveNotAlphaNumHelper T nil {Append Result Acc|nil}}
+                end
+            else
+                {SplitAndRemoveNotAlphaNumHelper T {Append Acc C|nil} Result}
+            end
+        [] nil then %Fini de traiter la chaine
+            if Acc==nil then %Si chaine de caractère vide on ne l'ajoute pas
+                Result 
+            else
+                {Append Result [Acc]}
+            end
+        end
+    end
+    % Sépare une chaine de caractère en une liste de chaine de caractère, où les séparations sont faites par tout ce qui n'est pas alphanumérique
+    fun {SplitAndRemoveNotAlphaNum S}
+        {SplitAndRemoveNotAlphaNumHelper S nil nil}
+    end
+
 end

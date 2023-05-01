@@ -3,6 +3,9 @@ UNAME_S := $(shell uname -s)
 ENTRY_POINT=main.ozf
 ENTRY_TEST=tests.ozf
 
+#Pour activer ou désactiver les extensions :
+EXTENSIONS= --custom_dataset false --history false --automatic false --correction false --more_gramme false --better_parse false
+
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
 	OZENGINE = /Applications/Mozart2.app/Contents/Resources/bin/ozengine
@@ -18,7 +21,7 @@ all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.oz
 	$(OZC) -c $< -o "$@"
 
 run: $(ENTRY_POINT)
-	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) --custom_dataset false --history false --automatic true --correction true
+	$(OZENGINE) $(ENTRY_POINT) --folder $(TWEETS_FOLDER) $(EXTENSIONS)
 
 clean :
 	rm -f **/*.ozf

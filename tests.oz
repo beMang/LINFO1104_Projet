@@ -98,6 +98,14 @@ define
       {Browse {Str.getLastCharExceptSpace S2}}
    end
 
+   proc {TestNewSplit}
+      S1 = "I love Michigan"
+      S2 = "12€ allà mAdrid"
+   in
+      {System.show {Str.splitAndRemoveNotAlphaNum S1}}
+      {System.show {Str.splitAndRemoveNotAlphaNum S2}}
+   end
+
    %On lance les tests
    %{Browse {TestToLower}}
    %{TestTreeAndLookUp}
@@ -109,8 +117,7 @@ define
    %{TestIsDir "srcf"}
    {TestCorrection}
    {TestLastChar}
-
-   
+   {TestNewSplit}
 
    {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
    {Application.exit 0}

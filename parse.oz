@@ -3,15 +3,17 @@ import
     File at 'files.ozf'
     Str at 'str.ozf'
     Tree at 'tree.ozf'
+    Save at 'save.ozf'
     System
-    Open
 export
-    parseFilePort:ParseFilePort
+    parseFile:ParseFile
     formatStr:FormatStr
 define
+    BetterParsing = {Save.isExtensionActive 'better_parse'} %Si on a activé le parsing un peu meilleur que celui de base (pour ne pas aller demander à l'appli à chaque fois)
+
     %Retire les symboles inutiles des mots
     fun {FormatStr S}
-        {Str.deleteCarBegin {Str.toLower S}}
+        if BetterParsing then {Str.deleteCarBegin {Str.toLower S}} else S end
     end
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P
@@ -43,34 +45,28 @@ define
         end
     end
     proc {GetSamplePort Sentence P}
-        {GetSampleHelperPort {Str.split Sentence [32]} nil nil P} %32 code Ascii de espace, donc on envoie les mots
+        if BetterParsing then
+            {GetSampleHelperPort {Str.split Sentence [32]} nil nil P} %32 code Ascii de espace, donc on envoie les mots
+        else
+            {GetSampleHelperPort {Str.splitAndRemoveNotAlphaNum Sentence} nil nil P}
+        end
     end
     
     %Fonctions parsant un fichier, fonctionnant avec un port, les résultats sont envoyés à celui-ci
-    proc{ParseSentences SentenceArray P}
-        case SentenceArray
+    proc{ParseFile FileName P}
+        if BetterParsing then
+            {ParseFileHelper {File.getSentences FileName} P}
+        else
+            {ParseFileHelper {Str.split {File.readFile FileName} [10]} P}
+        end
+    end
+    
+    proc {ParseFileHelper Sentences P}
+        case Sentences
         of nil then skip
         [] H|T then
             {GetSamplePort H P}
-            {ParseSentences T P}
+            {ParseFileHelper T P}
         end
-    end
-    %Parse un fichier où F est un TextFile
-    proc {ParseFile F P}
-        Line={F getS($)}
-    in
-        if Line\=false then 
-            {ParseSentences {Str.getSentences Line} P} 
-            {ParseFile F P}
-        else skip end
-    end
-
-    class TextFile  %Pour pouvoir utiliser les méthodes getS
-        from Open.file Open.text  
-    end
-    proc {ParseFilePort FileName P}
-        F = {New TextFile init(name:FileName flags:[read])}
-    in
-        {ParseFile F P}
     end
 end

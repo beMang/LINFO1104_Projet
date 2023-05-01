@@ -31,21 +31,15 @@ define
          {GUI.setOutput ""}
          [[nil] 0]
       else
-         local Prediction Text Final Final2 in
+         local Prediction Final in
             Prediction = {Tree.lookUp MyTree [{Parse.formatStr {Nth TwoLast 1}} {Parse.formatStr {Nth TwoLast 2}}]}
             if Prediction==0 then
                {GUI.setOutput ""}
                [[nil] 0]
             else
                Final= {Possibility.getPrevision Prediction}
-               case Final.1        /*Travail du résultat pour ne renvoyer qu'un mot*/
-               of H|T then 
-                  Final2=Final.1
-                  Text = {VirtualString.toString {Value.toVirtualString Final2.1 20 25}}
-               else
-                  Text = {VirtualString.toString {Value.toVirtualString Final.1 20 25}}
-               end
-               {GUI.setOutput Text}
+               {System.show Final}
+               {GUI.setOutput Final.1.1}
                Final
             end
          end
@@ -104,7 +98,7 @@ define
       case Files
       of nil then 0
       [] H|T then
-         {Parse.parseFilePort H P}
+         {Parse.parseFile H P}
          {ProcessFiles T P}
       end
    end
