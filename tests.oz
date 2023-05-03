@@ -107,14 +107,13 @@ define
    end
 
    %On lance les tests
-   %{Browse {TestToLower}}
-   %{TestTreeAndLookUp}
-   %{Browse {TestInsertBigTree}}
-   %{Browse {TestLookUp}}
-   %{Browse {TestTwoLastWord}}
-   %{TestGetFolders}
-   %{TestGetAllFiles}
-   %{TestIsDir "srcf"}
+   {Browse {TestToLower}}
+   {Browse {TestInsertBigTree}}
+   {Browse {TestLookUp}}
+   {Browse {TestTwoLastWord}}
+   {TestGetFolders}
+   {TestGetAllFiles}
+   {TestIsDir "srcf"}
    {TestCorrection}
    {TestLastChar}
    {TestNewSplit}

@@ -5,6 +5,7 @@ import
 export
    lookUp:LookUp
    getTreeFromList:GetTreeFromList
+   insertInTree:InsertInTree
 define
 
    %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
