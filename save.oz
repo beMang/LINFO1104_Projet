@@ -1,5 +1,4 @@
-%Ce fichier gère tout ce qui est sauvegarde de l'historique ainsi que des base de données custom à utiliser ou pas
-functor
+functor %Module qui gère tout ce qui est sauvegarde de l'historique ainsi que des base de données custom à utiliser ou pas
 import
     Files at 'files.ozf'
     Str at 'str.ozf'

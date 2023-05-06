@@ -6,7 +6,4 @@
 * Extension 3 : makefile pour les extensions *
 * Extension 4 : amélioration de l'interface *
 * Proposition automatique *
-
-## TODO :
-* Extension 3 : bouton next
-* Finir correction ?
+* Afficher plus de propositions

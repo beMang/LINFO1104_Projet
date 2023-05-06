@@ -1,4 +1,4 @@
-functor 
+functor %Module qui gère notre structure d'arbre
 import 
     Str at 'str.ozf'
 export

@@ -1,4 +1,4 @@
-functor  
+functor %Module qui gère l'accès aux fichiers
 import
 	Open
     Str at 'str.ozf'

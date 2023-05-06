@@ -1,4 +1,4 @@
-functor  
+functor %Module qui s'occupe de parser les fichiers
 import
     File at 'files.ozf'
     Str at 'str.ozf'

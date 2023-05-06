@@ -1,4 +1,4 @@
-functor
+functor %Ce fichier contient quelques tests de nos fonctions qui nous ont été utiles pour debugger le projet
 import
    Str at 'str.ozf'
    Tree at 'tree.ozf'
@@ -7,7 +7,6 @@ import
    Browser
    System
    Application
-   Correction at 'correction.ozf'
 define
    proc {Browse Buf}
       {Browser.browse Buf}
@@ -31,15 +30,6 @@ define
    Result_test_insert= tree(string: "Je" right: E left:nil subtree:B)
    F= possibilities(beaucoup: 3 bien: 5 des: 7)
    G= possibilities(a:1 hier:4 manger:4)
-
-   proc {TestCorrection}
-      local A TwoWords ToChange in
-         A=["Je" "mange" "pas"]
-         TwoWords= [{Nth A 1} {Nth A 2}]
-         ToChange= {Nth A 3}
-         {System.show {Correction.getNewWord Test TwoWords ToChange}}
-      end
-   end
 
    fun {TestInsertBigTree}
       local Mytree in 
@@ -114,7 +104,6 @@ define
    {TestGetFolders}
    {TestGetAllFiles}
    {TestIsDir "srcf"}
-   {TestCorrection}
    {TestLastChar}
    {TestNewSplit}
 

@@ -1,5 +1,4 @@
-%Fichier qui gère l'interface utilisateur
-functor
+functor %Module qui gère l'interface utilisateur
 import
     QTk at 'x-oz://system/wp/QTk.ozf'
 	Application
@@ -15,15 +14,17 @@ export
 	init:Init
 	clear:Clear
 define
-	InputText OutputText PressAction CorrectionAction
+	InputText OutputText PressAction
 
 	%Construit la description de la fenêtre principale
-    fun {GetDescription Press MyCorrection HandleMain}
+    fun {GetDescription Press HandleMain}
         Menu1=menu(
+            tearoff:false
             command(text:"Reload" action: proc{$} {ReloadApp} end) %Remove on inginious submission for tests
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
         )
         Menu2=menu(
+            tearoff:false
             command(text:"Add dataset" action:AddDataSetWindow) %Sauvegarde historique
             command(text:"Select datasets" action:SelectDatasetWindow)
             command(text: "Reset datasets" action:proc{$} {Save.resetDataSet} {DialogBox "Datasets successfully reset"} end)
@@ -47,7 +48,6 @@ define
         )
 		in
             PressAction=Press
-            CorrectionAction=MyCorrection
 			Description
     end
 
@@ -55,8 +55,8 @@ define
     fun {BuildMenu Menu1 Menu2}
         if {Save.isExtensionActive 'custom_dataset'} then
             lr(menubutton(glue:nw text:"File" menu:Menu1)
-                    menubutton(glue:nw text:"Dataset" menu:Menu2)
-                    glue:nw
+                menubutton(glue:nw text:"Dataset" menu:Menu2)
+                glue:nw
             )
         else
             lr(menubutton(glue:nw text:"File" menu:Menu1)

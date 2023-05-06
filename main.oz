@@ -7,7 +7,7 @@ import
    Possibility at './possibility.ozf'
    GUI at './GUI.ozf'
    FileM at './files.ozf'
-   Correction at './correction.ozf'
+   Save at './save.ozf'
    Property
    Application
    System
@@ -38,21 +38,15 @@ define
                [[nil] 0]
             else
                Final= {Possibility.getPrevision Prediction}
-               {System.show Final}
-               {GUI.setOutput Final.1.1}
+               if {Save.isExtensionActive 'more_gramme'} == false then
+                  {GUI.setOutput Final.1.1}
+               else
+                  {GUI.setOutput {VirtualString.toString {Value.toVirtualString {Possibility.getNMostProbableWord Prediction 5} 200 200}}}
+               end
                Final
             end
          end
       end
-   end
-
-   fun {MyCorrection}
-      Text= {GUI.getEntry}
-      ThreeWords= {Str.lastWord Text 3}
-      TwoWords= [{Nth ThreeWords 1} {Nth ThreeWords 2}]
-      ToChange= {Nth ThreeWords 3}
-   in
-      {Correction.getNewWord MyTree TwoWords ToChange}
    end
    
    /* Lance les N threads de lecture et de parsing qui liront et traiteront tous les fichiers
@@ -102,10 +96,10 @@ define
    end
    
    proc {Main}
-      {Property.put print foo(width:1000 depth:1000)}  /*pour afficher bcp sur le terminal (stdout)*/
+      {Property.put print foo(width:1000 depth:1000)}
 
       /*Creation de la fenetre*/
-      Window={QTk.build {GUI.getDescription Press MyCorrection InputText}}
+      Window={QTk.build {GUI.getDescription Press InputText}}
       {Window show}
       {GUI.init Press InputText}
       /*On lance les threads de lecture et de parsing*/

@@ -4,7 +4,7 @@ ENTRY_POINT=main.ozf
 ENTRY_TEST=tests.ozf
 
 #Pour activer ou désactiver les extensions :
-EXTENSIONS= --custom_dataset false --history false --automatic false --more_gramme false --better_parse false
+EXTENSIONS= --custom_dataset true --history false --automatic false --better_parse false --more_gramme true #More gramme si j'ai le temps de le faire
 
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
