@@ -2,9 +2,7 @@ functor
 import
     File at 'files.ozf'
     Str at 'str.ozf'
-    Tree at 'tree.ozf'
     Save at 'save.ozf'
-    System
 export
     parseFile:ParseFile
     formatStr:FormatStr

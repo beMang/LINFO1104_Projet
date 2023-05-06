@@ -1,7 +1,6 @@
 functor 
 import 
     Str at 'str.ozf'
-    Browser
 export
    lookUp:LookUp
    getTreeFromList:GetTreeFromList

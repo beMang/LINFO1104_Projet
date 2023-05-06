@@ -60,10 +60,8 @@ define
    proc {LaunchThreads P N}
       Files = {FileM.getAllFilesToLoad}
    in
-      local X in
-         thread
-            MyTree = {Tree.getTreeFromList SeparatedWordsStream}
-         end
+      thread
+         MyTree = {Tree.getTreeFromList SeparatedWordsStream}
       end
       if {LaunchThreadsHelper Files P N}==0 then 
          {Port.send P nil} 

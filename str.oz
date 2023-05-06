@@ -1,7 +1,5 @@
 %Ce fichier s'appelle str pour éviter les conflits avec String, mais fait référence à la gestion des chaines de caractère dans le projet
 functor
-import
-    System
 export
     compare:Compare
     split:Split

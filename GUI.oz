@@ -8,7 +8,6 @@ import
     Files at 'files.ozf'
     Str at 'str.ozf'
     Open
-    Correction at 'correction.ozf'
 export
     getDescription:GetDescription
 	getEntry:GetEntry
@@ -20,7 +19,6 @@ define
 
 	%Construit la description de la fenêtre principale
     fun {GetDescription Press MyCorrection HandleMain}
-        Radio Check C R
         Menu1=menu(
             command(text:"Reload" action: proc{$} {ReloadApp} end) %Remove on inginious submission for tests
             command(text:"Quitter"action:proc{$} {Application.exit 0} end)
@@ -40,7 +38,7 @@ define
                     text(handle:OutputText width:60 height:15 background:black foreground:white glue:w wrap:word setgrid:true)
                 )
                 2:{BuildButtons
-                    ['history' 'custom_dataset' 'correction']
+                    ['history' 'custom_dataset']
                     td(padx:5 1:button(text:"Predict" width:15 height:2 background:blue pady:5 action:proc{$} X in X={Press}end))
                     2
                 }
@@ -74,15 +72,7 @@ define
             {Record.adjoin Acc td(padx:5 I:button(text:"Quit" width:15 height:2 background:red pady:5 action:proc{$}{Application.exit 0} end))}
         [] H|T then
             case H
-            of 'correction' then
-                if {Save.isExtensionActive H} then
-                    {BuildButtons
-                        T
-                        {Record.adjoin Acc td(I:button(text:"Correction" width:15 height:2 background:yellow foreground:black pady:5 action:proc{$}{System.show {CorrectionAction}}end))}
-                        I+1
-                    }
-                else {BuildButtons T Acc I} end
-            [] 'history' then
+            of 'history' then
                 if{Save.isExtensionActive H} then
                     {BuildButtons
                         T
@@ -242,7 +232,7 @@ define
     end
 
     proc {CompleteAfterSpace}
-        LastChar = {Str.getLastCharExceptSpace {GetEntry}} TwoLastWord Prediction NewWord
+        LastChar = {Str.getLastCharExceptSpace {GetEntry}} TwoLastWord Prediction
     in
         if {Member LastChar [10 46 63 33 34 40 41]} then skip %on fait rien si début de phrase
         else

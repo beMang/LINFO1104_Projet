@@ -4,7 +4,7 @@ ENTRY_POINT=main.ozf
 ENTRY_TEST=tests.ozf
 
 #Pour activer ou désactiver les extensions :
-EXTENSIONS= --custom_dataset false --history false --automatic false --correction false --more_gramme false --better_parse false
+EXTENSIONS= --custom_dataset false --history false --automatic false --more_gramme false --better_parse false
 
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
@@ -14,7 +14,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : correction.ozf possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
+all : possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
 	make $^
 
 %.ozf: %.oz

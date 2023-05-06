@@ -4,7 +4,6 @@ import
     Files at 'files.ozf'
     Str at 'str.ozf'
     Application
-    System
 export
     getFoldersToLoad:GetFoldersToLoad
     save:Save
@@ -37,7 +36,6 @@ define
             'custom_dataset'(single type:string default:false optional:false)
             'history'(single type:string default:false optional:false)
             'automatic'(single type:string default:false optional:false)
-            'correction'(single type:string default:false optional:false)
             'better_parse'(single type:string default:false optional:false)
             'more_gramme'(single type:string default:false optional:false)
         )}
@@ -59,10 +57,6 @@ define
 
     fun {GetHistoryFolder}
         "save/history/"
-    end
-
-    fun {GetHistoryFile}
-        {Append {GetHistoryFolder} "history"}
     end
 
     proc {InitHistory}
@@ -89,8 +83,6 @@ define
         end
     end
     fun {GetFoldersToLoadHelper Lines Acc}
-        L
-    in
         case Lines
         of nil then Acc
         [] H|T then
@@ -110,7 +102,7 @@ define
                 if H.value=="true" then
                     if {Files.isDir H.key} then {GetFoldersToLoadHelper T {Append [H.key] Acc}}
                     else 
-                        {System.show {String.toAtom "Erreur : Dossier invalide dans la configuration"}}
+                        {Exception.error "Dossier invalide dans les datasets sélectionnés"}
                         {GetFoldersToLoadHelper T Acc} 
                     end
                 else {GetFoldersToLoadHelper T Acc} end
@@ -118,7 +110,7 @@ define
         end
     end
 
-    %Dataset management :
+    %Dataset management - code permettant de gérer les bases de données à utiliser
 
     %Renvoie un dataset avec la clé name:active ajoutée/mise à jour
     fun {SetDataset Name Active DataSet}
@@ -158,7 +150,7 @@ define
         end
     end
 
-    %Récupère une clé
+    %Récupère une clé spécifique
     fun {GetKey Name DataSet}
         {GetKeyHelper Name DataSet}
     end
