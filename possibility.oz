@@ -70,14 +70,14 @@ define
 
     %Comparateur utilisé pour trier les records possibility (dans l'ordre croissant)
     fun {RecordPossiblityComparator R1 R2}
-        if R1.2 - R2.2 < 0 then true else false end
+        if R1.2 - R2.2 > 0 then true else false end
     end
 
-    %Retire le nombre d'occurence d'une liste dont les éléments sont word#occurence (et inverse la liste)
+    %Retire le nombre d'occurence d'une liste dont les éléments sont word#occurence
     fun {RemoveOccurence L Acc}
         case L 
         of nil then Acc
-        [] H|T then {RemoveOccurence T H.1|Acc}
+        [] H|T then {RemoveOccurence T {Append Acc [H.1]}}
         end
     end
 end
