@@ -62,37 +62,68 @@ define
 
 
    %----------Tests des fonctions de Str--------%
-   fun {TestToLower}
+   proc {TestCompare}
+      local S1 S2 Result1 Result2 Result3 in 
+         S1= "mother"
+         S2= "father"
+         Result1={Str.compare S1 S2}
+         Result2={Str.compare S2 S1}
+         Result3={Str.compare S1 S1}
+         {System.show Result1==1}
+         {System.show Result2==~1}
+         {System.show Result3==0}
+      end
+   end
+
+   proc {TestSplit}
+      local S Result S2 in 
+         S= "i want money"
+         S2= {Str.split S [32]}
+         Result= ["i" "want" "money"]
+         {System.show S2==Result}
+      end
+   end
+
+
+   proc {TestToLower}
       local S Mytest Verif in
          S = "START MAKING VENTILATORS NOW"
          Verif= 'start making ventilators now'  
          Mytest = {String.toAtom{Str.toLower S}}
-         Verif==Mytest
+         {System.show Verif==Mytest}
       end
    end
 
-   fun {TestTwoLastWord}
-      S = "ceci est une phrase"
-      LW = {Str.lastWord S 2}
-   in
-      LW==["une" "phrase"]
+   proc {TestLastWord}
+      local S LW in 
+         S = "ceci est une phrase"
+         LW = {Str.lastWord S 2}
+         {System.show LW==["une" "phrase"]}
+      end
+   end
+
+   proc {TestGetSentences}
+      local Text Phrases in 
+         Text="I have one brother. Is he nice? Yes he is!"
+         Phrases= ["I have one brother" " Is he nice" " Yes he is"]
+         {System.show {Str.getSentences Text}==Phrases}
+      end
    end
 
    proc {TestLastChar}
       S1 = "bonjour les amis"
       S2 = "bonjour les amis ?  "
    in
-      {System.show {Str.getLastCharExceptSpace S1}}
-      {System.show {Str.getLastCharExceptSpace S2}}
+      {System.show {Str.getLastCharExceptSpace S1}==115}
+      {System.show {Str.getLastCharExceptSpace S2}==63}
    end
 
    proc {TestNewSplit}
       S1 = "I love Michigan"
       S2 = "12€ allà mAdrid"
    in
-      
-      {System.show {Str.splitAndRemoveNotAlphaNum S1}}
-      {System.show {Str.splitAndRemoveNotAlphaNum S2}}
+      {System.show {Str.splitAndRemoveNotAlphaNum S1}==["i" "love" "michigan"]}
+      {System.show {Str.splitAndRemoveNotAlphaNum S2}==["12" "all" "madrid"]}
    end
 
    %----------Tests des fonctions de files---------%
@@ -118,15 +149,21 @@ define
    
 
    %---------Lancement des tests--------%
-   {Browse {TestToLower}}
+   {System.show {String.toAtom "Tests from Tree file"}}
    {TestInsertBigTree}
    {TestLookUp}
    {TestGetTreeFromList}
-   {Browse {TestTwoLastWord}}
+
+   {System.show {String.toAtom "Tests from Str file"}}
+   {TestCompare}
+   {TestSplit}
+   {TestToLower}
+   {TestLastWord}
+   {TestGetSentences}
+   {TestLastChar}
    %{TestGetFolders}
    %{TestGetAllFiles}
-   {TestIsDir "src"}
-   {TestLastChar}
+   {TestIsDir "tweets"}
    {TestNewSplit}
 
    {Delay 10*1000} %On attend 10 secondes avant de quitter les tests

@@ -59,7 +59,7 @@ define
         end
     end
     % Sépare une chaine de caractère en une liste de chaine de caractère
-    % Carr contient les caractères utilisés pour séparé la liste S
+    % Carr contient les caractères utilisés pour séparer la liste S
     fun {Split S Carr}
         {SplitHelper S Carr nil nil}
     end
@@ -102,7 +102,7 @@ define
         end
     end
 
-    %Récupère les N derniers mots d'une entrée si le dernier caractère n'est pas
+    %Récupère les N derniers mots d'une entrée si le dernier caractère n'est pas 
     fun{RemoveLastWord S}
         Splited = {Split S [32]}
     in
