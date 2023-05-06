@@ -7,7 +7,7 @@ export
    insertInTree:InsertInTree
 define
 
-   %fonction récursive utilisée par press pour trouver dans l'arbre le Ngramme voulu
+   %fonction récursive utilisée par Press pour trouver dans l'arbre le Ngramme voulu
    %Retourne la value du record pour la liste de mot L (dans le cas de 2-gramme, la liste aura une longueur 2)
    %Retourne 0 si pas trouvé
    fun{LookUp Tree L}
@@ -35,7 +35,7 @@ define
 
    % Création de l'arbre :
 
-   %Insère une entrée dans l'arbre, avec une liste de mots (et plus 3 arguments comme avant)
+   %Insère une entrée dans l'arbre, avec une liste de mots 
    %Leaf représente les records qui contiennent un champ "value" et contenant un record possibilities
    %Pas le cas des records "tree"
    fun {InsertInTree Words Tree}
@@ -109,7 +109,7 @@ define
       [] H|T then %H is a sample
          if H==nil then Acc
          else
-            {GetTreeFromListHelper T {InsertInTree H Acc}} %A adapter si on veut un N-Gramme
+            {GetTreeFromListHelper T {InsertInTree H Acc}} 
          end
       end
    end

@@ -20,37 +20,53 @@ define
          {DisplayList T}
       end
    end
-
-   A= subtree(string: "mange" right:nil left: nil value: F)
-   B= subtree(string: "bois" right: A left: nil value:nil)
-   Test= tree(string : "Je" right: nil left:nil subtree: B)
+   
+   %--------Elements créés pour tester nos fonctions-------%
+   TestTree= tree(string : "Je" right: nil left:nil subtree: B)
+   A= leaf(string: "mange" right:nil left: nil value: F)
+   F= possibilities(beaucoup: 3 bien: 5 des: 7)
+   B= leaf(string: "bois" right: A left: nil value:nil)
    C=possibilities(des:1)
-   D=subtree(string: "manges" right:nil left:nil value:C)
+   D=leaf(string: "manges" right:nil left:nil value:C)
    E=tree(string:"Tu" right:nil left:nil subtree:D)
    Result_test_insert= tree(string: "Je" right: E left:nil subtree:B)
-   F= possibilities(beaucoup: 3 bien: 5 des: 7)
    G= possibilities(a:1 hier:4 manger:4)
+   H=leaf(string: "est" right:nil left:nil value: I)
+   I=possibilities(beau:2 gentil:1)
+   ResultGetTreeFromList= tree(string: "Il" right: E left: nil subtree:H )
 
-   fun {TestInsertBigTree}
+
+
+   %------------Tests des fonctions de Tree---------------%
+   proc {TestInsertBigTree}
       local Mytree in 
-         Mytree = {Tree.insertInTree ["Tu" "manges" 'des'] Test}
-         Mytree==Result_test_insert
+         Mytree = {Tree.insertInTree ["Tu" "manges" 'des'] TestTree}
+         {System.show Mytree==Result_test_insert}
       end
    end
-   fun {TestLookUp}
-      local G in 
-         G={Tree.lookUp Test ["Je" "mange"]}
-         G==F
+   proc {TestLookUp}
+      local Founded Result in 
+         Founded={Tree.lookUp TestTree ["Je" "mange"]}
+         {System.show Founded==F}
+      end
+   end
+   proc {TestGetTreeFromList}
+      local List Result in 
+         List= [["Il" "est" 'beau'] ["Tu" "manges" 'des'] ["Il" "est" 'gentil'] ["Il" "est" 'beau']]
+         Result={Tree.getTreeFromList List}
+         {System.show Result==ResultGetTreeFromList}
       end
    end
 
 
+
+
+   %----------Tests des fonctions de Str--------%
    fun {TestToLower}
       local S Mytest Verif in
          S = "START MAKING VENTILATORS NOW"
          Verif= 'start making ventilators now'  
          Mytest = {String.toAtom{Str.toLower S}}
-         %note: toAtom renvoit une chaine de caractères, pas un string, donc on ne peut pas y appliquer Mytest.1
          Verif==Mytest
       end
    end
@@ -62,7 +78,24 @@ define
       LW==["une" "phrase"]
    end
 
-   %Files Tests :
+   proc {TestLastChar}
+      S1 = "bonjour les amis"
+      S2 = "bonjour les amis ?  "
+   in
+      {System.show {Str.getLastCharExceptSpace S1}}
+      {System.show {Str.getLastCharExceptSpace S2}}
+   end
+
+   proc {TestNewSplit}
+      S1 = "I love Michigan"
+      S2 = "12€ allà mAdrid"
+   in
+      
+      {System.show {Str.splitAndRemoveNotAlphaNum S1}}
+      {System.show {Str.splitAndRemoveNotAlphaNum S2}}
+   end
+
+   %----------Tests des fonctions de files---------%
 
    proc {TestGetFolders}
       Folders = {Save.getFoldersToLoad}
@@ -80,33 +113,22 @@ define
       {System.show {Files.isDir Name}}
    end
 
-   proc {TestLastChar}
-      S1 = "bonjour les amis"
-      S2 = "bonjour les amis ?  "
-   in
-      {Browse {Str.getLastCharExceptSpace S1}}
-      {Browse {Str.getLastCharExceptSpace S2}}
-   end
+   
 
-   proc {TestNewSplit}
-      S1 = "I love Michigan"
-      S2 = "12€ allà mAdrid"
-   in
-      {System.show {Str.splitAndRemoveNotAlphaNum S1}}
-      {System.show {Str.splitAndRemoveNotAlphaNum S2}}
-   end
+   
 
-   %On lance les tests
+   %---------Lancement des tests--------%
    {Browse {TestToLower}}
-   {Browse {TestInsertBigTree}}
-   {Browse {TestLookUp}}
+   {TestInsertBigTree}
+   {TestLookUp}
+   {TestGetTreeFromList}
    {Browse {TestTwoLastWord}}
-   {TestGetFolders}
-   {TestGetAllFiles}
-   {TestIsDir "srcf"}
+   %{TestGetFolders}
+   %{TestGetAllFiles}
+   {TestIsDir "src"}
    {TestLastChar}
    {TestNewSplit}
 
-   {Delay 10*1000} %On attend 10 secondes et puis on quitte les tests (ouais c'est pas ouf)
+   {Delay 10*1000} %On attend 10 secondes avant de quitter les tests
    {Application.exit 0}
 end
