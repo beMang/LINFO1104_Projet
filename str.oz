@@ -83,8 +83,7 @@ define
         [] H|T then
             case H 
             of 64 then T
-            [] 35 then T 
-            [] 91 then T 
+            [] 35 then T  
             [] 45 then T      %Caractères @ # [ - sont retirés
             else 
                 MyString
@@ -118,7 +117,7 @@ define
 
     %Renvoie les phrases d'une chaine de caractère
     fun {GetSentences S}
-        {Split S [10 46 63 33 34 40 41]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet, 40 41-> parenthèses
+        {Split S [10 46 63 33 34 40 41 91 93]} %10->saut de ligne, 46->point, 63->point d'interrogation,33->point d'exclamation, 34-> guillemet, 40 41-> parenthèses, 91 93 -> crochets
     end
 
     %Converti une chaine de caractère en booléen
