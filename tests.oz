@@ -4,6 +4,7 @@ import
    Tree at 'tree.ozf'
    Save at 'save.ozf'
    Files at 'files.ozf'
+   Possibility at 'possibility.ozf'
    Browser
    System
    Application
@@ -44,12 +45,14 @@ define
          {System.show Mytree==Result_test_insert}
       end
    end
+
    proc {TestLookUp}
-      local Founded Result in 
+      local Founded in 
          Founded={Tree.lookUp TestTree ["Je" "mange"]}
          {System.show Founded==F}
       end
    end
+
    proc {TestGetTreeFromList}
       local List Result in 
          List= [["Il" "est" 'beau'] ["Tu" "manges" 'des'] ["Il" "est" 'gentil'] ["Il" "est" 'beau']]
@@ -126,6 +129,14 @@ define
       {System.show {Str.splitAndRemoveNotAlphaNum S2}==["12" "all" "madrid"]}
    end
 
+   proc {TestRemoveLastWord}
+      local S in 
+         S= "I want you"
+         {System.show {Str.removeLastWord S}== "I want "}
+      end
+   end
+
+
    %----------Tests des fonctions de files---------%
 
    proc {TestGetFolders}
@@ -144,6 +155,17 @@ define
       {System.show {Files.isDir Name}}
    end
 
+
+   %--------Test des fonction de possibility----%
+   proc {TestGetPrevision}
+      {System.show {Possibility.getPrevision F}== [['des'] 7.0/15.0]}
+      {System.show {Possibility.getPrevision G}==[['manger' 'hier'] 4.0/9.0]}
+   end
+
+   proc {TestGetNMostProbableWords}
+      {System.show {Possibility.getNMostProbableWord F 2}==['des' 'bien']}
+   end
+
    
 
    
@@ -154,17 +176,24 @@ define
    {TestLookUp}
    {TestGetTreeFromList}
 
-   {System.show {String.toAtom "Tests from Str file"}}
+   {System.show {String.toAtom "Tests from Str"}}
    {TestCompare}
    {TestSplit}
    {TestToLower}
    {TestLastWord}
    {TestGetSentences}
    {TestLastChar}
-   %{TestGetFolders}
-   %{TestGetAllFiles}
-   {TestIsDir "tweets"}
+   {TestRemoveLastWord}
    {TestNewSplit}
+   
+   {System.show {String.toAtom "Tests from Files"}}
+   %{TestGetFolders}
+  % {TestGetAllFiles}
+   {TestIsDir "tweets"}
+
+   {System.show {String.toAtom "Tests from Possibility"}}
+   {TestGetPrevision}
+   {TestGetNMostProbableWords}
 
    {Delay 10*1000} %On attend 10 secondes avant de quitter les tests
    {Application.exit 0}

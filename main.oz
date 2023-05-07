@@ -10,7 +10,7 @@ import
    Save at './save.ozf'
    Property
    Application
-   System
+
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree InputText
 

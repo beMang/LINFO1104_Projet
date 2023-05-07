@@ -102,7 +102,7 @@ define
         end
     end
 
-    %Récupère les N derniers mots d'une entrée si le dernier caractère n'est pas 
+    %Récupère le dernier mot de l'entrée
     fun{RemoveLastWord S}
         Splited = {Split S [32]}
     in
