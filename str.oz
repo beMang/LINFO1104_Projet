@@ -85,7 +85,7 @@ define
             of 64 then T
             [] 35 then T 
             [] 91 then T 
-            [] 45 then T 
+            [] 45 then T      %Caractères @ # [ - sont retirés
             else 
                 MyString
             end

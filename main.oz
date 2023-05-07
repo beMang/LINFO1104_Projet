@@ -12,7 +12,9 @@ import
    Application
    System
 define
-   Window SeparatedWordsStream SeparatedWordsPort MyTree InputText
+   Window SeparatedWordsStream SeparatedWordsPort MyTree InputText NberWord
+
+   NberWord=5
 
    /* @pre : les threads sont "ready"
    @post: Fonction appellee lorsqu on appuie sur le bouton de prediction
@@ -41,7 +43,7 @@ define
                if {Save.isExtensionActive 'more_gramme'} == false then
                   {GUI.setOutput Final.1.1}
                else
-                  {GUI.setOutput {VirtualString.toString {Value.toVirtualString {Possibility.getNMostProbableWord Prediction 5} 200 200}}}
+                  {GUI.setOutput {VirtualString.toString {Value.toVirtualString {Possibility.getNMostProbableWord Prediction NberWord} 200 200}}}
                end
                Final
             end
