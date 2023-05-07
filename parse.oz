@@ -5,13 +5,18 @@ import
     Save at 'save.ozf'
 export
     parseFile:ParseFile
-    formatStr:FormatStr
+    formatInput:FormatInput
 define
     BetterParsing = {Save.isExtensionActive 'better_parse'} %Si on a activé le parsing un peu meilleur que celui de base (pour ne pas aller demander à l'appli à chaque fois)
 
     %Retire les symboles inutiles des mots
     fun {FormatStr S}
         if BetterParsing then {Str.deleteCarBegin {Str.toLower S}} else S end
+    end
+
+    %Formatte l'input de l'utilisateur (similaire à formatStr mais met tout en minuscule même si better_parsing est désactivé)
+    fun {FormatInput S}
+        if BetterParsing then {Str.deleteCarBegin {Str.toLower S}} else {Str.toLower S} end
     end
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P

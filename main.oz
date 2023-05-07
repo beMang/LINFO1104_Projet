@@ -10,7 +10,7 @@ import
    Save at './save.ozf'
    Property
    Application
-
+   System
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree InputText
 
@@ -32,7 +32,7 @@ define
          [[nil] 0]
       else
          local Prediction Final in
-            Prediction = {Tree.lookUp MyTree [{Parse.formatStr {Nth TwoLast 1}} {Parse.formatStr {Nth TwoLast 2}}]}
+            Prediction = {Tree.lookUp MyTree [{Parse.formatInput {Nth TwoLast 1}} {Parse.formatInput {Nth TwoLast 2}}]}
             if Prediction==0 then
                {GUI.setOutput ""}
                [[nil] 0]
