@@ -20,6 +20,15 @@ define
     end
 
     %Créer une sample (liste du type word1|word2|prediction|nil) et l'envoie dans le port P
+
+    proc {GetSamplePort Sentence P}
+        if BetterParsing then
+            {GetSampleHelperPort {Str.split Sentence [32]} nil nil P} %32 code Ascii de espace, donc on envoie les mots
+        else
+            {GetSampleHelperPort {Str.splitAndRemoveNotAlphaNum Sentence} nil nil P}
+        end
+    end
+
     proc {GetSampleHelperPort WordsL Word1 Word2 P}
         case WordsL
         of nil then skip
@@ -47,15 +56,9 @@ define
             end
         end
     end
-    proc {GetSamplePort Sentence P}
-        if BetterParsing then
-            {GetSampleHelperPort {Str.split Sentence [32]} nil nil P} %32 code Ascii de espace, donc on envoie les mots
-        else
-            {GetSampleHelperPort {Str.splitAndRemoveNotAlphaNum Sentence} nil nil P}
-        end
-    end
     
-    %Fonctions parsant un fichier, fonctionnant avec un port, les résultats sont envoyés à celui-ci
+    
+    %Fonction analysant un fichier, fonctionnant avec un port, les résultats sont envoyés à celui-ci
     proc{ParseFile FileName P}
         if BetterParsing then
             {ParseFileHelper {File.getSentences FileName} P}

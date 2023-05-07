@@ -136,7 +136,7 @@ define
         {WriteDataSet ResetDataSet}
     end
 
-    %Vérifie que set existe ou pas
+    %Vérifie si le set de donnée existe
     fun{DataSetExist Name DataSet}
         {DataSetExistHelper Name DataSet}
     end

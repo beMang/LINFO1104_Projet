@@ -1,10 +1,10 @@
-TWEETS_FOLDER="tweets" #si pas envie d'attendre à chaque fois mettre smaller_data pour plus petit set de donnée
+TWEETS_FOLDER="tweets"
 UNAME_S := $(shell uname -s)
 ENTRY_POINT=main.ozf
 ENTRY_TEST=tests.ozf
 
 #Pour activer ou désactiver les extensions :
-EXTENSIONS= --custom_dataset false --history false --automatic false --better_parse false --more_gramme false #More gramme si j'ai le temps de le faire
+EXTENSIONS= --custom_dataset false --history false --automatic false --better_parse false --more_gramme false
 
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
