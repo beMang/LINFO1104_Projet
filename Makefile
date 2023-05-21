@@ -1,10 +1,10 @@
 TWEETS_FOLDER="tweets"
 UNAME_S := $(shell uname -s)
 ENTRY_POINT=main.ozf
-ENTRY_TEST=tests.ozf
+ENTRY_TEST=src/tests.ozf
 
 #Pour activer ou désactiver les extensions :
-EXTENSIONS= --custom_dataset false --history false --automatic false --better_parse false --more_gramme false
+EXTENSIONS = --custom_dataset true --history true --automatic false --better_parse true --more_gramme true
 
 ifeq ($(UNAME_S),Darwin)
 	OZC = /Applications/Mozart2.app/Contents/Resources/bin/ozc
@@ -14,7 +14,7 @@ else
 	OZENGINE = ozengine
 endif
 
-all : possibility.ozf tree.ozf str.ozf files.ozf parse.ozf GUI.ozf save.ozf main.ozf
+all : src/possibility.ozf src/tree.ozf src/str.ozf src/files.ozf src/parse.ozf src/GUI.ozf src/save.ozf main.ozf
 	make $^
 
 %.ozf: %.oz

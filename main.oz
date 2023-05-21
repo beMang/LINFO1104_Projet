@@ -1,20 +1,20 @@
 functor
 import 
 	QTk at 'x-oz://system/wp/QTk.ozf'
-   Parse at './parse.ozf'
-   Tree at './tree.ozf'
-   Str at './str.ozf'
-   Possibility at './possibility.ozf'
-   GUI at './GUI.ozf'
-   FileM at './files.ozf'
-   Save at './save.ozf'
+   Parse at './src/parse.ozf'
+   Tree at './src/tree.ozf'
+   Str at './src/str.ozf'
+   Possibility at './src/possibility.ozf'
+   GUI at './src/GUI.ozf'
+   FileM at './src/files.ozf'
+   Save at './src/save.ozf'
    Property
    Application
    System
 define
    Window SeparatedWordsStream SeparatedWordsPort MyTree InputText NberWord
 
-   NberWord=5
+   NberWord=5 %défini le nombre de mot affiché si more_gramme est activé
 
    /* @pre : les threads sont "ready"
    @post: Fonction appellee lorsqu on appuie sur le bouton de prediction

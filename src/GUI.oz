@@ -230,6 +230,7 @@ define
         {S close}
         {Application.exit 0}
     end
+    
     %Insère le mot le plus probable dans l'entrée
     proc {CompleteAfterSpace}
         LastChar = {Str.getLastCharExceptSpace {GetEntry}} TwoLastWord Prediction
