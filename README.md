@@ -24,6 +24,7 @@ Les options disponibles sont :
 * tweets : contient la base de donnée de base
 * smaller_data : contient une base de donnée plus petite pour tester le programme plus rapidement
 * save : dossier de sauvegarde pour les bases de données personalisées et l'historique
+* report : contient le rapport du projet
 
 ## Commande du MakeFile
 * make : compile le projet
